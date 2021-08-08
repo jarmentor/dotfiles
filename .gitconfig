@@ -1,0 +1,63 @@
+[user]
+	email = jarmentor@me.com
+	name = Jonathan Armentor
+	signingkey = 6F2B19877B331439A19D9A85C9F8011368795A2A
+[web]
+    browser = safari
+[core]
+	excludesfile = /Users/jarmentor/.gitignore_global
+    editor = subl
+    autocrlf = input
+    whitespace = blank-at-eol,blank-at-eof,tab-in-indent,-space-before-tab
+[apply]
+    whitespace = fix
+[github]
+    user = jarmentor
+    token = token
+[alias]
+    a = add
+    ca = commit -a
+    s = status
+    st = status
+    stat = status
+    cob = checkout -b
+    br = branch
+    ci = commit
+    co = checkout
+    df = diff
+    g = grep -I
+    lg = log -p
+    pp = !"echo 'Pull'; git pull; echo 'Push'; git push"
+    rb = rbranch
+    rv = review
+[credential]
+    helper = osxkeychain
+[commit]
+	template = /Users/jarmentor/.gitmessage
+	gpgsign = true
+[color]
+    ui = true
+[push]
+    default = matching
+[filter "lfs"]
+    required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+[gitflow "branch"]
+    master = main
+    develop = develop
+[init]
+    defaultBranch = main
+[tag]
+    forceSignAnnotated = false
+[status]
+    showUntrackedFiles = all
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[gpg]
+	program = /usr/local/bin/gpg
