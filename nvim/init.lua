@@ -192,12 +192,12 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Moving Lines Around
-vim.keymap.set('n', '<C-j>', ':m .+1<CR>==', { desc = 'Move line down' })
-vim.keymap.set('n', '<C-k>', ':m .-2<CR>==', { desc = 'Move line up' })
-vim.keymap.set('i', '<C-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down' })
-vim.keymap.set('i', '<C-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up' })
-vim.keymap.set('v', '<C-j>', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
-vim.keymap.set('v', '<C-k>', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { desc = 'Move line down' })
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { desc = 'Move line up' })
+vim.keymap.set('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down' })
+vim.keymap.set('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up' })
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
