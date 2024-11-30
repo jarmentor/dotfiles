@@ -1,0 +1,76 @@
+[init]
+  defaultBranch = main
+[user]
+  name = Jonathan Armentor
+  email = jonathan@comitdevelopers.com
+
+[includeIf "gitdir:/Volumes/Development/Comit/"]
+  path = ~/.gitconfig-comit
+
+[includeIf "gitdir:/Volumes/Development/Personal/"]
+  path = ~/.gitconfig-personal
+
+[core]
+  editor = nvim
+  autocrlf = false
+
+[advice]
+  pushNonFastForward = false
+
+[color]
+  ui = auto
+
+[color "status"]
+  added = green
+  changed = yellow
+  untracked = red
+
+[color "branch"]
+  current = yellow reverse
+  remote = green
+
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  new = green
+  old = red
+
+[alias]
+  br = branch
+  co = checkout
+  d = diff
+  ff = flow feature
+  fff = flow feature finish
+  ffi = flow init -d
+  ffs = flow feature start
+  fi = flow init -d
+  l = log --oneline --decorate --color
+  mt = mergetool
+  s = status
+  sh = show
+  st = stash
+  amend = commit --amend --no-edit
+  count = rev-list --count
+  graph = log --oneline --decorate --graph --all
+  last = log -1 HEAD
+  patch = log -p
+  unstage = reset HEAD --
+
+[help]
+  autocorrect = 1
+
+[format]
+  pretty = "%h %s %b"
+
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+
+[merge]
+  tool=nvim
+
+[mergetool "nvim"]
+  cmd = nvim -d $LOCAL $REMOTE
+  trustExitCode = false
