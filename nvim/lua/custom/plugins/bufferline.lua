@@ -3,13 +3,11 @@ vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer', silent = true
 vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous buffer', silent = true })
 
 -- buffer navigation
-vim.keymap.set('n', '1', ':BufferLineGoToBuffer 1<CR>', { desc = 'Go to buffer 1', silent = true })
-vim.keymap.set('n', '2', ':BufferLineGoToBuffer 2<CR>', { desc = 'Go to buffer 2', silent = true })
-vim.keymap.set('n', '3', ':BufferLineGoToBuffer 3<CR>', { desc = 'Go to buffer 3', silent = true })
-vim.keymap.set('n', '4', ':BufferLineGoToBuffer 4<CR>', { desc = 'Go to buffer 4', silent = true })
-vim.keymap.set('n', '5', ':BufferLineGoToBuffer 5<CR>', { desc = 'Go to buffer 5', silent = true })
-vim.keymap.set('n', '6', ':BufferLineGoToBuffer 6<CR>', { desc = 'Go to buffer 6', silent = true })
-vim.keymap.set('n', '<leader>$', ':BufferLineGoToBuffer -1<CR>', { desc = 'Go to last buffer', silent = true })
+vim.keymap.set('n', '<C-1>', ':BufferLineGoToBuffer 1<CR>', { desc = 'Go to buffer 1', silent = true })
+vim.keymap.set('n', '<C-2>', ':BufferLineGoToBuffer 2<CR>', { desc = 'Go to buffer 2', silent = true })
+vim.keymap.set('n', '<C-3>', ':BufferLineGoToBuffer 3<CR>', { desc = 'Go to buffer 3', silent = true })
+vim.keymap.set('n', '<C-4>', ':BufferLineGoToBuffer 4<CR>', { desc = 'Go to buffer 4', silent = true })
+vim.keymap.set('n', '<C-5>', ':BufferLineGoToBuffer 5<CR>', { desc = 'Go to buffer 5', silent = true })
 
 -- buffer management
 vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete current buffer', silent = true })
