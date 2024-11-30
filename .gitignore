@@ -1,5 +1,6 @@
 # Add sensitive and non-personal files to gitignore
 .env*
 .env.sensitive
+.env.personal
 .env.comit
 .DS_Store
