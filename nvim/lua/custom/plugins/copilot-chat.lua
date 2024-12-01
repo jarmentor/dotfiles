@@ -50,6 +50,11 @@ return {
       luasnip.config.setup {}
 
       cmp.setup {
+        completion = {
+          completeopt = 'menu,menuone,noselect',
+          max_abbr_width = 50,
+          max_item_count = 10,
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -85,8 +90,8 @@ return {
           end, { 'i', 's' }),
         },
         sources = {
-          { name = 'copilot' },
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp', priority = 10 },
+          { name = 'copilot', priority = 5 },
           { name = 'luasnip' },
           { name = 'path' },
         },

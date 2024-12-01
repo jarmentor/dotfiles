@@ -22,6 +22,7 @@ return {
   dependencies = 'nvim-tree/nvim-web-devicons',
   config = function()
     require('bufferline').setup {
+      highlights = require 'rose-pine.plugins.bufferline',
       options = {
         mode = 'buffers', -- set to "tabs" to only show tabpages instead
         numbers = 'none',
