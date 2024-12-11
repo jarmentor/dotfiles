@@ -38,6 +38,7 @@ return {
         return vim.g.snacks_dim ~= false and vim.b[buf].snacks_dim ~= false and vim.bo[buf].buftype == ''
       end,
     },
+    notifier = { enabled = true },
     quickfile = { enabled = true },
   },
   keys = {

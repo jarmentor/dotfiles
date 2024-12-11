@@ -392,6 +392,15 @@ require('lazy').setup({
     'rose-pine/neovim',
     name = 'rose-pine',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('rose-pine').setup {
+        styles = {
+          bold = true,
+          italic = true,
+          transparency = true,
+        },
+      }
+    end,
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
