@@ -9,7 +9,6 @@ return {
   cmd = 'Neotree',
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
-    { '<S-\\>', ':Neotree close<CR>', desc = 'Close NeoTree' },
   },
   opts = {
     filesystem = {
@@ -37,7 +36,5 @@ return {
   },
   config = function(_, opts)
     require('neo-tree').setup(opts)
-    -- Add a Neovim mapping for Shift+\
-    vim.api.nvim_set_keymap('n', '<S-\\>', ':Neotree close<CR>', { noremap = true, silent = true, desc = 'Close NeoTree' })
   end,
 }

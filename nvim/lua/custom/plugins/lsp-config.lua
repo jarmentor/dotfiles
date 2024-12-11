@@ -44,14 +44,10 @@ return {
     --    That is to say, every time a new file is opened that is associated with
     --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
     --    function will be executed to configure the current buffer
+
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
-        -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-        -- to define small helper and utility functions so you don't have to repeat yourself.
-        --
-        -- In this case, we create a function that lets us more easily define mappings specific
-        -- for LSP related items. It sets the mode, buffer and description for us each time.
         local map = function(keys, func, desc)
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
@@ -159,21 +155,47 @@ return {
               unknownAtRules = 'ignore',
             },
           },
+          scss = {
+            validate = true,
+          },
+          less = {
+            validate = true,
+          },
         },
       },
-      -- :will:quote:
-      -- clangd = {},
-      -- gopls = {},
-      -- pyright = {},
-      -- rust_analyzer = {},
-      -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --
-      -- Some languages (like typescript) have entire language plugins that can be useful:
-      --    https://github.com/pmizio/typescript-tools.nvim
-      --
-      -- But for many setups, the LSP (`tsserver`) will work just fine
-      -- tsserver = {},
-      --
+
+      emmet_language_server = {
+        filetypes = { 'html', 'astro', 'css', 'javascript', 'typescript', 'php', 'vue', 'javascriptreact', 'typescriptreact' },
+        root_dir = require('lspconfig').util.find_git_ancestor,
+        single_file_support = true,
+      },
+
+      graphql = {
+        filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'graphql' },
+      },
+
+      phpactor = {
+        capabilities = capabilities,
+        root_dir = require('lspconfig').util.root_pattern('composer.json', '.git'),
+        settings = {
+          phpactor = {
+            diagnostics = {
+              enable = true,
+            },
+            phpcs = {
+              enable = true,
+            },
+            completion = {
+              enable = true,
+              autocompleteMethod = true,
+              autocompleteClass = true,
+            },
+            hover = {
+              enable = true,
+            },
+          },
+        },
+      },
 
       lua_ls = {
         -- cmd = {...},
@@ -184,8 +206,50 @@ return {
             completion = {
               callSnippet = 'Replace',
             },
-            -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            -- diagnostics = { disable = { 'missing-fields' } },
+            diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+      },
+
+      stylelint_lsp = {
+        filetypes = {
+          'css',
+          'scss',
+          'less',
+          'html',
+          'astro',
+        },
+        settings = {
+          stylelintplus = {
+            autoFixOnFormat = true,
+            autoFixOnSave = true,
+            validateOnType = true,
+            validateOnSave = true,
+          },
+        },
+      },
+
+      yamlls = {
+        filetypes = { 'yaml', 'yml' },
+        settings = {
+          yaml = {
+            schemaStore = {
+              enable = false,
+              url = '',
+            },
+            schemas = {
+              ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*',
+              ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '*docker-compose*.{yml,yaml}',
+              ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
+              ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
+            },
+            format = {
+              enable = true,
+              singleQuote = true,
+            },
+            yaml = {
+              validate = true,
+            },
           },
         },
       },
@@ -205,10 +269,16 @@ return {
     vim.list_extend(ensure_installed, {
       'stylua', -- Used to format Lua code
       'tailwindcss-language-server',
+      'sqlls',
+      'bashls',
+      'jsonls',
+      'markdown_oxide',
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     require('mason-lspconfig').setup {
+      automatic_installation = true,
+      ensure_installed = {},
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
@@ -219,7 +289,7 @@ return {
           -- Special setup for Tailwind CSS LSP to include .astro files
           if server_name == 'tailwindcss-language-server' then
             require('lspconfig')[server_name].setup {
-              filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript' }, -- Add .astro filetype
+              filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript' },
             }
           else
             require('lspconfig')[server_name].setup(server)
