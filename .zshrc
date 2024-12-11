@@ -159,6 +159,8 @@ tmux_select() {
 
 alias {tms,tmux-select}=tmux_select
 
+alias {tls,tmls}="tmux list-sessions"
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
 
 # bun + bun completions
