@@ -1,18 +1,22 @@
 [init]
   defaultBranch = main
+
 [user]
   name = Jonathan Armentor
-  email = jonathan@comitdevelopers.com
+  email = jonathan@jonathanarmentor.dev
+
+[core]
+  editor = nvim
+  autocrlf = false
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 
 [includeIf "gitdir:/Volumes/Development/Comit/"]
   path = ~/.gitconfig-comit
 
 [includeIf "gitdir:/Volumes/Development/Personal/"]
   path = ~/.gitconfig-personal
-
-[core]
-  editor = nvim
-  autocrlf = false
 
 [advice]
   pushNonFastForward = false
@@ -44,17 +48,34 @@
   ffi = flow init -d
   ffs = flow feature start
   fi = flow init -d
-  l = log --oneline --decorate --color
+  l = log --oneline --decorate --color --all
   mt = mergetool
   s = status
   sh = show
   st = stash
-  amend = commit --amend --no-edit
+  reb = "!r() { git rebase -i HEAD~$1; }; r"
+  amend = commit --amend --reuse-message=HEAD
   count = rev-list --count
   graph = log --oneline --decorate --graph --all
   last = log -1 HEAD
   patch = log -p
   unstage = reset HEAD --
+  whoami = config user.email
+
+  # Show verboase output about tags, branches or rmotes.
+  tags = tag -l
+  branches = branch --all
+  remotes = remote --verbose
+
+  # List aliases.
+  aliases = config --get-regexp alias
+
+[apply]
+  # detect whitespace errors when patching
+  whitespace = fix
+
+[push]
+  followTags = true
 
 [help]
   autocorrect = 1
