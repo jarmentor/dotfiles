@@ -25,6 +25,9 @@ return { -- Collection of various small independent plugins/modules
       },
     }
 
+    -- Replace Comment.nvim with mini.comment for commenting support
+    require('mini.comment').setup()
+
     local statusline = require 'mini.statusline'
     statusline.setup { use_icons = vim.g.have_nerd_font }
 
