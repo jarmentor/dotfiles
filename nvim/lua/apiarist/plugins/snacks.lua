@@ -1,7 +1,6 @@
 return {
   'folke/snacks.nvim',
-  lazy = false,
-  priority = 1000,
+  event = 'VeryLazy',
   opts = {
     dashboard = {
       formats = {
@@ -43,28 +42,18 @@ return {
   },
   keys = {
     {
-      '<leader>.',
+      '<leader>uh',
       function()
-        Snacks.scratch()
+        require('snacks').toggle.inlay_hints()
       end,
-      desc = 'Toggle Scratch Buffer',
+      desc = 'Snacks: Toggle inlay hints',
     },
     {
-      '<leader>S',
+      '<leader>uD',
       function()
-        Snacks.scratch.select()
+        require('snacks').toggle.dim()
       end,
-      desc = 'Select Scratch Buffer',
+      desc = 'Snacks: Toggle dim buffers',
     },
   },
-  init = function()
-    vim.api.nvim_create_autocmd('User', {
-      pattern = 'VeryLazy',
-      callback = function()
-        -- Create some toggle mappings
-        Snacks.toggle.inlay_hints():map '<leader>uh'
-        Snacks.toggle.dim():map '<leader>uD'
-      end,
-    })
-  end,
 }
