@@ -11,7 +11,9 @@ vim.api.nvim_create_user_command('TrimTrailingSpaces', function(opts)
 end, { range = true, desc = 'Remove trailing spaces (with optional range)' })
 
 vim.api.nvim_create_user_command('ToggleLineNumbers', 'set number! | set relativenumber!', {})
+
 vim.api.nvim_create_user_command('SaveAll', 'wa', {})
+
 vim.api.nvim_create_user_command('BackupFile', function()
   -- Get the current file name
   local filename = vim.fn.expand '%'
