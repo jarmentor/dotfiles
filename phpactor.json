@@ -1,0 +1,7 @@
+{
+        "autoload": {
+                "global": [
+                        "/Users/jarmentor/.composer/vendor/autoload.php"
+                ]
+        }
+}

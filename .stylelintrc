@@ -1,0 +1,10 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "indentation": 2,
+    "linebreak-style": [
+      "unix"
+    ],
+    "selector-class-pattern": "^[a-z][a-z0-9-]*$"
+  }
+}
