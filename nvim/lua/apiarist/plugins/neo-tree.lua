@@ -8,7 +8,7 @@ return {
   },
   cmd = 'Neotree',
   keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal' },
+    { '\\', ':Neotree toggle<CR>', desc = 'NeoTree toggle' },
   },
   opts = {
     filesystem = {
@@ -32,6 +32,14 @@ return {
         leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
       hijack_netrw_behavior = 'open_default',
+    },
+    event_handlers = {
+      {
+        event = 'file_opened',
+        handler = function()
+          require('neo-tree.command').execute { action = 'close' }
+        end,
+      },
     },
   },
   config = function(_, opts)
