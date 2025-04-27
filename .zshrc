@@ -17,6 +17,10 @@ export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+  export TERM=xterm-256color
+fi
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -82,6 +86,7 @@ alias g="git"
 alias gsh="git show"
 alias gs="git status"
 alias gd="git diff"
+alias gap="git add -p"
 
 # Miscellaneous Tools
 alias obs="open -a Obsidian"
@@ -103,6 +108,7 @@ alias tojpg="mogrify -quality 100 -format jpg"
 alias dotfiles="cd ~/.dotfiles"
 alias rfc=view_rfc
 alias h=head
+alias o=open
 alias {c,cl,clr}=clear
 
 # Nonsense and Fun
@@ -124,10 +130,10 @@ view_rfc() {
 vv() {
   # Assumes all configs exist in directories named ~/.config/nvim-*
   local config=$(fd --max-depth 1 --glob 'nvi*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
- 
+
   # If I exit fzf without selecting a config, don't open Neovim
   [[ -z $config ]] && echo "No config selected" && return
- 
+
   # Open Neovim with the selected config
   NVIM_APPNAME=$(basename $config) nvim $@
 }
@@ -222,3 +228,28 @@ source "/Users/jarmentor/.dotfiles/.env"
 source "/Users/jarmentor/.dotfiles/.env.comit"
 source "/Users/jarmentor/.dotfiles/.env.personal"
 
+create_recaptcha_key() {
+    local domain_name="$1"
+    local environment_name="$2"
+
+    # Validate input
+    if [[ -z "$domain_name" || -z "$environment_name" ]]; then
+        echo "Usage: create_recaptcha_key <domain_name> <environment_name>"
+        return 1
+    fi
+
+    # Construct domain arguments
+    local wpengine_domain="${environment_name}.wpenginepowered.com"
+
+    # Run gcloud command
+    gcloud recaptcha keys create \
+        --web \
+        --display-name="$domain_name" \
+        --integration-type="SCORE" \
+        --domains="$wpengine_domain,$domain_name"
+
+    echo "reCAPTCHA key created for domains: $wpengine_domain, $domain_name"
+}
+
+
+. "$HOME/.local/bin/env"
