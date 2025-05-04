@@ -56,6 +56,7 @@ alias tdl='cd ~/Downloads'
 alias dotfiles='cd ~/.dotfiles'
 alias neovim='nvim'
 alias {v,vim,nv}='nvim'
+alias {d,dev,todev}='cd /Volumes/Development'
 
 # Git
 alias g=git
