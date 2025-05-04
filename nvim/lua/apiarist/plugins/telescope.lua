@@ -56,7 +56,19 @@ return {
       pickers = {
         find_files = {
           hidden = true,
-          file_ignore_patterns = { '.git/', '.cache', '%.o', '%.a', '%.out', '%.class', '%.pdf', '%.mkv', '%.mp4', '%.zip' },
+          -- Only ignore exact file extensions; anchor patterns to end of string
+          file_ignore_patterns = {
+            '.git/',
+            '.cache',
+            '%.o$',
+            '%.a$',
+            '%.out$',
+            '%.class$',
+            '%.pdf$',
+            '%.mkv$',
+            '%.mp4$',
+            '%.zip$',
+          },
         },
       },
       extensions = {
