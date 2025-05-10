@@ -8,7 +8,6 @@ return {
   },
   opts = {
     dashboard = {
-      header = { 'Welcome back, 👋', '' },
       formats = {
         key = function(item)
           return { { '[', hl = 'special' }, { item.key, hl = 'key' }, { ']', hl = 'special' } }
