@@ -1,3 +1,7 @@
+# ─── only run the rest in a real interactive shell ───────────────────────────
+# skip EVERYTHING below if this isn't an interactive terminal
+[[ $- != *i* ]] && return
+
 # ────────────────────────────────────────────────────────────────────────────
 # Instant prompt (Powerlevel10k)
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -150,8 +154,8 @@ for envf in ~/.dotfiles/.env ~/.dotfiles/.env.comit ~/.dotfiles/.env.personal; d
 done
 
 # ────────────────────────────────────────────────────────────────────────────
-# Auto-attach tmux on Apiarist.local
- if [[ "$(hostname)" == "Apiarist.local" && -z $TMUX ]]; then
+# ─── Auto-attach tmux on Apiarist.local (but NOT in VS Code bc aaaa) ────────────────
+if [[ "$(hostname)" == "Apiarist.local" && -z $TMUX && $TERM_PROGRAM != "vscode" ]]; then
   if command -v tmux >/dev/null 2>&1; then
     exec tmux new-session -A -s main
   fi

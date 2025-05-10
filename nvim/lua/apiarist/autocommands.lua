@@ -77,3 +77,14 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     end
   end,
 })
+
+-- Enable inlay hints for phpbuffers
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(event)
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client.name == 'phpactor' and client.supports_method 'textDocument/inlayHint' then
+      -- Enable for this buffer
+      vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+    end
+  end,
+})

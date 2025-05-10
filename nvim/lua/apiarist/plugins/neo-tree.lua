@@ -17,6 +17,8 @@ return {
         hide_dotfiles = false,
         never_show = {
           '.DS_Store',
+          'node_modules',
+          'vendor',
         },
         always_show_by_pattern = {
           '.env*',

@@ -2,23 +2,11 @@ return {
   'folke/snacks.nvim',
   event = 'VeryLazy',
   cmd = {
-    'SnacksScratch',
-    'SnacksScratchSelect',
-    'SnacksQuickfile',
     'SnacksDashboard',
     'SnacksToggleDim',
     'SnacksToggleInlayHints',
   },
   opts = {
-    scratch = {
-      enabled = true,
-      default_ft = 'markdown',
-      open_cmd = 'vsplit',
-      template = function()
-        return { '# Scratch • ' .. os.date '%Y-%m-%d', '' }
-      end,
-      persist = false,
-    },
     dashboard = {
       header = { 'Welcome back, 👋', '' },
       formats = {
@@ -72,38 +60,8 @@ return {
         icons = { info = ' ', warn = ' ', error = ' ', success = ' ' },
       },
     },
-    quickfile = {
-      enabled = true,
-      dir = '~/notes/%Y/%m/',
-      extension = 'md',
-      template = function(path)
-        return { '# ' .. vim.fn.fnamemodify(path, ':t:r'), '', '—✎' }
-      end,
-      create_dir = true,
-      on_create = function(path)
-        vim.cmd('edit ' .. path)
-        if vim.fn.exists '*vim.lsp.buf.format' == 1 then
-          vim.lsp.buf.format { async = false }
-        end
-        vim.fn.jobstart({ 'git', 'add', path }, { detach = true })
-      end,
-    },
   },
   keys = {
-    {
-      '<leader>.',
-      function()
-        Snacks.scratch()
-      end,
-      desc = 'Toggle Scratch Buffer',
-    },
-    {
-      '<leader>S',
-      function()
-        Snacks.scratch.select()
-      end,
-      desc = 'Select Scratch Buffer',
-    },
     {
       '<leader>n',
       function()

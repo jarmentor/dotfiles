@@ -146,6 +146,11 @@ return {
           capabilities = capabilities,
           root_dir = require('lspconfig').util.root_pattern('composer.json', '.git'),
           settings = {
+            language_server_worse_reflection = {
+              enable = true,
+              types = true,
+              params = true,
+            },
             phpactor = {
               diagnostics = {
                 enable = true,
