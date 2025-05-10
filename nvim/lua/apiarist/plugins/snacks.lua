@@ -1,6 +1,6 @@
 return {
   'folke/snacks.nvim',
-  event = 'VeryLazy',
+  event = 'VimEnter',
   cmd = {
     'SnacksDashboard',
     'SnacksToggleDim',
@@ -15,10 +15,34 @@ return {
         end,
       },
       sections = {
-        { section = 'terminal', cmd = 'fortune -s | cowsay', hl = 'header', padding = 1, indent = 8 },
-        { icon = '', title = 'Workspaces', section = 'projects', padding = 1 },
-        { icon = '', title = 'Recent Files', section = 'recent_files', padding = 1 },
-        { icon = '', title = 'Find File', action = 'Telescope find_files', padding = 1 },
+        {
+          section = 'header',
+          header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+        },
+        { section = 'keys', gap = 1, padding = 1 },
+        { pane = 2, icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
+        { pane = 2, icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
+        {
+          pane = 2,
+          icon = ' ',
+          title = 'Git Status',
+          section = 'terminal',
+          enabled = function()
+            return Snacks.git.get_root() ~= nil
+          end,
+          cmd = 'git status --short --branch --renames',
+          height = 5,
+          padding = 1,
+          ttl = 5 * 60,
+          indent = 3,
+        },
+        { section = 'startup' },
       },
       indent = 2,
       padding = 2,
