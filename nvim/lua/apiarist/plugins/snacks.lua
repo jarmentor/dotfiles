@@ -8,6 +8,7 @@ return {
   },
   opts = {
     toggle = {},
+    quickfile = {},
     dashboard = {
       formats = {
         key = function(item)
