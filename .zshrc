@@ -97,6 +97,9 @@ alias fib='seq 50 | awk "BEGIN{a=1;b=1}{print a;c=a+b;a=b;b=c}"'
 alias tojpg='mogrify -quality 100 -format jpg'
 alias img-resize='magick mogrify'
 
+# LocalWP Mysql
+alias localmysql='/Applications/Local.app/Contents/Resources/extraResources/lightning-services/mysql-8.0.35+2/bin/darwin-arm64/bin/mysql -u root -p'
+
 # ────────────────────────────────────────────────────────────────────────────
 # Functions
 
