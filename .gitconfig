@@ -62,7 +62,7 @@
   unstage = reset HEAD --
   whoami = config user.email
 
-  # Show verboase output about tags, branches or rmotes.
+  # Show verboase output about tags, branches or remotes.
   tags = tag -l
   branches = branch --all
   remotes = remote --verbose
@@ -71,7 +71,7 @@
   aliases = config --get-regexp alias
 
 [log]
-  date = relative
+  date = iso-local
 
 [apply]
   # detect whitespace errors when patching
