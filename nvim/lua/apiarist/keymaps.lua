@@ -37,8 +37,6 @@ vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Vertical split win
 -- Moving Lines Around
 vim.keymap.set('n', '<S-j>', ':m .+1<CR>==', { desc = 'Move line down' })
 vim.keymap.set('n', '<S-k>', ':m .-2<CR>==', { desc = 'Move line up' })
-vim.keymap.set('i', '<S-j>', '<Esc>:m .+1<CR>==gi', { desc = 'Move line down' })
-vim.keymap.set('i', '<S-k>', '<Esc>:m .-2<CR>==gi', { desc = 'Move line up' })
 vim.keymap.set('v', '<S-j>', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
 vim.keymap.set('v', '<S-k>', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
 
