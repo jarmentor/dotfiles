@@ -13,13 +13,15 @@ fi
 typeset -a EXTRA_PATHS=(
   "$HOME/bin"
   "$HOME/.local"
+  "$HOME/.local/bin"
   "/opt/homebrew/bin"
   "/usr/local/bin"
   "$HOME/.composer/vendor/bin"
   "/usr/local/sbin"
   "$HOME/.cargo/bin"
   "/opt/homebrew/opt/ruby/bin"
-  "/Library/Frameworks/Python.framework/Versions/3.11/bin"
+  "/Library/Frameworks/Python.framework/Versions/3.11/bin",
+  "$HOME/.docker/bin"
 )
 for p in "${EXTRA_PATHS[@]}"; do
   [[ -d $p && :$PATH: != *":$p:"* ]] && PATH="$p:$PATH"
@@ -74,7 +76,7 @@ alias brewup='brew update && brew upgrade && brew cleanup && brew upgrade --cask
 
 # Docker & Node
 alias dk='docker'
-alias dkc='docker-compose'
+alias dkc='docker compose'
 alias useenv='source venv/bin/activate'
 alias python=python3
 alias pip=pip3
