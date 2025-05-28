@@ -110,6 +110,14 @@ rfc() {
   curl -s "https://www.rfc-editor.org/rfc/rfc$1.txt" | less
 }
 
+sitemap() {
+  local url="$1"
+  curl -s "$url" \
+    | grep '<loc>' \
+    | awk -F'[<>]' '{print $3}' \
+    | sort
+}
+
 # ────────────────────────────────────────────────────────────────────────────
 # Third-party tool integrations
 
