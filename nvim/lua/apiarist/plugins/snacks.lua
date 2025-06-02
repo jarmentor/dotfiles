@@ -1,18 +1,57 @@
 return {
   'folke/snacks.nvim',
-  event = 'VimEnter',
+  priority = 1000, -- ensure early setup
+  lazy = false, -- load immediately to register autocommands
+
+  -- Only load when these commands or keymaps are used (still "loaded", but usage is deferred)
   cmd = {
     'SnacksDashboard',
     'SnacksToggleDim',
     'SnacksToggleInlayHints',
+    'SnacksTerminal',
+    'SnacksNotifierHistory',
   },
+  keys = {
+    {
+      '<leader>n',
+      function()
+        require('snacks').notifier.show_history()
+      end,
+      desc = 'Snacks: Notification History',
+    },
+    {
+      '<leader>uh',
+      function()
+        require('snacks').toggle.inlay_hints()
+      end,
+      desc = 'Snacks: Toggle Inlay Hints',
+    },
+    {
+      '<leader>uD',
+      function()
+        require('snacks').toggle.dim()
+      end,
+      desc = 'Snacks: Toggle Dim Buffers',
+    },
+    {
+      '<leader>tt',
+      function()
+        require('snacks').terminal()
+      end,
+      desc = 'Snacks: Toggle Terminal',
+    },
+  },
+
   opts = {
-    toggle = {},
-    quickfile = {},
+    -- Explicitly enable modules you want; unset or omit to disable
+    toggle = { enabled = true },
+    quickfile = { enabled = true },
     dashboard = {
+      enabled = true,
       formats = {
         key = function(item)
-          return { { '[', hl = 'special' }, { item.key, hl = 'key' }, { ']', hl = 'special' } }
+          local k = item.key or '?' -- safe fallback if no key present
+          return { { '[', hl = 'special' }, { k, hl = 'key' }, { ']', hl = 'special' } }
         end,
       },
       sections = {
@@ -27,68 +66,71 @@ return {
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
         },
         { section = 'keys', gap = 1, padding = 1 },
-        { pane = 2, icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
-        { pane = 2, icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
         {
-          pane = 2,
-          icon = ' ',
-          title = 'Git Status',
+          section = 'recent_files',
+          title = 'Recent Files',
+          icon = ' ',
+          indent = 2,
+          padding = 1,
+          pane = 1, -- use pane 1 (single column)
+        },
+        {
+          section = 'projects',
+          title = 'Projects',
+          icon = ' ',
+          indent = 2,
+          padding = 1,
+          pane = 1,
+        },
+        {
           section = 'terminal',
+          title = 'Git Status',
+          icon = ' ',
           enabled = function()
-            return Snacks.git.get_root() ~= nil
+            return require('snacks.git').get_root() ~= nil
           end,
           cmd = 'git status --short --branch --renames',
           height = 5,
           padding = 1,
           ttl = 5 * 60,
           indent = 3,
+          pane = 1,
         },
-        { section = 'startup' },
+        { section = 'startup', pane = 1 },
       },
-      indent = 2,
-      padding = 2,
+      indent = vim.o.columns < 100 and 1 or 2, -- dynamic for narrow windows
+      padding = vim.o.columns < 100 and 1 or 2,
     },
-    terminal = {},
-    dim = {},
+    terminal = { enabled = true },
+    dim = { enabled = true },
     notifier = {
       enabled = true,
-      timeout = 5000,
+      timeout = 3000, -- shorter toast time
       style = {
         border = 'rounded',
         max_width = 90,
+        min_width = 20,
+        max_height = 10, -- avoid overly tall popups
         min_height = 2,
-        icons = { info = ' ', warn = ' ', error = ' ', success = ' ' },
+        icons = {
+          info = ' ',
+          warn = ' ',
+          error = ' ',
+          success = ' ',
+          debug = ' ',
+        },
       },
     },
-  },
-  keys = {
-    {
-      '<leader>n',
-      function()
-        Snacks.notifier.show_history()
-      end,
-      desc = 'Notification History',
-    },
-    {
-      '<leader>uh',
-      function()
-        require('snacks').toggle.inlay_hints()
-      end,
-      desc = 'Snacks: Toggle inlay hints',
-    },
-    {
-      '<leader>uD',
-      function()
-        Snacks.toggle.dim()
-      end,
-      desc = 'Snacks: Toggle dim buffers',
-    },
-    {
-      '<leader>tt',
-      function()
-        Snacks.terminal()
-      end,
-      desc = 'Snacks: Toggle Terminal',
-    },
+
+    -- Example additional modules you might enable:
+    bigfile = { enabled = true },
+    explorer = { enabled = true },
+    indent = { enabled = true },
+    input = { enabled = true },
+    picker = { enabled = true },
+    scope = { enabled = false }, -- toggle off if not needed
+    scroll = { enabled = false },
+    statuscolumn = { enabled = false },
+    words = { enabled = false },
   },
 }
