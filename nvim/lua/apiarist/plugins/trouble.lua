@@ -1,17 +1,88 @@
 return {
   'folke/trouble.nvim',
-  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  opts = {
+    modes = {
+      diagnostics = {
+        mode = 'diagnostics',
+        preview = {
+          type = 'split',
+          relative = 'win',
+          position = 'right',
+          size = 0.3,
+        },
+      },
+      todos = {
+        mode = 'todo',
+        preview = {
+          type = 'split',
+          relative = 'win',
+          position = 'right',
+          size = 0.3,
+        },
+      },
+    },
+    icons = {
+      indent = {
+        top = '│ ',
+        middle = '├╴',
+        last = '└╴',
+        fold_open = ' ',
+        fold_closed = ' ',
+        ws = '  ',
+      },
+      folder_closed = ' ',
+      folder_open = ' ',
+      kinds = {
+        Array = ' ',
+        Boolean = '󰨙 ',
+        Class = ' ',
+        Constant = '󰏿 ',
+        Constructor = ' ',
+        Enum = ' ',
+        EnumMember = ' ',
+        Event = ' ',
+        Field = ' ',
+        File = ' ',
+        Function = '󰊕 ',
+        Interface = ' ',
+        Key = ' ',
+        Method = '󰊕 ',
+        Module = ' ',
+        Namespace = '󰦮 ',
+        Null = ' ',
+        Number = '󰎠 ',
+        Object = ' ',
+        Operator = ' ',
+        Package = ' ',
+        Property = ' ',
+        String = ' ',
+        Struct = '󰆼 ',
+        TypeParameter = ' ',
+        Variable = '󰀫 ',
+      },
+    },
+  },
   cmd = 'Trouble',
   keys = {
     {
-      '<leader>xt',
+      '<leader>tt',
       '<cmd>Trouble diagnostics toggle<cr>',
       desc = 'Diagnostics (Trouble)',
     },
     {
-      '<leader>xT',
+      '<leader>tT',
       '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
       desc = 'Buffer Diagnostics (Trouble)',
+    },
+    {
+      '<leader>td',
+      '<cmd>Trouble todo toggle<cr>',
+      desc = 'TODOs (Trouble)',
+    },
+    {
+      '<leader>tD',
+      '<cmd>Trouble todo toggle filter={tag={TODO,FIXME,HACK,WARN,PERF,NOTE,TEST}}<cr>',
+      desc = 'All TODOs/FIXMEs (Trouble)',
     },
     {
       '<leader>cs',
@@ -24,12 +95,12 @@ return {
       desc = 'LSP Definitions / references / ... (Trouble)',
     },
     {
-      '<leader>xL',
+      '<leader>tl',
       '<cmd>Trouble loclist toggle<cr>',
       desc = 'Location List (Trouble)',
     },
     {
-      '<leader>xQ',
+      '<leader>tq',
       '<cmd>Trouble qflist toggle<cr>',
       desc = 'Quickfix List (Trouble)',
     },
