@@ -3,7 +3,7 @@ return {
   --  Telescope core plugin
   -- ───────────────────────────────────────────────────
   'nvim-telescope/telescope.nvim',
-  branch = '0.1.8', -- lock to latest tagged release
+  tag = '0.1.8', -- lock to latest tagged release
   event = 'VeryLazy',
 
   -- ───────────────────────────────────────────────────
@@ -138,5 +138,14 @@ return {
     map('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[S]earch [N]eovim files' })
+
+    -- Git status with preview
+    map('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
+
+    -- Git file history for current file
+    map('n', '<leader>gh', builtin.git_bcommits, { desc = '[G]it [H]istory (current file)' })
+
+    -- Search git files (respects .gitignore)
+    map('n', '<leader>sg', builtin.git_files, { desc = '[S]earch [G]it files' })
   end,
 }

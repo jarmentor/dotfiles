@@ -61,3 +61,37 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 20
+
+-- Better search experience
+vim.opt.hlsearch = true
+
+-- Enable persistent undo
+vim.opt.undolevels = 10000
+
+-- Better completion experience
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+
+-- Enable true color support
+vim.opt.termguicolors = true
+
+-- Faster syntax highlighting
+vim.opt.synmaxcol = 300
+
+-- Better diff mode
+vim.opt.diffopt:append('iwhite,algorithm:patience')
+
+-- Improve performance for large files
+vim.opt.lazyredraw = true
+
+-- Better indentation
+vim.opt.smartindent = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+
+-- Show matching brackets
+vim.opt.showmatch = true
+
+-- Enable folding with better defaults
+vim.opt.foldmethod = 'indent'
+vim.opt.foldlevelstart = 99
