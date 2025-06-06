@@ -144,30 +144,7 @@ return {
 
         phpactor = {
           capabilities = capabilities,
-          root_dir = require('lspconfig').util.root_pattern('composer.json', '.git'),
-          settings = {
-            language_server_worse_reflection = {
-              enable = true,
-              types = true,
-              params = true,
-            },
-            phpactor = {
-              diagnostics = {
-                enable = true,
-              },
-              phpcs = {
-                enable = true,
-              },
-              completion = {
-                enable = true,
-                autocompleteMethod = true,
-                autocompleteClass = true,
-              },
-              hover = {
-                enable = true,
-              },
-            },
-          },
+          root_dir = require('lspconfig').util.root_pattern('composer.json', 'wp-config.php', 'functions.php', '.git'),
         },
 
         lua_ls = {
