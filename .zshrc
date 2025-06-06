@@ -53,7 +53,7 @@ fi
 
 # File + system
 alias reload='source ~/.zshrc'
-alias {c,cl}=clear
+alias {c,cl,clr}=clear
 alias {q,xit,x}=exit
 alias o=open
 alias f='open .'
