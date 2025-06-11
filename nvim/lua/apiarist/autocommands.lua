@@ -134,3 +134,23 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     vim.fn.setpos('.', save_cursor)
   end,
 })
+
+-- Auto-save on focus lost
+vim.api.nvim_create_autocmd({ 'FocusLost', 'BufLeave' }, {
+  pattern = '*',
+  callback = function()
+    if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' then
+      vim.cmd 'silent! write'
+    end
+  end,
+})
+
+-- Auto-save on cursor hold (after 2 seconds of inactivity)
+vim.api.nvim_create_autocmd('CursorHold', {
+  pattern = '*',
+  callback = function()
+    if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' then
+      vim.cmd 'silent! write'
+    end
+  end,
+})
