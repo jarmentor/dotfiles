@@ -78,10 +78,16 @@ return {
           i = { ['<C-t>'] = actions.open_qflist },
           n = { ['<C-t>'] = actions.open_qflist },
         },
+        preview = {
+          treesitter = false,
+        },
       },
 
       pickers = {
         find_files = { hidden = true },
+        git_bcommits = {
+          previewer = false,
+        },
       },
 
       extensions = {
@@ -143,9 +149,20 @@ return {
     map('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
 
     -- Git file history for current file
-    map('n', '<leader>gh', builtin.git_bcommits, { desc = '[G]it [H]istory (current file)' })
+    map('n', '<leader>gh', function()
+      local current_file = vim.fn.expand('%:p')
+      local relative_file = vim.fn.fnamemodify(current_file, ':.')
+
+      builtin.git_bcommits({
+        previewer = require('telescope.previewers').new_termopen_previewer({
+          get_command = function(entry)
+            return { 'git', 'show', '--pretty=format:%h %s%n%an, %ar%n', entry.value, '--', relative_file }
+          end
+        })
+      })
+    end, { desc = '[G]it [H]istory (current file)' })
 
     -- Search git files (respects .gitignore)
-    map('n', '<leader>sg', builtin.git_files, { desc = '[S]earch [G]it files' })
+    map('n', '<leader>sG', builtin.git_files, { desc = '[S]earch [G]it files' })
   end,
 }
