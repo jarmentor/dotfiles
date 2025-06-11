@@ -154,11 +154,13 @@ return {
       local relative_file = vim.fn.fnamemodify(current_file, ':.')
 
       builtin.git_bcommits({
+        prompt_title = 'Git File History',
+        results_title = 'Commits for ' .. vim.fn.fnamemodify(relative_file, ':t'),
         previewer = require('telescope.previewers').new_termopen_previewer({
           get_command = function(entry)
             return { 'sh', '-c',
               "STATUS=$(if git merge-base --is-ancestor " .. entry.value .. " main 2>/dev/null; then echo '\\033[32m[MERGED]\\033[0m'; else echo '\\033[31m[NOT MERGED]\\033[0m'; fi) && " ..
-              "git show --color=always --pretty=\"format:$STATUS %C(yellow)%h%C(reset) %s%n%C(blue)%an%C(reset), %C(green)%ar%C(reset)%n\" " .. entry.value .. " -- " .. relative_file
+              "git show --color=always --pretty=\"format:$STATUS %C(yellow)%h%C(reset) %s%n%C(blue)%an%C(reset), %C(cyan)%ad%C(reset) (%C(green)%ar%C(reset))%n\" --date=format:'%Y-%m-%d %H:%M' " .. entry.value .. " -- " .. relative_file
             }
           end
         })
