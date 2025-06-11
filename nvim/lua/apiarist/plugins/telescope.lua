@@ -156,7 +156,10 @@ return {
       builtin.git_bcommits({
         previewer = require('telescope.previewers').new_termopen_previewer({
           get_command = function(entry)
-            return { 'git', 'show', '--pretty=format:%h %s%n%an, %ar%n', entry.value, '--', relative_file }
+            return { 'sh', '-c',
+              "STATUS=$(if git merge-base --is-ancestor " .. entry.value .. " main 2>/dev/null; then echo '\\033[32m[MERGED]\\033[0m'; else echo '\\033[31m[NOT MERGED]\\033[0m'; fi) && " ..
+              "git show --color=always --pretty=\"format:$STATUS %C(yellow)%h%C(reset) %s%n%C(blue)%an%C(reset), %C(green)%ar%C(reset)%n\" " .. entry.value .. " -- " .. relative_file
+            }
           end
         })
       })
