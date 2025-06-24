@@ -84,6 +84,9 @@ alias nrb='npm run build'
 alias nrs='npm run start'
 alias nrd='npm run dev'
 
+# Trafilatura
+alias traf='trafilatura'
+
 # Cargo & Rust
 alias cb='cargo build'
 alias cr='cargo run'
