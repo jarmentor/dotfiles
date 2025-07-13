@@ -53,7 +53,7 @@ fi
 
 # File + system
 alias reload='source ~/.zshrc'
-alias {c,cl,clr}=clear
+alias {c,cl,clr,lear}=clear
 alias {q,xit,x}=exit
 alias o=open
 alias f='open .'
@@ -63,6 +63,7 @@ alias dotfiles='cd ~/.dotfiles'
 alias neovim='nvim'
 alias {v,vim,nv,ivm}='nvim'
 alias {d,dev,todev}='cd /Volumes/Development'
+alias {n,nb,notebook}='cd /Volumes/Development/Notebook/'
 
 # Git
 alias g=git
@@ -102,8 +103,8 @@ alias fib='seq 50 | awk "BEGIN{a=1;b=1}{print a;c=a+b;a=b;b=c}"'
 alias tojpg='mogrify -quality 100 -format jpg'
 alias img-resize='magick mogrify'
 
-# LocalWP Mysql
-alias localmysql='/Applications/Local.app/Contents/Resources/extraResources/lightning-services/mysql-8.0.35+2/bin/darwin-arm64/bin/mysql -u root -p'
+# Remote server
+alias {h,hipaa}='ssh hipaa'
 
 # ────────────────────────────────────────────────────────────────────────────
 # Functions
@@ -123,6 +124,9 @@ sitemap() {
 
 # ────────────────────────────────────────────────────────────────────────────
 # Third-party tool integrations
+
+# Zoxide
+eval "$(zoxide init --cmd cd zsh)"
 
 # Bun
 [[ -s "$HOME/.bun/bin/bun" ]] && export PATH="$HOME/.bun/bin:$PATH"

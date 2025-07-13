@@ -15,20 +15,22 @@ return {
     { '<leader>oo', '<cmd>ObsidianSearch<cr>', desc = 'Search Obsidian notes' },
     { '<leader>os', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Quick switch note' },
     { '<leader>ob', '<cmd>ObsidianBacklinks<cr>', desc = 'Show backlinks' },
-    { '<leader>ot', '<cmd>ObsidianTags<cr>', desc = 'Search tags' },
+    { '<leader>oT', '<cmd>ObsidianTags<cr>', desc = 'Search tags' },
     { '<leader>oi', '<cmd>ObsidianTemplate<cr>', desc = 'Insert template' },
     { '<leader>op', '<cmd>ObsidianPasteImg<cr>', desc = 'Paste image' },
     { '<leader>ol', '<cmd>ObsidianLink<cr>', desc = 'Create link' },
     { '<leader>of', '<cmd>ObsidianFollowLink<cr>', desc = 'Follow link' },
     { '<leader>od', '<cmd>ObsidianDailies<cr>', desc = 'Daily notes' },
     { '<leader>oy', '<cmd>ObsidianYesterday<cr>', desc = "Yesterday's note" },
+    { '<leader>ot', '<cmd>ObsidianToday<cr>', desc = "Today's note" },
+    { '<leader>om', '<cmd>ObsidianTomorrow<cr>', desc = "Tomorrow's note" },
     { '<leader>ow', '<cmd>ObsidianWorkspace<cr>', desc = 'Switch workspace' },
   },
   opts = {
     workspaces = {
       {
         name = 'personal',
-        path = '/Volumes/Development/Notebook/',
+        path = tostring '/Volumes/Development/Notebook/',
       },
     },
 
@@ -37,7 +39,7 @@ return {
       folder = 'daily',
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
-      template = nil,
+      template = 'daily-note.md',
     },
 
     -- Completion
@@ -59,6 +61,16 @@ return {
       ['<leader>ch'] = {
         action = function()
           return require('obsidian').util.toggle_checkbox()
+        end,
+        opts = { buffer = true },
+      },
+      -- Quick checkbox creation
+      ['<leader>cb'] = {
+        action = function()
+          local line = vim.api.nvim_get_current_line()
+          local indent = line:match '^%s*'
+          vim.api.nvim_set_current_line(indent .. '- [ ] ')
+          vim.api.nvim_feedkeys('A', 'n', false)
         end,
         opts = { buffer = true },
       },

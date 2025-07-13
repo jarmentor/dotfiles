@@ -78,7 +78,7 @@ vim.opt.termguicolors = true
 vim.opt.synmaxcol = 300
 
 -- Better diff mode
-vim.opt.diffopt:append('iwhite,algorithm:patience')
+vim.opt.diffopt:append 'iwhite,algorithm:patience'
 
 -- Improve performance for large files
 vim.opt.lazyredraw = true
