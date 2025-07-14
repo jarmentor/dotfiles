@@ -39,7 +39,6 @@ return {
       folder = 'daily',
       date_format = '%Y-%m-%d',
       alias_format = '%B %-d, %Y',
-      template = 'daily-note.md',
     },
 
     -- Completion
