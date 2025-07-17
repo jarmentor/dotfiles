@@ -26,7 +26,9 @@ return {
     { '<leader>om', '<cmd>ObsidianTomorrow<cr>', desc = "Tomorrow's note" },
     { '<leader>ow', '<cmd>ObsidianWorkspace<cr>', desc = 'Switch workspace' },
   },
-  opts = {
+  config = function()
+    vim.opt.conceallevel = 2
+    require('obsidian').setup({
     workspaces = {
       {
         name = 'personal',
@@ -171,5 +173,6 @@ return {
         ObsidianHighlightText = { bg = '#75662e' },
       },
     },
-  },
+  })
+  end,
 }
