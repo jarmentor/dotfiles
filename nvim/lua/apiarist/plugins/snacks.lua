@@ -47,6 +47,171 @@ return {
       end,
       desc = 'Explorer',
     },
+    -- File finding
+    {
+      '<leader>sf',
+      function()
+        require('snacks').picker.files()
+      end,
+      desc = '[S]earch [F]iles',
+    },
+    {
+      '<leader><leader>',
+      function()
+        require('snacks').picker.buffers()
+      end,
+      desc = 'Switch Buffers',
+    },
+    {
+      '<leader>sG',
+      function()
+        require('snacks').picker.git_files()
+      end,
+      desc = '[S]earch [G]it files',
+    },
+    {
+      '<leader>sn',
+      function()
+        require('snacks').picker.files({ cwd = vim.fn.stdpath('config') })
+      end,
+      desc = '[S]earch [N]eovim files',
+    },
+    -- Search
+    {
+      '<leader>sg',
+      function()
+        require('snacks').picker.grep()
+      end,
+      desc = '[S]earch by [G]rep',
+    },
+    {
+      '<leader>sw',
+      function()
+        require('snacks').picker.grep({ search = vim.fn.expand('<cword>') })
+      end,
+      desc = '[S]earch current [W]ord',
+    },
+    {
+      '<leader>/',
+      function()
+        require('snacks').picker.lines()
+      end,
+      desc = '[/] Search in current buffer',
+    },
+    -- Git
+    {
+      '<leader>sl',
+      function()
+        require('snacks').picker.git_log()
+      end,
+      desc = '[S]earch Git [L]og',
+    },
+    {
+      '<leader>sb',
+      function()
+        require('snacks').picker.git_branches()
+      end,
+      desc = '[S]earch [B]ranches',
+    },
+    {
+      '<leader>gs',
+      function()
+        require('snacks').picker.git_status()
+      end,
+      desc = '[G]it [S]tatus',
+    },
+    -- Help and navigation
+    {
+      '<leader>sh',
+      function()
+        require('snacks').picker.help()
+      end,
+      desc = '[S]earch [H]elp',
+    },
+    {
+      '<leader>sk',
+      function()
+        require('snacks').picker.keymaps()
+      end,
+      desc = '[S]earch [K]eymaps',
+    },
+    {
+      '<leader>s.',
+      function()
+        require('snacks').picker.recent()
+      end,
+      desc = '[S]earch Recent Files',
+    },
+    -- Document symbols
+    {
+      '<leader>sy',
+      function()
+        require('snacks').picker.lsp_symbols()
+      end,
+      desc = '[S]earch S[Y]mbols',
+    },
+    {
+      '<leader>ds',
+      function()
+        require('snacks').picker.lsp_symbols()
+      end,
+      desc = '[D]ocument [S]ymbols',
+    },
+    {
+      '<leader>ws',
+      function()
+        require('snacks').picker.lsp_symbols()
+      end,
+      desc = '[W]orkspace [S]ymbols',
+    },
+    -- Colorschemes
+    {
+      '<leader>sc',
+      function()
+        require('snacks').picker.colorschemes()
+      end,
+      desc = '[S]earch [C]olorschemes',
+    },
+    -- Diagnostics
+    {
+      '<leader>sd',
+      function()
+        require('snacks').picker.diagnostics()
+      end,
+      desc = '[S]earch [D]iagnostics',
+    },
+    -- Resume last picker
+    {
+      '<leader>sr',
+      function()
+        require('snacks').picker.resume()
+      end,
+      desc = '[S]earch [R]esume',
+    },
+    -- LSP implementations
+    {
+      '<leader>si',
+      function()
+        require('snacks').picker.lsp_implementations()
+      end,
+      desc = '[S]earch [I]mplementations',
+    },
+    -- Telescope builtin (for picker discovery)
+    {
+      '<leader>ss',
+      function()
+        require('snacks').picker.commands()
+      end,
+      desc = '[S]earch [S]elect Commands',
+    },
+    -- Search open files
+    {
+      '<leader>s/',
+      function()
+        require('snacks').picker.grep({ search_dirs = vim.tbl_map(vim.api.nvim_buf_get_name, vim.api.nvim_list_bufs()) })
+      end,
+      desc = '[S]earch [/] in Open Files',
+    },
   },
 
   opts = {
