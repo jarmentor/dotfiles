@@ -52,7 +52,7 @@ return {
         separator_style = 'thin',
         enforce_regular_tabs = true,
         always_show_bufferline = true,
-        offsets = { { filetype = 'neo-tree', text = 'File Explorer', padding = 1 } },
+        offsets = { { filetype = 'snacks_explorer', text = 'File Explorer', padding = 1 } },
       },
     }
   end,

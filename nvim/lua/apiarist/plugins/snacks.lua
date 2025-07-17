@@ -40,6 +40,13 @@ return {
       end,
       desc = 'Snacks: Toggle Terminal',
     },
+    {
+      '\\',
+      function()
+        require('snacks').explorer()
+      end,
+      desc = 'Explorer',
+    },
   },
 
   opts = {
@@ -67,9 +74,11 @@ return {
         },
         { section = 'keys', gap = 1, padding = 1 },
         {
-          icon = ' ',
           key = 'd',
           desc = 'Daily Note',
+          icon = ' ',
+          indent = 2,
+          padding = 1,
           action = function()
             require('lazy').load { plugins = { 'obsidian.nvim' } }
             vim.cmd 'ObsidianToday'
@@ -133,7 +142,11 @@ return {
 
     -- Example additional modules you might enable:
     bigfile = { enabled = true },
-    explorer = { enabled = true },
+    explorer = {
+      enabled = true,
+      follow_file = true,
+      auto_close = true,
+    },
     indent = { enabled = true },
     input = { enabled = true },
     picker = { enabled = true },

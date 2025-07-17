@@ -14,7 +14,7 @@ return {
         'help',
         'alpha',
         'dashboard',
-        'neo-tree',
+        'snacks_explorer',
         'Trouble',
         'trouble',
         'lazy',
