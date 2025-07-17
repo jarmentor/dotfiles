@@ -67,6 +67,15 @@ return {
         },
         { section = 'keys', gap = 1, padding = 1 },
         {
+          icon = ' ',
+          key = 'd',
+          desc = 'Daily Note',
+          action = function()
+            require('lazy').load { plugins = { 'obsidian.nvim' } }
+            vim.cmd 'ObsidianToday'
+          end,
+        },
+        {
           section = 'recent_files',
           title = 'Recent Files',
           icon = ' ',

@@ -107,3 +107,22 @@ vim.keymap.set('n', '<leader>k', function()
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
   end
 end, { desc = 'Toggle markdown checkbox' })
+
+-- Custom commands
+vim.api.nvim_create_user_command('Wrap', function()
+  vim.opt.wrap = true
+end, { desc = 'Enable line wrapping' })
+
+vim.api.nvim_create_user_command('NoWrap', function()
+  vim.opt.wrap = false
+end, { desc = 'Disable line wrapping' })
+
+vim.api.nvim_create_user_command('Numbers', function()
+  vim.opt.number = true
+  vim.opt.relativenumber = true
+end, { desc = 'Enable line numbers and relative numbers' })
+
+vim.api.nvim_create_user_command('NoNumbers', function()
+  vim.opt.number = false
+  vim.opt.relativenumber = false
+end, { desc = 'Disable line numbers and relative numbers' })
