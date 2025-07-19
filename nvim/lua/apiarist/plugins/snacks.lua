@@ -72,7 +72,7 @@ return {
     {
       '<leader>sn',
       function()
-        require('snacks').picker.files({ cwd = vim.fn.stdpath('config') })
+        require('snacks').picker.files { cwd = vim.fn.stdpath 'config' }
       end,
       desc = '[S]earch [N]eovim files',
     },
@@ -87,7 +87,7 @@ return {
     {
       '<leader>sw',
       function()
-        require('snacks').picker.grep({ search = vim.fn.expand('<cword>') })
+        require('snacks').picker.grep { search = vim.fn.expand '<cword>' }
       end,
       desc = '[S]earch current [W]ord',
     },
@@ -208,7 +208,7 @@ return {
     {
       '<leader>s/',
       function()
-        require('snacks').picker.grep({ search_dirs = vim.tbl_map(vim.api.nvim_buf_get_name, vim.api.nvim_list_bufs()) })
+        require('snacks').picker.grep { search_dirs = vim.tbl_map(vim.api.nvim_buf_get_name, vim.api.nvim_list_bufs()) }
       end,
       desc = '[S]earch [/] in Open Files',
     },
@@ -242,8 +242,9 @@ return {
           key = 'd',
           desc = 'Daily Note',
           icon = ' ',
-          indent = 2,
+          indent = 1,
           padding = 1,
+          pane = 1,
           action = function()
             require('lazy').load { plugins = { 'obsidian.nvim' } }
             vim.cmd 'ObsidianToday'
