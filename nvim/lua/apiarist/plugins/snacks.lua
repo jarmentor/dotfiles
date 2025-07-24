@@ -174,19 +174,18 @@ return {
     },
     -- Diagnostics
     {
-      '<leader>sd',
+      '<leader>sD',
       function()
         require('snacks').picker.diagnostics()
       end,
       desc = '[S]earch [D]iagnostics',
     },
-    -- Resume last picker
     {
-      '<leader>sr',
+      '<leader>sd',
       function()
-        require('snacks').picker.resume()
+        require('snacks').picker.diagnostics_buffer()
       end,
-      desc = '[S]earch [R]esume',
+      desc = '[S]earch [d]iagnostics Buffer',
     },
     -- LSP implementations
     {
@@ -222,11 +221,27 @@ return {
     },
     -- Registers picker
     {
-      '<leader>s"',
+      '<leader>sr',
       function()
         require('snacks').picker.registers()
       end,
-      desc = '[S]earch ["]Registers',
+      desc = '[S]earch [R]egisters',
+    },
+    -- Git hunks picker
+    {
+      '<leader>gh',
+      function()
+        require('snacks').picker.git_diff()
+      end,
+      desc = '[G]it [H]unks',
+    },
+    -- Line picker
+    {
+      '<leader>sl',
+      function()
+        require('snacks').picker.lines()
+      end,
+      desc = '[S]earch [L]ines',
     },
   },
 
