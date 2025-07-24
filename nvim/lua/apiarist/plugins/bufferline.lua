@@ -9,10 +9,45 @@ vim.keymap.set('n', '<C-3>', ':BufferLineGoToBuffer 3<CR>', { desc = 'Go to buff
 vim.keymap.set('n', '<C-4>', ':BufferLineGoToBuffer 4<CR>', { desc = 'Go to buffer 4', silent = true })
 vim.keymap.set('n', '<C-5>', ':BufferLineGoToBuffer 5<CR>', { desc = 'Go to buffer 5', silent = true })
 
+-- Smart buffer closing function
+local function smart_close_buffer()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  local filetype = vim.bo[bufnr].filetype
+  local modified = vim.bo[bufnr].modified
+
+  -- Always force close these buffer types
+  local force_close_types = {
+    'help',
+    'quickfix',
+    'qf',
+    'loclist',
+    'terminal',
+    'nofile',
+    'acwrite',
+  }
+
+  -- Check if buffer is a scratch/temporary buffer
+  local is_scratch = bufname == ''
+    or vim.tbl_contains(force_close_types, filetype)
+    or vim.bo[bufnr].buftype ~= ''
+    or bufname:match '^/tmp/'
+    or bufname:match '^term://'
+    or not vim.bo[bufnr].modifiable
+
+  if is_scratch or not modified then
+    -- Safe to force close scratch buffers or unmodified buffers
+    vim.cmd 'bdelete!'
+  else
+    -- Regular file with modifications - use normal bdelete (will prompt)
+    vim.cmd 'bdelete'
+  end
+end
+
 -- buffer management
 vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete current buffer', silent = true })
 vim.keymap.set('n', '<leader>ba', ':bufdo bd<CR>', { desc = 'Delete all buffers', silent = true })
-vim.keymap.set('n', '<leader>x', ':bdelete<CR>', { desc = 'Close current buffer', silent = true })
+vim.keymap.set('n', '<leader>x', smart_close_buffer, { desc = 'Smart close current buffer', silent = true })
 vim.keymap.set('n', '<leader>o', ':BufferLineCloseLeft<CR>:BufferLineCloseRight<CR>', { desc = 'Close all other buffers', silent = true })
 vim.keymap.set('n', '<leader>n', ':enew<CR>', { desc = 'New buffer', silent = true })
 

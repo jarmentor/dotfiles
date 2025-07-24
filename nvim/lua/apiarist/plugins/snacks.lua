@@ -212,6 +212,22 @@ return {
       end,
       desc = '[S]earch [/] in Open Files',
     },
+    -- Marks picker
+    {
+      '<leader>sm',
+      function()
+        require('snacks').picker.marks()
+      end,
+      desc = '[S]earch [M]arks',
+    },
+    -- Registers picker
+    {
+      '<leader>s"',
+      function()
+        require('snacks').picker.registers()
+      end,
+      desc = '[S]earch ["]Registers',
+    },
   },
 
   opts = {
