@@ -96,7 +96,7 @@ vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]p
 vim.keymap.set('n', '<leader>tz', '<cmd>ZenMode<CR>', { desc = '[T]oggle [Z]en Mode' })
 
 -- Toggle markdown checkboxes
-vim.keymap.set('n', '<leader>k', function()
+local function toggle_checkbox()
   local line = vim.api.nvim_get_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1] - 1 -- 0-indexed
 
@@ -106,8 +106,24 @@ vim.keymap.set('n', '<leader>k', function()
   elseif line:match '%- %[x%]' then
     local new_line = line:gsub('%- %[x%]', '- [ ]')
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
+  else
+    -- If line has text but no checkbox, add unchecked checkbox at the beginning
+    local trimmed = line:match '^%s*(.-)%s*$' -- trim whitespace
+    if trimmed and trimmed ~= '' then
+      local indent = line:match '^(%s*)' or ''
+      local new_line = indent .. '- [ ] ' .. trimmed
+      vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
+    else
+      -- Empty line, just add checkbox
+      local indent = line:match '^(%s*)' or ''
+      local new_line = indent .. '- [ ] '
+      vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
+    end
   end
-end, { desc = 'Toggle markdown checkbox' })
+end
+
+vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown checkbox' })
+vim.keymap.set('n', '<leader>tc', toggle_checkbox, { desc = '[T]oggle markdown [C]heckbox' })
 
 -- Custom commands
 vim.api.nvim_create_user_command('Wrap', function()
