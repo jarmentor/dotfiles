@@ -98,6 +98,7 @@ alias ff=fzf
 alias hgrep='history | grep'
 alias lorem=lorem-ipsum
 alias fib='seq 50 | awk "BEGIN{a=1;b=1}{print a;c=a+b;a=b;b=c}"'
+alias {ts,now}='date +%s | sed "s/\n//g"'
 
 # Photo / image
 alias tojpg='mogrify -quality 100 -format jpg'
