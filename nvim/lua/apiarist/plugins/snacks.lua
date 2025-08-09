@@ -243,6 +243,38 @@ return {
       end,
       desc = '[S]earch [L]ines',
     },
+    -- Git stash picker
+    {
+      '<leader>gS',
+      function()
+        require('snacks').picker.git_stash()
+      end,
+      desc = '[G]it [S]tash',
+    },
+    -- Git log for current file
+    {
+      '<leader>gf',
+      function()
+        require('snacks').picker.git_log_file()
+      end,
+      desc = '[G]it log [F]ile history',
+    },
+    -- Git log for current line
+    {
+      '<leader>gL',
+      function()
+        require('snacks').picker.git_log_line()
+      end,
+      desc = '[G]it [L]og line history',
+    },
+    -- Git grep through repository
+    {
+      '<leader>gG',
+      function()
+        require('snacks').picker.git_grep()
+      end,
+      desc = '[G]it [G]rep repository',
+    },
   },
 
   opts = {
