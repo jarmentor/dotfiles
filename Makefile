@@ -21,6 +21,7 @@ install link:
 	@ln -sf $(PWD)/.gitignore ~/.gitignore
 	@ln -sf $(PWD)/.editorconfig ~/.editorconfig
 	@ln -sf $(PWD)/.stylelintrc ~/.stylelintrc
+	@ln -sf $(PWD)/.markdownlint.json ~/.markdownlint.json
 	@ln -sf $(PWD)/.taskrc ~/.taskrc
 	@ln -sf $(PWD)/phpactor.json ~/.config/phpactor/phpactor.json
 	@mkdir -p ~/.config/ghostty
@@ -39,6 +40,7 @@ uninstall unlink:
 	@rm -f ~/.gitignore
 	@rm -f ~/.editorconfig
 	@rm -f ~/.stylelintrc
+	@rm -f ~/.markdownlint.json
 	@rm -f ~/.taskrc
 	@rm -f ~/.config/phpactor/phpactor.json
 	@rm -f ~/.config/ghostty/config
@@ -55,6 +57,7 @@ status:
 	@printf "~/.gitignore: "; [ -L ~/.gitignore ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.editorconfig: "; [ -L ~/.editorconfig ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.stylelintrc: "; [ -L ~/.stylelintrc ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.markdownlint.json: "; [ -L ~/.markdownlint.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.taskrc: "; [ -L ~/.taskrc ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/phpactor/phpactor.json: "; [ -L ~/.config/phpactor/phpactor.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/ghostty/config: "; [ -L ~/.config/ghostty/config ] && echo "✓ linked" || echo "✗ not linked"
@@ -63,5 +66,5 @@ status:
 # Clean broken symlinks
 clean:
 	@echo "Cleaning broken symlinks..."
-	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.taskrc|phpactor\.json|ghostty|nvim)" | xargs rm -f 2>/dev/null || true
+	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim)" | xargs rm -f 2>/dev/null || true
 	@echo "Broken symlinks cleaned!"

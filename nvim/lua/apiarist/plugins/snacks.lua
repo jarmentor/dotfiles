@@ -310,7 +310,7 @@ return {
           pane = 1,
           action = function()
             require('lazy').load { plugins = { 'obsidian.nvim' } }
-            vim.cmd 'ObsidianToday'
+            vim.cmd 'Obsidian today'
           end,
         },
         {

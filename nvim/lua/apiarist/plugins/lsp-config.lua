@@ -179,6 +179,17 @@ return {
           },
         },
 
+        harper_ls = {
+          filetypes = { 'markdown', 'text' },
+          settings = {
+            ['harper-ls'] = {
+              diagnostics = {
+                severity = 'hint', -- Use hint level to avoid overwhelming interface
+              },
+            },
+          },
+        },
+
         yamlls = {
           filetypes = { 'yaml', 'yml' },
           settings = {
@@ -223,6 +234,7 @@ return {
         'bashls',
         'jsonls',
         'markdown_oxide',
+        'harper_ls', -- Fast grammar checking
         'phpactor',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }

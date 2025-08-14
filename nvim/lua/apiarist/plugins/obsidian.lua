@@ -1,34 +1,63 @@
 -- lua/apiarist/plugins/obsidian.lua
 return {
-  'epwalsh/obsidian.nvim',
+  'obsidian-nvim/obsidian.nvim',
   version = '*',
   lazy = true,
   ft = 'markdown',
   dependencies = {
     'nvim-lua/plenary.nvim',
     'hrsh7th/nvim-cmp',
-    'nvim-telescope/telescope.nvim',
+    'folke/snacks.nvim',
     'nvim-treesitter/nvim-treesitter',
   },
   keys = {
-    { '<leader>on', '<cmd>ObsidianNew<cr>', desc = 'New Obsidian note' },
-    { '<leader>oo', '<cmd>ObsidianSearch<cr>', desc = 'Search Obsidian notes' },
-    { '<leader>os', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Quick switch note' },
-    { '<leader>ob', '<cmd>ObsidianBacklinks<cr>', desc = 'Show backlinks' },
-    { '<leader>oT', '<cmd>ObsidianTags<cr>', desc = 'Search tags' },
-    { '<leader>oi', '<cmd>ObsidianTemplate<cr>', desc = 'Insert template' },
-    { '<leader>op', '<cmd>ObsidianPasteImg<cr>', desc = 'Paste image' },
-    { '<leader>ol', '<cmd>ObsidianLink<cr>', desc = 'Create link' },
-    { '<leader>of', '<cmd>ObsidianFollowLink<cr>', desc = 'Follow link' },
-    { '<leader>od', '<cmd>ObsidianDailies<cr>', desc = 'Daily notes' },
-    { '<leader>oy', '<cmd>ObsidianYesterday<cr>', desc = "Yesterday's note" },
-    { '<leader>ot', '<cmd>ObsidianToday<cr>', desc = "Today's note" },
-    { '<leader>om', '<cmd>ObsidianTomorrow<cr>', desc = "Tomorrow's note" },
-    { '<leader>ow', '<cmd>ObsidianWorkspace<cr>', desc = 'Switch workspace' },
+    { '<leader>on', '<cmd>Obsidian new<cr>', desc = 'New Obsidian note' },
+    { '<leader>oo', '<cmd>Obsidian search<cr>', desc = 'Search Obsidian notes' },
+    { '<leader>os', '<cmd>Obsidian quick_switch<cr>', desc = 'Quick switch note' },
+    { '<leader>ob', '<cmd>Obsidian backlinks<cr>', desc = 'Show backlinks' },
+    { '<leader>oT', '<cmd>Obsidian tags<cr>', desc = 'Search tags' },
+    { '<leader>oi', '<cmd>Obsidian template<cr>', desc = 'Insert template' },
+    { '<leader>op', '<cmd>Obsidian paste_img<cr>', desc = 'Paste image' },
+    { '<leader>ol', '<cmd>Obsidian link<cr>', desc = 'Create link' },
+    { '<leader>of', '<cmd>Obsidian follow_link<cr>', desc = 'Follow link' },
+    { '<leader>od', '<cmd>Obsidian dailies<cr>', desc = 'Daily notes' },
+    { '<leader>oy', '<cmd>Obsidian yesterday<cr>', desc = "Yesterday's note" },
+    { '<leader>ot', '<cmd>Obsidian today<cr>', desc = "Today's note" },
+    { '<leader>om', '<cmd>Obsidian tomorrow<cr>', desc = "Tomorrow's note" },
+    { '<leader>ow', '<cmd>Obsidian workspace<cr>', desc = 'Switch workspace' },
   },
   config = function()
-    vim.opt.conceallevel = 2
+    -- Disable conceallevel to work with render-markdown.nvim
+    vim.opt.conceallevel = 0
+    
+    -- Set up buffer-local keymaps for markdown files
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'markdown',
+      callback = function(event)
+        local opts = { buffer = event.buf, silent = true }
+        
+        -- Override 'gf' mapping to work on markdown/wiki links
+        vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<cr>', vim.tbl_extend('force', opts, { desc = 'Follow link' }))
+        
+        -- Toggle check-boxes
+        vim.keymap.set('n', '<leader>ch', function()
+          vim.cmd('Obsidian toggle_checkbox')
+        end, vim.tbl_extend('force', opts, { desc = 'Toggle checkbox' }))
+        
+        -- Quick checkbox creation
+        vim.keymap.set('n', '<leader>cb', function()
+          local line = vim.api.nvim_get_current_line()
+          local indent = line:match '^%s*'
+          vim.api.nvim_set_current_line(indent .. '- [ ] ')
+          vim.api.nvim_feedkeys('A', 'n', false)
+        end, vim.tbl_extend('force', opts, { desc = 'Create checkbox' }))
+      end,
+    })
+    
     require('obsidian').setup {
+      -- Disable legacy commands to get rid of warnings
+      legacy_commands = false,
+      
       workspaces = {
         {
           name = 'personal',
@@ -50,33 +79,6 @@ return {
         min_chars = 2,
       },
 
-      -- Mappings (in addition to keys above)
-      mappings = {
-        -- Overrides the 'gf' mapping to work on markdown/wiki links
-        ['gf'] = {
-          action = function()
-            return require('obsidian').util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
-        },
-        -- Toggle check-boxes
-        ['<leader>ch'] = {
-          action = function()
-            return require('obsidian').util.toggle_checkbox()
-          end,
-          opts = { buffer = true },
-        },
-        -- Quick checkbox creation
-        ['<leader>cb'] = {
-          action = function()
-            local line = vim.api.nvim_get_current_line()
-            local indent = line:match '^%s*'
-            vim.api.nvim_set_current_line(indent .. '- [ ] ')
-            vim.api.nvim_feedkeys('A', 'n', false)
-          end,
-          opts = { buffer = true },
-        },
-      },
 
       -- Note ID generation
       note_id_func = function(title)
@@ -113,8 +115,13 @@ return {
         vim.fn.jobstart { 'open', url } -- Mac OS
       end,
 
-      -- Optional, by default commands like `:ObsidianToday` will open in current buffer
+      -- Optional, by default commands like `:Obsidian today` will open in current buffer
       open_notes_in = 'current',
+      
+      -- Checkbox configuration (replaces ui.checkboxes order)
+      checkbox = {
+        order = { ' ', 'x', '>', '~' },
+      },
 
       -- Specify how to handle attachments
       attachments = {
@@ -132,46 +139,29 @@ return {
         end,
       },
 
-      -- Optional, set to true if you use the Obsidian Advanced URI plugin
-      use_advanced_uri = false,
-
-      -- Optional, set to true to force ':ObsidianOpen' to bring the app to the foreground
-      open_app_foreground = false,
+      -- Open configuration (replaces use_advanced_uri and open_app_foreground)
+      open = {
+        use_advanced_uri = false,
+        func = function(uri)
+          vim.ui.open(uri, { cmd = { "open", "-a", "/Applications/Obsidian.app" } })
+        end,
+      },
 
       picker = {
-        name = 'telescope.nvim',
-        mappings = {
+        name = 'snacks.pick',
+        note_mappings = {
           new = '<C-x>',
           insert_link = '<C-l>',
         },
+        tag_mappings = {
+          tag_note = '<C-x>',
+          insert_tag = '<C-l>',
+        },
       },
 
-      -- Optional, configure additional syntax highlighting
+      -- Disable UI features to work with render-markdown.nvim
       ui = {
-        enable = true,
-        update_debounce = 200,
-        checkboxes = {
-          [' '] = { char = '󰄱', hl_group = 'ObsidianTodo' },
-          ['x'] = { char = '', hl_group = 'ObsidianDone' },
-          ['>'] = { char = '', hl_group = 'ObsidianRightArrow' },
-          ['~'] = { char = '󰰱', hl_group = 'ObsidianTilde' },
-        },
-        bullets = { char = '•', hl_group = 'ObsidianBullet' },
-        external_link_icon = { char = '', hl_group = 'ObsidianExtLinkIcon' },
-        reference_text = { hl_group = 'ObsidianRefText' },
-        highlight_text = { hl_group = 'ObsidianHighlightText' },
-        tags = { hl_group = 'ObsidianTag' },
-        hl_groups = {
-          ObsidianTodo = { bold = true, fg = '#f78c6c' },
-          ObsidianDone = { bold = true, fg = '#89ddff' },
-          ObsidianRightArrow = { bold = true, fg = '#f78c6c' },
-          ObsidianTilde = { bold = true, fg = '#ff5370' },
-          ObsidianBullet = { bold = true, fg = '#89ddff' },
-          ObsidianRefText = { underline = true, fg = '#c792ea' },
-          ObsidianExtLinkIcon = { fg = '#c792ea' },
-          ObsidianTag = { italic = true, fg = '#89ddff' },
-          ObsidianHighlightText = { bg = '#75662e' },
-        },
+        enable = false,
       },
     }
   end,
