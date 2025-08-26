@@ -37,6 +37,11 @@ plugins=(git fast-syntax-highlighting)
 source "$ZSH/oh-my-zsh.sh"
 
 # ────────────────────────────────────────────────────────────────────────────
+# Vi mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# ────────────────────────────────────────────────────────────────────────────
 # Terminal tweaks
 [[ $TERM_PROGRAM == "ghostty" ]] && export TERM=xterm-256color
 
@@ -181,3 +186,29 @@ if [[ "$(hostname)" == "Apiarist.local" && -z $TMUX && $TERM_PROGRAM != "vscode"
     exec tmux new-session -A -s main
   fi
 fi
+
+
+function __set_beam_cursor {
+    echo -ne '\e[6 q'
+}
+
+function __set_block_cursor {
+    echo -ne '\e[2 q'
+}
+
+function zle-keymap-select {
+  case $KEYMAP in
+    vicmd) __set_block_cursor;;
+    viins|main) __set_beam_cursor;;
+  esac
+}
+zle -N zle-keymap-select
+
+function zle-line-init {
+    __set_beam_cursor
+}
+zle -N zle-line-init
+
+precmd() {
+    __set_beam_cursor  # doesn't have to be in precmd - can put outside a function if you like
+}
