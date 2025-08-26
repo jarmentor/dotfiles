@@ -166,3 +166,13 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.wrapmargin = 0
   end,
 })
+
+-- Auto-reload files when they change externally
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  pattern = '*',
+  callback = function()
+    if vim.fn.mode() ~= 'c' then
+      vim.cmd 'checktime'
+    end
+  end,
+})

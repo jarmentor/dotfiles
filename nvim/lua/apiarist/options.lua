@@ -95,3 +95,6 @@ vim.opt.showmatch = true
 -- Enable folding with better defaults
 vim.opt.foldmethod = 'indent'
 vim.opt.foldlevelstart = 99
+
+-- Auto-reload files when changed externally
+vim.opt.autoread = true
