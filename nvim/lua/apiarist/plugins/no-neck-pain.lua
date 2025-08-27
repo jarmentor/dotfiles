@@ -17,6 +17,11 @@ return {
         widthUp = '<Leader>nn=',
         widthDown = '<Leader>nn-',
       },
+      integrations = {
+        snacks = {
+          enabled = true,
+        },
+      },
     })
   end,
 }
