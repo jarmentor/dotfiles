@@ -34,7 +34,7 @@ return {
       desc = 'Snacks: Toggle Dim Buffers',
     },
     {
-      '<leader>tt',
+      '<leader>tm',
       function()
         require('snacks').terminal()
       end,
