@@ -33,6 +33,7 @@ install link:
 	@ln -sf $(PWD)/tmux/session-fzf.sh ~/.local/bin/session-fzf
 	@chmod +x $(PWD)/tmux/tmux-sessionizer.sh
 	@chmod +x $(PWD)/tmux/session-fzf.sh
+	@chmod +x $(PWD)/tmux/preview-helper.sh
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
