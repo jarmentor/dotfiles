@@ -64,10 +64,15 @@ else
     fi
     
     # Show unified picker
-    selected=$(echo "$options" | \
+    selected=$(printf "%s" "$options" | \
         fzf --reverse \
-            --header="Switch Session or Select Project" \
-            --height=40% \
+            --border=none \
+            --header="Session Manager" \
+            --header-first \
+            --height=80% \
+            --prompt="❯ " \
+            --color=pointer:#f6c177 \
+            --color=marker:#ebbcba \
             --preview="$HOME/.dotfiles/tmux/preview-helper.sh {}" \
             --preview-window=right:50%:wrap)
     
