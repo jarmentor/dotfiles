@@ -28,6 +28,8 @@ install link:
 	@ln -sf $(PWD)/ghostty.config ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
 	@ln -sf $(PWD)/nvim ~/.config/nvim
+	@mkdir -p ~/.config/spotify_player
+	@ln -sf $(PWD)/spotify-player/app.toml ~/.config/spotify_player/app.toml
 	@mkdir -p ~/.local/bin
 	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 	@ln -sf $(PWD)/tmux/session-fzf.sh ~/.local/bin/session-fzf
@@ -51,6 +53,7 @@ uninstall unlink:
 	@rm -f ~/.config/phpactor/phpactor.json
 	@rm -f ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
+	@rm -f ~/.config/spotify_player/app.toml
 	@rm -f ~/.local/bin/tmux-sessionizer
 	@rm -f ~/.local/bin/session-fzf
 	@echo "Dotfiles uninstalled successfully!"
@@ -70,6 +73,7 @@ status:
 	@printf "~/.config/phpactor/phpactor.json: "; [ -L ~/.config/phpactor/phpactor.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/ghostty/config: "; [ -L ~/.config/ghostty/config ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/nvim: "; [ -L ~/.config/nvim ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.config/spotify_player/app.toml: "; [ -L ~/.config/spotify_player/app.toml ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/tmux-sessionizer: "; [ -L ~/.local/bin/tmux-sessionizer ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/session-fzf: "; [ -L ~/.local/bin/session-fzf ] && echo "✓ linked" || echo "✗ not linked"
 
