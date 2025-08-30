@@ -28,6 +28,11 @@ install link:
 	@ln -sf $(PWD)/ghostty.config ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
 	@ln -sf $(PWD)/nvim ~/.config/nvim
+	@mkdir -p ~/.local/bin
+	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
+	@ln -sf $(PWD)/tmux/session-fzf.sh ~/.local/bin/session-fzf
+	@chmod +x $(PWD)/tmux/tmux-sessionizer.sh
+	@chmod +x $(PWD)/tmux/session-fzf.sh
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
@@ -45,6 +50,8 @@ uninstall unlink:
 	@rm -f ~/.config/phpactor/phpactor.json
 	@rm -f ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
+	@rm -f ~/.local/bin/tmux-sessionizer
+	@rm -f ~/.local/bin/session-fzf
 	@echo "Dotfiles uninstalled successfully!"
 
 # Show status of symlinks
@@ -62,6 +69,8 @@ status:
 	@printf "~/.config/phpactor/phpactor.json: "; [ -L ~/.config/phpactor/phpactor.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/ghostty/config: "; [ -L ~/.config/ghostty/config ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/nvim: "; [ -L ~/.config/nvim ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.local/bin/tmux-sessionizer: "; [ -L ~/.local/bin/tmux-sessionizer ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.local/bin/session-fzf: "; [ -L ~/.local/bin/session-fzf ] && echo "✓ linked" || echo "✗ not linked"
 
 # Clean broken symlinks
 clean:
