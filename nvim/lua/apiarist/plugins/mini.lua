@@ -11,17 +11,17 @@ return { -- Collection of various small independent plugins/modules
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
-    -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-    -- - sd'   - [S]urround [D]elete [']quotes
-    -- - sr)'  - [S]urround [R]eplace [)] [']
+    -- - ysiw) - [Y]ou [S]urround [I]nner [W]ord [)]Paren
+    -- - ds'   - [D]elete [S]urround [']quotes
+    -- - cs)'  - [C]hange [S]urround [)] [']
     require('mini.surround').setup {
       mappings = {
-        add = 'sa', -- Add surround
-        delete = 'sd', -- Delete surround
-        find = 'sf', -- Find surround
-        highlight = 'sh', -- Highlight surround
-        replace = 'sr', -- Replace surround
-        update_n_lines = 'sn', -- Update `n_lines`
+        add = 'ys', -- Add surround (vim-surround style)
+        delete = 'ds', -- Delete surround (vim-surround style)
+        find = '', -- Disable find (rarely used)
+        highlight = '', -- Disable highlight (rarely used)
+        replace = 'cs', -- Change surround (vim-surround style)
+        update_n_lines = '', -- Disable update (rarely used)
       },
     }
 

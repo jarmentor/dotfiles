@@ -92,9 +92,24 @@ vim.opt.tabstop = 2
 -- Show matching brackets
 vim.opt.showmatch = true
 
--- Enable folding with better defaults
-vim.opt.foldmethod = 'indent'
+-- Enable folding with better defaults (modern treesitter folding)
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldlevelstart = 99
 
 -- Auto-reload files when changed externally
 vim.opt.autoread = true
+
+-- Performance optimizations
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.writebackup = false
+
+-- Reduce startup time
+vim.opt.shadafile = "NONE"
+
+-- Better redraw performance
+vim.opt.redrawtime = 1500
+
+-- Better floating window appearance
+vim.opt.pumblend = 10 -- Slight transparency for popup menu
