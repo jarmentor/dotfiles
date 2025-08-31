@@ -36,12 +36,11 @@ return {
     vim.api.nvim_create_autocmd('VimResized', {
       callback = function()
         local width = vim.o.columns
-        local nnp = require('no-neck-pain')
         
-        if width > 140 and not nnp.state.enabled then
-          nnp.enable()
-        elseif width < 120 and nnp.state.enabled then
-          nnp.disable()
+        if width > 140 then
+          require('no-neck-pain').enable()
+        elseif width < 120 then
+          require('no-neck-pain').disable()
         end
       end,
     })

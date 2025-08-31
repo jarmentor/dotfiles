@@ -304,8 +304,8 @@ return {
         {
           key = 'd',
           desc = 'Daily Note',
-          icon = ' ',
-          indent = 1,
+          icon = '󰃭 ',
+          indent = 0,
           padding = 1,
           pane = 1,
           action = function()
