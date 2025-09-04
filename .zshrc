@@ -67,7 +67,13 @@ alias tdl='cd ~/Downloads'
 alias {dots,dotfiles}='cd ~/.dotfiles'
 alias neovim='nvim'
 alias {v,vim,nv,ivm,bim}='nvim'
-alias {d,dev,todev}='cd /Volumes/Development'
+alias {dev,todev}='cd /Volumes/Development'
+
+# Daily note function
+d() {
+  local today_file="/Volumes/Development/Notebook/daily/$(date +%Y-%m-%d).md"
+  nvim "$today_file"
+}
 alias {n,nb,notebook}='cd /Volumes/Development/Notebook/'
 
 # Git
