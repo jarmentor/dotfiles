@@ -33,7 +33,11 @@ return {
         },
       },
       cmdline = {
-        sources = {}
+        completion = {
+          menu = {
+            auto_show = true
+          }
+        }
       },
       signature = { 
         enabled = true,
