@@ -375,10 +375,14 @@ return {
       enabled = true,
       follow_file = true,
       auto_close = true,
+      hidden = true,
     },
     indent = { enabled = true },
     input = { enabled = true },
-    picker = { enabled = true },
+    picker = {
+      enabled = true,
+      hidden = true,
+    },
     scope = { enabled = false }, -- toggle off if not needed
     scroll = { enabled = false },
     statuscolumn = { enabled = false },
