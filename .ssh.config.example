@@ -1,0 +1,13 @@
+# Assumes that ~/.ssh/control dir exists
+
+Host *
+    Protocol 2
+    ControlMaster auto
+    ControlPath ~/.ssh/control/%r@%h:%p
+    ControlPersist 600        # 10 minutes instead of 30
+    Compression yes
+    ServerAliveInterval 60    # Less aggressive than 20s
+    ServerAliveCountMax 3     # Fail faster
+    TCPKeepAlive yes
+
+# Other hosts here
