@@ -37,6 +37,20 @@ plugins=(git fast-syntax-highlighting)
 source "$ZSH/oh-my-zsh.sh"
 
 # ────────────────────────────────────────────────────────────────────────────
+# History configuration
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+setopt APPEND_HISTORY # append to history file rather than replace it
+setopt SHARE_HISTORY # share history between sessions
+setopt EXTENDED_HISTORY # add timestamps to history
+setopt HIST_IGNORE_ALL_DUPS # don't record dupes in history
+setopt INC_APPEND_HISTORY # saves commands immediately
+setopt HIST_REDUCE_BLANKS # cleans up extra whitespace
+setopt HIST_VERIFY # shows command before executing from history
+
+# ────────────────────────────────────────────────────────────────────────────
 # Vi mode
 bindkey -v
 export KEYTIMEOUT=1
