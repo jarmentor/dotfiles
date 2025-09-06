@@ -61,6 +61,7 @@
   patch = log -p
   unstage = reset HEAD --
   whoami = config user.email
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
   # Show verboase output about tags, branches or remotes.
   tags = tag -l
@@ -79,6 +80,14 @@
 
 [push]
   followTags = true
+  default = simple
+
+[pull]
+  rebase = true
+  ff = only
+
+[commit]
+  verbose = true
 
 [help]
   autocorrect = 1
