@@ -1,3 +1,6 @@
+-- Enable faster loading with cache
+vim.loader.enable()
+
 -- Set <space> as the leader key
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
