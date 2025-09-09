@@ -127,6 +127,51 @@ end
 vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown checkbox' })
 vim.keymap.set('n', '<leader>tc', toggle_checkbox, { desc = '[T]oggle markdown [C]heckbox' })
 
+-- Custom gt for Accelo tickets and tasks
+local function open_ticket()
+  local line = vim.api.nvim_get_current_line()
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  
+  -- Get Accelo base URL from environment variable
+  local base_url = vim.env.ACCELO_BASE_URL
+  if not base_url then
+    print('Error: ACCELO_BASE_URL environment variable not set')
+    return
+  end
+
+  -- Find tk pattern (support issues)
+  local ticket_pattern = 'tk(%d+)'
+  local start_pos, end_pos, ticket_id = string.find(line, ticket_pattern)
+
+  if ticket_id then
+    -- Check if cursor is on the tk pattern
+    if col >= start_pos - 1 and col <= end_pos then
+      local url = string.format('%s/?action=view_support_issue&id=%s', base_url, ticket_id)
+      vim.fn.system(string.format('open "%s"', url))
+      print(string.format('Opening support issue tk%s in browser', ticket_id))
+      return
+    end
+  end
+
+  -- Find task pattern (tasks) - # is optional
+  local task_pattern = 'task #?(%d+)'
+  start_pos, end_pos, ticket_id = string.find(line, task_pattern)
+
+  if ticket_id then
+    -- Check if cursor is on the task pattern
+    if col >= start_pos - 1 and col <= end_pos then
+      local url = string.format('%s/?action=view_task&id=%s', base_url, ticket_id)
+      vim.fn.system(string.format('open "%s"', url))
+      print(string.format('Opening task %s in browser', ticket_id))
+      return
+    end
+  end
+
+  print('No ticket or task pattern found under cursor')
+end
+
+vim.keymap.set('n', 'gt', open_ticket, { desc = 'Open Accelo ticket under cursor' })
+
 -- Custom commands
 vim.api.nvim_create_user_command('Wrap', function()
   vim.opt.wrap = true

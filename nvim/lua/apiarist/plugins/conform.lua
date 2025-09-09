@@ -44,7 +44,7 @@ return { -- Autoformat
           '--stdin-filepath',
           '$FILENAME',
           '--prose-wrap',
-          'always',
+          'preserve',
           '--print-width',
           '80',
           '--tab-width',
