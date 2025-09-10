@@ -41,8 +41,11 @@ return {
           vim.defer_fn(function()
             local nnp = require('no-neck-pain')
             if nnp.state and nnp.state.enabled then
-              -- Just refresh the state instead of toggling
-              vim.cmd('NoNeckPainResize')
+              -- Just refresh by toggling off and on instead of using resize
+              nnp.disable()
+              vim.schedule(function()
+                nnp.enable()
+              end)
             end
           end, 150)
         end
