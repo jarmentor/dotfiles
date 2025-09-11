@@ -46,23 +46,9 @@ return {
       hyperlink = '󰌹 ',
       highlight = 'RenderMarkdownLink',
     },
-    -- Code block configuration
+    -- Code block configuration - disable to allow treesitter syntax highlighting
     code = {
-      enabled = true,
-      sign = false,
-      style = 'normal',
-      position = 'left',
-      language_pad = 0,
-      disable_background = {},
-      width = 'block',
-      left_pad = 1,
-      right_pad = 1,
-      min_width = 0,
-      border = 'none',
-      above = '',
-      below = '',
-      highlight = 'RenderMarkdownCode',
-      highlight_inline = 'RenderMarkdownCodeInline',
+      enabled = false, -- Disable render-markdown code handling
     },
     -- Heading configuration
     heading = {
@@ -162,21 +148,19 @@ return {
       bg = '#26233a', -- Rose Pine overlay background
       fg = '#f6c177'  -- Rose Pine gold for inline code
     })
-    -- Override any treesitter code block highlights
+    -- Keep background overrides but remove foreground to preserve syntax highlighting
     vim.api.nvim_set_hl(0, '@markup.raw.block.markdown', { 
-      bg = '#1f1d2e', -- Rose Pine surface
-      fg = '#e0def4'  -- Rose Pine text
+      bg = '#1f1d2e' -- Rose Pine surface background only
     })
     vim.api.nvim_set_hl(0, '@markup.raw.markdown_inline', { 
       bg = '#26233a', -- Rose Pine overlay
-      fg = '#f6c177'  -- Rose Pine gold
+      fg = '#f6c177'  -- Rose Pine gold for inline code (keep this for inline)
     })
     
-    -- Additional overrides for stubborn white backgrounds
+    -- Additional background overrides only
     vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#1f1d2e' })
-    vim.api.nvim_set_hl(0, '@text.literal.block.markdown', { bg = '#1f1d2e', fg = '#e0def4' })
-    vim.api.nvim_set_hl(0, '@text.literal.markdown_inline', { bg = '#26233a', fg = '#f6c177' })
-    vim.api.nvim_set_hl(0, 'markdownCode', { bg = '#1f1d2e', fg = '#e0def4' })
-    vim.api.nvim_set_hl(0, 'markdownCodeBlock', { bg = '#1f1d2e', fg = '#e0def4' })
+    vim.api.nvim_set_hl(0, '@text.literal.block.markdown', { bg = '#1f1d2e' })
+    vim.api.nvim_set_hl(0, 'markdownCode', { bg = '#1f1d2e' })
+    vim.api.nvim_set_hl(0, 'markdownCodeBlock', { bg = '#1f1d2e' })
   end,
 }
