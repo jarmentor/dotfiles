@@ -6,7 +6,7 @@ return {
       ensure_installed = { 
         'bash', 'c', 'cpp', 'css', 'diff', 'dockerfile', 'git_config', 'git_rebase', 'gitcommit', 'gitignore',
         'go', 'html', 'javascript', 'json', 'lua', 'luadoc', 'make', 'markdown', 'markdown_inline', 
-        'python', 'query', 'regex', 'rust', 'sql', 'toml', 'typescript', 'vim', 'vimdoc', 'yaml'
+        'php', 'python', 'query', 'regex', 'rust', 'sql', 'toml', 'typescript', 'vim', 'vimdoc', 'yaml'
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
