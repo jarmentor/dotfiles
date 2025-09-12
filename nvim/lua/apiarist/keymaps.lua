@@ -95,6 +95,22 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save fil
 vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<CR>', { desc = '[T]oggle [W]rap' })
 vim.keymap.set('n', '<leader>tn', '<cmd>set number! relativenumber!<CR>', { desc = '[T]oggle [N]umber' })
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]pell' })
+
+-- Harper LSP spelling navigation and correction
+vim.keymap.set('n', ']s', function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.HINT })
+end, { desc = 'Next spelling issue' })
+
+vim.keymap.set('n', '[s', function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.HINT })
+end, { desc = 'Previous spelling issue' })
+
+-- Better spelling correction that selects the whole word
+vim.keymap.set('n', '<leader>sp', function()
+  -- Select the word under cursor first
+  vim.cmd('normal! viw')
+  vim.lsp.buf.code_action()
+end, { desc = '[S]pelling [P]roposals' })
 vim.keymap.set('n', '<leader>tz', '<cmd>ZenMode<CR>', { desc = '[T]oggle [Z]en Mode' })
 
 -- Toggle markdown checkboxes
