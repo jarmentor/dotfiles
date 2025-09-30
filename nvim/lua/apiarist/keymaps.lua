@@ -4,11 +4,9 @@
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Capital W should also write the file
-vim.keymap.set('n', ':W', '<cmd>w<CR>', { noremap = true, silent = true })
-
--- Capital Q should quit
-vim.keymap.set('n', ':Q', '<cmd>q<CR>', { noremap = true, silent = true })
+-- Capital W and Q commands (fixed to work properly)
+vim.api.nvim_create_user_command('W', 'w', {})
+vim.api.nvim_create_user_command('Q', 'q', {})
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -100,6 +98,10 @@ vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]p
 vim.keymap.set('n', '<leader>te', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = '[T]oggle diagnostic [E]rrors' })
+
+-- LSP utilities
+vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<CR>', { desc = '[L]SP [R]estart' })
+vim.keymap.set('n', '<leader>L', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
 
 -- Harper LSP spelling navigation and correction
 vim.keymap.set('n', ']s', function()

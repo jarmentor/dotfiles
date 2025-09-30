@@ -39,6 +39,20 @@ return {
         return orig_util_open_floating_preview(contents, syntax, opts, ...)
       end
 
+      -- Better diagnostic configuration
+      vim.diagnostic.config({
+        virtual_text = {
+          prefix = '●',
+          source = 'if_many',
+        },
+        float = {
+          source = 'always',
+          border = 'rounded',
+        },
+        severity_sort = true,
+        update_in_insert = false,
+      })
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)

@@ -44,8 +44,8 @@ return {
         end,
       })
 
-      -- Set updatetime for faster CursorHold trigger (default is 4000ms)
-      vim.opt.updatetime = 1000
+      -- Note: updatetime is set in options.lua (250ms)
+      -- Removed from here to avoid conflict
 
       -- Keymap for manual diagnostic hover
       vim.keymap.set('n', '<leader>l', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })

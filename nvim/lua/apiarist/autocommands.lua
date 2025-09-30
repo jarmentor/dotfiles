@@ -49,16 +49,7 @@ end, { desc = 'Git reset with confirmation' })
 --
 --
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
+-- Removed duplicate - see enhanced version below at line 109
 
 -- Add autocmd for buffer formatting before save for jsx etc.
 vim.api.nvim_create_autocmd('BufWritePre', {
