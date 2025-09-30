@@ -96,6 +96,11 @@ vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<CR>', { desc = '[T]oggle [W]ra
 vim.keymap.set('n', '<leader>tn', '<cmd>set number! relativenumber!<CR>', { desc = '[T]oggle [N]umber' })
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]pell' })
 
+-- Toggle diagnostics (linting errors)
+vim.keymap.set('n', '<leader>te', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = '[T]oggle diagnostic [E]rrors' })
+
 -- Harper LSP spelling navigation and correction
 vim.keymap.set('n', ']s', function()
   vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.HINT })

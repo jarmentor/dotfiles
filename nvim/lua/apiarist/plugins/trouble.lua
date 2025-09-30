@@ -65,42 +65,42 @@ return {
   cmd = 'Trouble',
   keys = {
     {
-      '<leader>tt',
+      '<leader>xx',
       '<cmd>Trouble diagnostics toggle<cr>',
       desc = 'Diagnostics (Trouble)',
     },
     {
-      '<leader>tT',
+      '<leader>xX',
       '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
       desc = 'Buffer Diagnostics (Trouble)',
     },
     {
-      '<leader>td',
+      '<leader>xt',
       '<cmd>Trouble todo toggle<cr>',
       desc = 'TODOs (Trouble)',
     },
     {
-      '<leader>tD',
+      '<leader>xT',
       '<cmd>Trouble todo toggle filter={tag={TODO,FIXME,HACK,WARN,PERF,NOTE,TEST}}<cr>',
       desc = 'All TODOs/FIXMEs (Trouble)',
     },
     {
-      '<leader>cs',
+      '<leader>xs',
       '<cmd>Trouble symbols toggle focus=false<cr>',
       desc = 'Symbols (Trouble)',
     },
     {
-      '<leader>cl',
+      '<leader>xl',
       '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
       desc = 'LSP Definitions / references / ... (Trouble)',
     },
     {
-      '<leader>tl',
+      '<leader>xL',
       '<cmd>Trouble loclist toggle<cr>',
       desc = 'Location List (Trouble)',
     },
     {
-      '<leader>tq',
+      '<leader>xq',
       '<cmd>Trouble qflist toggle<cr>',
       desc = 'Quickfix List (Trouble)',
     },
