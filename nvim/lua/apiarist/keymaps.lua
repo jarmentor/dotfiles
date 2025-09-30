@@ -105,6 +105,18 @@ vim.keymap.set('n', '<leader>tv', function()
   vim.diagnostic.config({ virtual_text = not current })
 end, { desc = '[T]oggle [V]irtual text' })
 
+-- Toggle git-only mode (hide diagnostics, keep git signs)
+vim.keymap.set('n', '<leader>tg', function()
+  local current = vim.diagnostic.is_enabled()
+  if current then
+    vim.diagnostic.enable(false)
+    print('Git-only mode: diagnostics hidden')
+  else
+    vim.diagnostic.enable(true)
+    print('Git-only mode: off (diagnostics shown)')
+  end
+end, { desc = '[T]oggle [G]it-only mode' })
+
 -- LSP utilities
 vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<CR>', { desc = '[L]SP [R]estart' })
 vim.keymap.set('n', '<leader>L', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
