@@ -41,10 +41,7 @@ return {
 
       -- Better diagnostic configuration
       vim.diagnostic.config({
-        virtual_text = {
-          prefix = '●',
-          source = 'if_many',
-        },
+        virtual_text = false,
         float = {
           source = 'always',
           border = 'rounded',
