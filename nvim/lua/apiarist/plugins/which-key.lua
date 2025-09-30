@@ -10,7 +10,7 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>d', group = '[D]ocument' },
       { '<leader>r', group = '[R]ename' },
       { '<leader>s', group = '[S]earch' },
-      { '<leader>w', group = '[W]orkspace' },
+      { '<leader>w', group = '[W]orkspace/[W]rap', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
       { '<leader>x', group = 'Diagnostics/Trouble' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },

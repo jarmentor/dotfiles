@@ -82,6 +82,9 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
 -- Unique selected lines
 vim.keymap.set('v', '<leader>u', ':sort u<CR>gv', { desc = '[U]nique selected lines' })
 
+-- nvim-surround helper shortcuts (optional - learn ys/cs/ds first!)
+vim.keymap.set('n', '<leader>sw', 'ysiw"', { desc = '[S]urround [W]ord with quotes' })
+
 -- Center search results
 vim.keymap.set('n', 'n', 'nzz', { desc = 'Next search result (centered)' })
 vim.keymap.set('n', 'N', 'Nzz', { desc = 'Previous search result (centered)' })
