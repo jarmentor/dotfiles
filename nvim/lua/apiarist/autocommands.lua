@@ -127,7 +127,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 })
 
 -- Auto-save on focus lost
-vim.api.nvim_create_autocmd({ 'FocusLost', 'BufLeave' }, {
+vim.api.nvim_create_autocmd('FocusLost', {
   pattern = '*',
   callback = function()
     if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' then
