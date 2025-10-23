@@ -75,6 +75,7 @@ alias reload='source ~/.zshrc'
 alias {c,cl,clr,lear}=clear
 alias {q,xit,x}=exit
 alias o=open
+alias sdn=share-daily-note
 alias f='open .'
 alias tdt='cd ~/Desktop'
 alias tdl='cd ~/Downloads'
