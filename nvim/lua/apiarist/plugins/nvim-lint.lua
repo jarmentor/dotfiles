@@ -30,8 +30,14 @@ return {
       vim.api.nvim_create_autocmd('CursorHold', {
         group = lint_augroup,
         callback = function()
-          -- Only show hover if there are diagnostics on the current line
+          -- Only show hover if diagnostics are enabled
+          if not vim.diagnostic.is_enabled() then
+            return
+          end
+
+          -- Get diagnostics, filtering out hints (harper) when diagnostics are toggled off
           local diagnostics = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+
           if #diagnostics > 0 then
             vim.diagnostic.open_float(nil, {
               focusable = false,

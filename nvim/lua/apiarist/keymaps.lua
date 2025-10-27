@@ -99,7 +99,17 @@ vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]p
 
 -- Toggle diagnostics (linting errors)
 vim.keymap.set('n', '<leader>te', function()
-  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+  local is_enabled = vim.diagnostic.is_enabled()
+  vim.diagnostic.enable(not is_enabled)
+
+  -- Also stop/start harper LSP to prevent it from showing hints
+  if is_enabled then
+    -- Stopping diagnostics, so stop harper
+    vim.lsp.stop_client(vim.lsp.get_clients({ name = 'harper_ls' }))
+  else
+    -- Re-enabling diagnostics, restart buffer to reattach harper
+    vim.cmd('edit')
+  end
 end, { desc = '[T]oggle diagnostic [E]rrors' })
 
 -- Toggle virtual text (inline diagnostic messages)
