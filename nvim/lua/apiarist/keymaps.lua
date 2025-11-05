@@ -181,6 +181,32 @@ end
 vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown checkbox' })
 vim.keymap.set('n', '<leader>tc', toggle_checkbox, { desc = '[T]oggle markdown [C]heckbox' })
 
+-- Copy file paths
+vim.keymap.set('n', '<leader>yp', '<cmd>let @+ = expand("%:p")<CR>', { desc = '[Y]ank file [P]ath (absolute)' })
+vim.keymap.set('n', '<leader>yr', '<cmd>let @+ = expand("%")<CR>', { desc = '[Y]ank [R]elative path' })
+
+-- Open current file in Finder
+vim.keymap.set('n', '<leader>of', '<cmd>!open %:p:h<CR>', { desc = '[O]pen in [F]inder' })
+
+-- Visual mode search - search for selected text
+vim.keymap.set('v', '//', 'y/\\V<C-R>=escape(@",\'/\\\')<CR><CR>', { desc = 'Search selected text' })
+
+-- Better diagnostic navigation
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+vim.keymap.set('n', ']e', function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Next error' })
+vim.keymap.set('n', '[e', function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = 'Previous error' })
+
+-- Buffer formatting
+vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format, { desc = '[B]uffer [F]ormat' })
+
+-- Quick window equalize
+vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = '[W]indow [=] equalize' })
+
 -- Custom gt for Accelo tickets and tasks
 local function open_ticket()
   local line = vim.api.nvim_get_current_line()
