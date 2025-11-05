@@ -32,7 +32,7 @@ export PATH
 # Oh-My-Zsh
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git fast-syntax-highlighting)
+plugins=(git fast-syntax-highlighting zsh-autosuggestions)
 
 source "$ZSH/oh-my-zsh.sh"
 
@@ -70,7 +70,12 @@ fi
 # ────────────────────────────────────────────────────────────────────────────
 # Aliases
 
-# File + system
+# File + system (modern replacements)
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -l --icons --group-directories-first'
+alias la='eza -la --icons --group-directories-first'
+alias lt='eza --tree --level=2 --icons'
+
 alias reload='source ~/.zshrc'
 alias {c,cl,clr,lear}=clear
 alias {q,xit,x}=exit
@@ -137,6 +142,18 @@ alias {h,hipaa}='ssh hipaa'
 # ────────────────────────────────────────────────────────────────────────────
 # Functions
 
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  if [ "x$pid" != "x" ]; then
+    echo $pid | xargs kill -${1:-9}
+  fi
+}
+
 rfc() {
   [[ $1 =~ ^[0-9]+$ ]] || { echo "Usage: rfc <number>"; return 1; }
   curl -s "https://www.rfc-editor.org/rfc/rfc$1.txt" | less
@@ -179,6 +196,7 @@ export PNPM_HOME="$HOME/Library/pnpm"
 export FZF_DEFAULT_COMMAND='fd --hidden --strip-cwd-prefix --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type=d --hidden --strip-cwd-prefix --exclude .git'
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
 # SGPT (bind Ctrl-L)
 _sgpt_zsh() {
@@ -234,3 +252,8 @@ zle -N zle-line-init
 precmd() {
     __set_beam_cursor  # doesn't have to be in precmd - can put outside a function if you like
 }
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/jarmentor/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
