@@ -75,6 +75,7 @@ alias ls='eza --icons --group-directories-first --git -l'
 alias ll='eza -l --icons --group-directories-first --git --header'
 alias la='eza -la --icons --group-directories-first --git --header'
 alias lt='eza --tree --level=2 --icons'
+alias lst='eza --icons --git -l --sort=modified --reverse'  # newest first (lst = ls by time)
 
 alias reload='source ~/.zshrc'
 alias {c,cl,clr,lear}=clear
