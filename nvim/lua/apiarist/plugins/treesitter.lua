@@ -4,8 +4,8 @@ return {
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 
-        'bash', 'c', 'cpp', 'css', 'diff', 'dockerfile', 'git_config', 'git_rebase', 'gitcommit', 'gitignore',
-        'go', 'html', 'javascript', 'json', 'lua', 'luadoc', 'make', 'markdown', 'markdown_inline', 
+        'bash', 'bibtex', 'c', 'cpp', 'css', 'diff', 'dockerfile', 'git_config', 'git_rebase', 'gitcommit', 'gitignore',
+        'go', 'html', 'javascript', 'json', 'latex', 'lua', 'luadoc', 'make', 'markdown', 'markdown_inline',
         'php', 'python', 'query', 'regex', 'rust', 'sql', 'toml', 'typescript', 'vim', 'vimdoc', 'yaml'
       },
       -- Autoinstall languages that are not installed

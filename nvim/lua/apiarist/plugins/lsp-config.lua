@@ -212,6 +212,31 @@ return {
           },
         },
 
+        texlab = {
+          settings = {
+            texlab = {
+              build = {
+                executable = 'latexmk',
+                args = { '-pdf', '-interaction=nonstopmode', '-synctex=1', '%f' },
+                onSave = true,
+              },
+              forwardSearch = {
+                executable = 'skim',
+                args = { '--synctex-forward', '%l:1:%f', '%p' },
+              },
+              chktex = {
+                onOpenAndSave = true,
+                onEdit = false,
+              },
+              diagnosticsDelay = 300,
+              latexFormatter = 'latexindent',
+              latexindent = {
+                modifyLineBreaks = false,
+              },
+            },
+          },
+        },
+
         yamlls = {
           filetypes = { 'yaml', 'yml' },
           settings = {
@@ -258,6 +283,8 @@ return {
         'markdown_oxide',
         'harper_ls', -- Fast grammar checking
         'phpactor',
+        'texlab', -- LaTeX LSP
+        'latexindent', -- LaTeX formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

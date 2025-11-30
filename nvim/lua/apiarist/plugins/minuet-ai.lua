@@ -34,7 +34,7 @@ return {
 
       -- Ghost text configuration
       virtualtext = {
-        auto_trigger_ft = { 'python', 'javascript', 'typescript', 'lua', 'rust', 'go', 'c', 'cpp', 'java', 'tsx', 'jsx', 'vue', 'svelte', 'php' },
+        auto_trigger_ft = { 'javascript', 'typescript', 'lua', 'rust', 'go', 'c', 'cpp', 'java', 'tsx', 'jsx', 'vue', 'svelte', 'php' },
         keymap = {
           accept = '<C-j>',
           accept_line = '<C-l>',

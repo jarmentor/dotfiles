@@ -258,3 +258,6 @@ fpath=(/Users/jarmentor/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# bun completions
+[ -s "/Users/jarmentor/.bun/_bun" ] && source "/Users/jarmentor/.bun/_bun"
