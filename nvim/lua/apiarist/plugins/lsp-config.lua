@@ -163,7 +163,7 @@ return {
         },
 
         emmet_language_server = {
-          filetypes = { 'html', 'astro', 'css', 'javascript', 'typescript', 'php', 'vue', 'javascriptreact', 'typescriptreact' },
+          filetypes = { 'html', 'astro', 'css', 'javascript', 'typescript', 'php', 'vue', 'svelte', 'javascriptreact', 'typescriptreact' },
           root_dir = require('lspconfig').util.find_git_ancestor,
           single_file_support = true,
         },

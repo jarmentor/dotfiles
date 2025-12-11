@@ -6,7 +6,6 @@ return {
   ft = 'markdown',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'hrsh7th/nvim-cmp',
     'folke/snacks.nvim',
     'nvim-treesitter/nvim-treesitter',
   },
@@ -77,9 +76,9 @@ return {
         template = 'daily-note.md',
       },
 
-      -- Completion
+      -- Completion (using blink.cmp, not nvim-cmp)
       completion = {
-        nvim_cmp = true,
+        nvim_cmp = false,
         min_chars = 2,
       },
 

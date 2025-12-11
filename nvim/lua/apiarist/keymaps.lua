@@ -52,12 +52,6 @@ vim.keymap.set('n', '<leader>bt', '<cmd>tabnew<CR>', { desc = '[B]uffer in new [
 vim.keymap.set('n', '[b', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', ']b', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 
--- Window resizing
-vim.keymap.set('n', '<C-w>H', '<cmd>vertical resize -5<CR>', { desc = 'Decrease window width' })
-vim.keymap.set('n', '<C-w>L', '<cmd>vertical resize +5<CR>', { desc = 'Increase window width' })
-vim.keymap.set('n', '<C-w>J', '<cmd>resize -5<CR>', { desc = 'Decrease window height' })
-vim.keymap.set('n', '<C-w>K', '<cmd>resize +5<CR>', { desc = 'Increase window height' })
-
 -- Better window management
 vim.keymap.set('n', '<leader>ww', '<C-w>w', { desc = 'Switch [W]indow' })
 vim.keymap.set('n', '<leader>wd', '<C-w>c', { desc = '[W]indow [D]elete/close' })
@@ -88,6 +82,8 @@ vim.keymap.set('n', '<leader>sw', 'ysiw"', { desc = '[S]urround [W]ord with quot
 -- Center search results
 vim.keymap.set('n', 'n', 'nzz', { desc = 'Next search result (centered)' })
 vim.keymap.set('n', 'N', 'Nzz', { desc = 'Previous search result (centered)' })
+vim.keymap.set('n', '*', '*zz', { desc = 'Search word under cursor (centered)' })
+vim.keymap.set('n', '#', '#zz', { desc = 'Search word backward (centered)' })
 
 -- Save with Ctrl+S
 vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save file' })
