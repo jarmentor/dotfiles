@@ -142,25 +142,18 @@ return {
       end,
       desc = '[S]earch Recent Files',
     },
-    -- Document symbols
+    -- Document/Workspace symbols
     {
       '<leader>sy',
       function()
         require('snacks').picker.lsp_symbols()
       end,
-      desc = '[S]earch S[Y]mbols',
-    },
-    {
-      '<leader>ds',
-      function()
-        require('snacks').picker.lsp_symbols()
-      end,
-      desc = '[D]ocument [S]ymbols',
+      desc = '[S]earch S[Y]mbols (document)',
     },
     {
       '<leader>ws',
       function()
-        require('snacks').picker.lsp_symbols()
+        require('snacks').picker.lsp_workspace_symbols()
       end,
       desc = '[W]orkspace [S]ymbols',
     },
