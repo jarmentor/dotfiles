@@ -49,15 +49,7 @@ end, { desc = 'Git reset with confirmation' })
 --
 --
 
--- Removed duplicate - see enhanced version below at line 109
-
--- Add autocmd for buffer formatting before save for jsx etc.
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = { '*.js', '*.ts', '*.jsx', '*.tsx' },
-  callback = function()
-    vim.lsp.buf.format { async = false }
-  end,
-})
+-- NOTE: JS/TS formatting handled by conform.nvim (see plugins/conform.lua)
 
 -- Automatically return to the last edit position when reopening a file
 vim.api.nvim_create_autocmd('BufReadPost', {
@@ -116,9 +108,9 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
--- Remove trailing whitespace on save
+-- Remove trailing whitespace on save (limited to text files to avoid corrupting binaries)
 vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
+  pattern = { '*.lua', '*.js', '*.ts', '*.jsx', '*.tsx', '*.php', '*.py', '*.md', '*.txt', '*.yaml', '*.yml', '*.json', '*.css', '*.scss', '*.html', '*.vue', '*.svelte', '*.astro', '*.tex', '*.bib', '*.sh', '*.zsh', '*.bash' },
   callback = function()
     local save_cursor = vim.fn.getpos '.'
     vim.cmd [[%s/\s\+$//e]]

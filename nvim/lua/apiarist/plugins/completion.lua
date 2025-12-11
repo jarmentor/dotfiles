@@ -21,16 +21,7 @@ return {
         },
       },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'minuet' },
-        providers = {
-          minuet = {
-            name = 'minuet',
-            module = 'minuet.blink',
-            async = true,
-            timeout_ms = 2500,
-            score_offset = 50,
-          },
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
       cmdline = {
         completion = {

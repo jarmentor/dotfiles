@@ -9,21 +9,7 @@ return { -- Collection of various small independent plugins/modules
     --  - ci'  - [C]hange [I]nside [']quote
     require('mini.ai').setup { n_lines = 500 }
 
-    -- Add/delete/replace surroundings (brackets, quotes, etc.)
-    --
-    -- - ysiw) - [Y]ou [S]urround [I]nner [W]ord [)]Paren
-    -- - ds'   - [D]elete [S]urround [']quotes
-    -- - cs)'  - [C]hange [S]urround [)] [']
-    require('mini.surround').setup {
-      mappings = {
-        add = 'ys', -- Add surround (vim-surround style)
-        delete = 'ds', -- Delete surround (vim-surround style)
-        find = '', -- Disable find (rarely used)
-        highlight = '', -- Disable highlight (rarely used)
-        replace = 'cs', -- Change surround (vim-surround style)
-        update_n_lines = '', -- Disable update (rarely used)
-      },
-    }
+    -- NOTE: Surround functionality provided by nvim-surround (has HTML/emmet support)
 
     -- Replace Comment.nvim with mini.comment for commenting support
     require('mini.comment').setup()

@@ -27,6 +27,9 @@ return {
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
+
+      -- JSON/YAML schema support
+      'b0o/schemastore.nvim',
     },
     config = function()
       -- Override LSP floating window defaults
@@ -128,6 +131,11 @@ return {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
+      -- Add folding capabilities for nvim-ufo
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      }
 
       local servers = {
         cssls = {
@@ -245,22 +253,30 @@ return {
                 enable = false,
                 url = '',
               },
-              schemas = {
-                ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*',
-                ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '*docker-compose*.{yml,yaml}',
-                ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
-                ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-              },
+              schemas = require('schemastore').yaml.schemas(),
               format = {
                 enable = true,
                 singleQuote = true,
               },
-              yaml = {
-                validate = true,
-              },
+              validate = true,
             },
           },
         },
+
+        jsonls = {
+          settings = {
+            json = {
+              schemas = require('schemastore').json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
+
+        bashls = {},
+
+        sqlls = {},
+
+        markdown_oxide = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -277,13 +293,6 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'tailwindcss-language-server',
-        'sqlls',
-        'bashls',
-        'jsonls',
-        'markdown_oxide',
-        'harper_ls', -- Fast grammar checking
-        'phpactor',
-        'texlab', -- LaTeX LSP
         'latexindent', -- LaTeX formatter
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
