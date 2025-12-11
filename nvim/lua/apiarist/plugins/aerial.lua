@@ -1,7 +1,9 @@
-vim.keymap.set('n', '<C-y>', '<cmd>AerialToggle!<CR>', { desc = 'Toggle Aerial Symbols', silent = true })
-
 return {
   'stevearc/aerial.nvim',
+  cmd = { 'AerialToggle', 'AerialOpen', 'AerialInfo' },
+  keys = {
+    { '<C-y>', '<cmd>AerialToggle!<CR>', desc = 'Toggle Aerial Symbols' },
+  },
   opts = {
     backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
     layout = {

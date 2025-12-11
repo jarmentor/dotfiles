@@ -3,12 +3,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 
-        'bash', 'bibtex', 'c', 'cpp', 'css', 'diff', 'dockerfile', 'git_config', 'git_rebase', 'gitcommit', 'gitignore',
-        'go', 'html', 'javascript', 'json', 'latex', 'lua', 'luadoc', 'make', 'markdown', 'markdown_inline',
-        'php', 'python', 'query', 'regex', 'rust', 'sql', 'toml', 'typescript', 'vim', 'vimdoc', 'yaml'
-      },
-      -- Autoinstall languages that are not installed
+      -- auto_install handles on-demand installation, no need for ensure_installed
       auto_install = true,
       highlight = {
         enable = true,

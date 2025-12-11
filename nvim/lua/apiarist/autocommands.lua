@@ -122,7 +122,12 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 vim.api.nvim_create_autocmd('FocusLost', {
   pattern = '*',
   callback = function()
-    if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' then
+    -- Skip special buffer types
+    local excluded_ft = { 'neo-tree', 'TelescopePrompt', 'lazy', 'mason', 'noice', 'snacks_dashboard', 'aerial' }
+    if vim.tbl_contains(excluded_ft, vim.bo.filetype) then
+      return
+    end
+    if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' and not vim.bo.readonly then
       vim.cmd 'silent! write'
     end
   end,
