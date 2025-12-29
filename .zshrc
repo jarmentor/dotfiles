@@ -78,7 +78,7 @@ alias lt='eza --tree --level=2 --icons'
 alias lst='eza --icons --git -l --sort=modified --reverse'  # newest first (lst = ls by time)
 
 alias reload='source ~/.zshrc'
-alias {c,cl,clr,lear}=clear
+alias {c,cl,clr,clea,lear}=clear
 alias {q,xit,x}=exit
 alias o=open
 alias sdn=share-daily-note
@@ -104,6 +104,7 @@ alias gs='git status'
 alias gd='git diff'
 alias gsh='git show'
 alias gap='git add -p'
+ alias gpf='git push --force-with-lease'
 
 # Brew & system
 alias brewup='brew update && brew upgrade && brew cleanup && brew upgrade --cask && brew doctor'
@@ -140,6 +141,8 @@ alias img-resize='magick mogrify'
 # Remote server
 alias {h,hipaa}='ssh hipaa'
 
+# CSV
+alias csv='csvlens'
 # ────────────────────────────────────────────────────────────────────────────
 # Functions
 

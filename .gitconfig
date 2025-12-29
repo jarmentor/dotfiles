@@ -18,6 +18,14 @@
 [includeIf "gitdir:/Volumes/Development/Personal/"]
   path = ~/.gitconfig-personal
 
+[rerere]
+  enabled = true
+  autoupdate = true
+
+[fetch]
+  prune = true
+  prunetags = true
+
 [advice]
   pushNonFastForward = false
 
@@ -39,15 +47,14 @@
   new = green
   old = red
 
+[diff]
+  algorithm = histogram
+  colorMoved = default
+
 [alias]
   br = branch
   co = checkout
   d = diff
-  ff = flow feature
-  fff = flow feature finish
-  ffi = flow init -d
-  ffs = flow feature start
-  fi = flow init -d
   l = log --oneline --decorate --color --all
   mt = mergetool
   s = status
@@ -63,13 +70,31 @@
   whoami = config user.email
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
-  # Show verboase output about tags, branches or remotes.
+  # Show verbose output about tags, branches or remotes
   tags = tag -l
   branches = branch --all
   remotes = remote --verbose
 
-  # List aliases.
+  # List aliases
   aliases = config --get-regexp alias
+
+  # Rebase shortcuts
+  rc = rebase --continue
+  ra = rebase --abort
+  rs = rebase --skip
+
+  # Force push safely
+  pf = push --force-with-lease
+
+  # WIP commits
+  wip = "!git add -A && git commit -m 'WIP'"
+  unwip = reset HEAD~1
+
+  # Show what you've done today
+  today = log --since=midnight --author='Jonathan' --oneline
+
+  # Delete branches whose remote tracking is gone
+  gone = "!git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D"
 
 [log]
   date = iso-local
@@ -81,16 +106,19 @@
 [push]
   followTags = true
   default = simple
+  autoSetupRemote = true
 
 [pull]
   rebase = true
   ff = only
 
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+
 [commit]
   verbose = true
-
-[help]
-  autocorrect = 1
 
 [format]
   pretty = "%C(auto)%h%Creset %C(bold blue)%an%Creset %C(dim green)(%ad)%Creset%n    %s%n%b"
