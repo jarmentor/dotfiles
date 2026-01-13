@@ -115,11 +115,6 @@ return {
         substitutions = {},
       },
 
-      -- Optional, configure key mappings
-      follow_url_func = function(url)
-        vim.fn.jobstart { 'open', url } -- Mac OS
-      end,
-
       -- Optional, by default commands like `:Obsidian today` will open in current buffer
       open_notes_in = 'current',
       
@@ -130,7 +125,7 @@ return {
 
       -- Specify how to handle attachments
       attachments = {
-        img_folder = 'assets/imgs',
+        folder = 'assets/imgs',
         img_text_func = function(client, path)
           local link_path
           local vault_relative_path = client:vault_relative_path(path)

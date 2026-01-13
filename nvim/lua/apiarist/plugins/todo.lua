@@ -32,7 +32,7 @@ return {
       keyword = 'wide',
       after = 'fg',
       pattern = [[.*<(KEYWORDS)\s*:?]],
-      comments_only = false,
+      comments_only = true,
       max_line_len = 400,
       exclude = {},
     },
