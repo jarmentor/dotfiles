@@ -82,6 +82,7 @@ alias {c,cl,clr,clea,lear}=clear
 alias {q,xit,x}=exit
 alias o=open
 alias sdn=share-daily-note
+alias odn=open-daily-note
 alias f='open .'
 alias tdt='cd ~/Desktop'
 alias tdl='cd ~/Downloads'
