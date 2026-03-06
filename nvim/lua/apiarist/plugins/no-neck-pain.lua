@@ -56,6 +56,10 @@ return {
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'markdown',
       callback = function()
+        local aerial_ok, aerial = pcall(require, 'aerial')
+        if aerial_ok and aerial.is_open() then
+          return
+        end
         require('no-neck-pain').enable()
       end,
     })
@@ -77,8 +81,14 @@ return {
         local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
         local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
         
+        -- Skip if aerial is open anywhere (let the integration handle it)
+        local aerial_ok, aerial = pcall(require, 'aerial')
+        if aerial_ok and aerial.is_open() then
+          return
+        end
+
         -- Skip if we're in aerial, snacks, or other special windows
-        if filetype == 'aerial' or 
+        if filetype == 'aerial' or
            filetype == 'snacks_dashboard' or 
            filetype == 'snacks_notif' or
            filetype == 'snacks_terminal' or
