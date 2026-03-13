@@ -3,6 +3,14 @@
 [[ $- != *i* ]] && return
 
 # ────────────────────────────────────────────────────────────────────────────
+# ─── Auto-attach tmux (before p10k instant prompt to avoid console I/O) ───
+if [[ ("$(hostname)" == "Apiarist.local" || "$(hostname)" == "Apiarist-Old.local") && -z $TMUX && $TERM_PROGRAM != "vscode" ]]; then
+  if command -v tmux >/dev/null 2>&1; then
+    exec tmux new-session -A -s main
+  fi
+fi
+
+# ────────────────────────────────────────────────────────────────────────────
 # Instant prompt (Powerlevel10k)
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -225,13 +233,6 @@ for envf in ~/.dotfiles/.env ~/.dotfiles/.env.comit ~/.dotfiles/.env.personal; d
   [[ -r $envf ]] && source "$envf"
 done
 
-# ────────────────────────────────────────────────────────────────────────────
-# ─── Auto-attach tmux on Apiarist.local (but NOT in VS Code bc aaaa) ────────────────
-if [[ "$(hostname)" == "Apiarist.local" && -z $TMUX && $TERM_PROGRAM != "vscode" ]]; then
-  if command -v tmux >/dev/null 2>&1; then
-    exec tmux new-session -A -s main
-  fi
-fi
 
 
 function __set_beam_cursor {
