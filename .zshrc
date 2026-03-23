@@ -28,7 +28,7 @@ typeset -a EXTRA_PATHS=(
   "/usr/local/sbin"
   "$HOME/.cargo/bin"
   "/opt/homebrew/opt/ruby/bin"
-  "/Library/Frameworks/Python.framework/Versions/3.11/bin",
+  "/Library/Frameworks/Python.framework/Versions/3.11/bin"
   "$HOME/.docker/bin"
 )
 for p in "${EXTRA_PATHS[@]}"; do
@@ -85,6 +85,23 @@ alias la='eza -la --icons --group-directories-first --git --header'
 alias lt='eza --tree --level=2 --icons'
 alias lst='eza --icons --git -l --sort=modified --reverse'  # newest first (lst = ls by time)
 
+# Clipboard
+alias pbp='pbpaste'
+alias cpwd='pwd | pbcopy'
+alias cplast='fc -ln -1 | pbcopy'
+
+# Disk
+alias du='du -sh'
+alias df='df -h'
+
+# Networking
+alias ip='curl -s ifconfig.me'
+alias localip="ipconfig getifaddr en0"
+alias ports='lsof -iTCP -sTCP:LISTEN -n -P'
+
+# Process
+alias psg='ps aux | grep -v grep | grep -i'
+
 alias reload='source ~/.zshrc'
 alias {c,cl,clr,clea,lear}=clear
 alias {q,xit,x}=exit
@@ -114,7 +131,20 @@ alias gs='git status'
 alias gd='git diff'
 alias gsh='git show'
 alias gap='git add -p'
- alias gpf='git push --force-with-lease'
+alias gpf='git push --force-with-lease'
+alias ga='git add'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gco='git checkout'
+alias gb='git branch'
+alias gl='git log --oneline --graph --decorate -20'
+alias gla='git log --oneline --graph --decorate --all -20'
+alias gp='git push'
+alias gpl='git pull'
+alias gst='git stash'
+alias gstp='git stash pop'
+alias gwip='git add -A && git commit -m "wip"'
+alias gundo='git reset --soft HEAD~1'
 
 # Brew & system
 alias brewup='brew update && brew upgrade && brew cleanup && brew upgrade --cask && brew doctor'
@@ -179,6 +209,38 @@ sitemap() {
     | grep '<loc>' \
     | awk -F'[<>]' '{print $3}' \
     | sort
+}
+
+extract() {
+  case "$1" in
+    *.tar.bz2) tar xjf "$1" ;;
+    *.tar.gz)  tar xzf "$1" ;;
+    *.tar.xz)  tar xJf "$1" ;;
+    *.bz2)     bunzip2 "$1" ;;
+    *.gz)      gunzip "$1" ;;
+    *.tar)     tar xf "$1" ;;
+    *.zip)     unzip "$1" ;;
+    *.7z)      7z x "$1" ;;
+    *)         echo "'$1' — unknown format" ;;
+  esac
+}
+
+serve() { python3 -m http.server "${1:-8000}"; }
+
+gopen() {
+  local url
+  url=$(git remote get-url origin 2>/dev/null) || { echo "No remote"; return 1; }
+  url=${url/git@github.com:/https://github.com/}
+  url=${url%.git}
+  open "$url"
+}
+
+fcd() { cd "$(fd --type d --hidden --exclude .git | fzf --preview 'eza --tree --level=1 {}')" ; }
+
+fbr() {
+  local branch
+  branch=$(git branch --all | fzf --height 40% | sed 's/^[* ]*//' | sed 's|remotes/origin/||')
+  [[ -n $branch ]] && git checkout "$branch"
 }
 
 # ────────────────────────────────────────────────────────────────────────────
