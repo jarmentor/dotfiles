@@ -142,6 +142,49 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.linebreak = true
     vim.opt_local.textwidth = 0
     vim.opt_local.wrapmargin = 0
+
+    -- Auto-continue lists and checkboxes on Enter
+    vim.keymap.set('i', '<CR>', function()
+      local line = vim.api.nvim_get_current_line()
+      local indent = line:match('^(%s*)')
+
+      -- Empty list item → remove marker and stay (exit list mode)
+      if line:match('^%s*[-*+]%s*$')
+        or line:match('^%s*%d+[.)]%s*$')
+        or line:match('^%s*- %[.%]%s*$') then
+        vim.api.nvim_set_current_line('')
+        return
+      end
+
+      -- Determine continuation prefix
+      local prefix
+      if line:match('^%s*- %[.%]') then
+        prefix = indent .. '- [ ] '
+      else
+        local bullet = line:match('^%s*([-*+]) ')
+        if bullet then
+          prefix = indent .. bullet .. ' '
+        else
+          local leading, num, sep = line:match('^(%s*)(%d+)([.)])')
+          if num then
+            prefix = leading .. (tonumber(num) + 1) .. sep .. ' '
+          end
+        end
+      end
+
+      if prefix then
+        local row = vim.api.nvim_win_get_cursor(0)[1]
+        local col = vim.api.nvim_win_get_cursor(0)[2]
+        local before = line:sub(1, col)
+        local after = line:sub(col + 1)
+        vim.api.nvim_set_current_line(before)
+        vim.api.nvim_buf_set_lines(0, row, row, false, { prefix .. after })
+        vim.api.nvim_win_set_cursor(0, { row + 1, #prefix })
+      else
+        local cr = vim.api.nvim_replace_termcodes('<CR>', true, false, true)
+        vim.api.nvim_feedkeys(cr, 'n', false)
+      end
+    end, { buffer = true })
   end,
 })
 
