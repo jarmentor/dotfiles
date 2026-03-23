@@ -4,15 +4,10 @@ return {
   dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
   ft = { 'markdown' },
   init = function()
-    -- Set highlight groups early to prevent white backgrounds
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { 
-      bg = '#1f1d2e', -- Rose Pine surface background
-      fg = '#e0def4'  -- Rose Pine text
-    })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInline', { 
-      bg = '#26233a', -- Rose Pine overlay background
-      fg = '#f6c177'  -- Rose Pine gold for inline code
-    })
+    -- Rose Pine-themed highlight groups (set early to prevent flash)
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { bg = '#1f1d2e' })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInline', { bg = '#26233a', fg = '#f6c177' })
+    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeBorder', { fg = '#26233a' })
   end,
   opts = {
     preset = 'obsidian',
@@ -46,9 +41,20 @@ return {
       hyperlink = '󰌹 ',
       highlight = 'RenderMarkdownLink',
     },
-    -- Code block configuration - disable to allow treesitter syntax highlighting
+    -- Code block configuration
     code = {
-      enabled = false, -- Disable render-markdown code handling
+      enabled = true,
+      sign = false,
+      style = 'full',
+      width = 'full',
+      left_pad = 1,
+      right_pad = 1,
+      border = 'thin',
+      above = '▄',
+      below = '▀',
+      highlight = 'RenderMarkdownCode',
+      highlight_inline = 'RenderMarkdownCodeInline',
+      highlight_border = 'RenderMarkdownCodeBorder',
     },
     -- Heading configuration
     heading = {
@@ -138,29 +144,5 @@ return {
   },
   config = function(_, opts)
     require('render-markdown').setup(opts)
-    
-    -- Custom highlight groups for darker, eye-friendly code blocks (Rose Pine colors)
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCode', { 
-      bg = '#1f1d2e', -- Rose Pine surface background
-      fg = '#e0def4'  -- Rose Pine text
-    })
-    vim.api.nvim_set_hl(0, 'RenderMarkdownCodeInline', { 
-      bg = '#26233a', -- Rose Pine overlay background
-      fg = '#f6c177'  -- Rose Pine gold for inline code
-    })
-    -- Keep background overrides but remove foreground to preserve syntax highlighting
-    vim.api.nvim_set_hl(0, '@markup.raw.block.markdown', { 
-      bg = '#1f1d2e' -- Rose Pine surface background only
-    })
-    vim.api.nvim_set_hl(0, '@markup.raw.markdown_inline', { 
-      bg = '#26233a', -- Rose Pine overlay
-      fg = '#f6c177'  -- Rose Pine gold for inline code (keep this for inline)
-    })
-    
-    -- Additional background overrides only
-    vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#1f1d2e' })
-    vim.api.nvim_set_hl(0, '@text.literal.block.markdown', { bg = '#1f1d2e' })
-    vim.api.nvim_set_hl(0, 'markdownCode', { bg = '#1f1d2e' })
-    vim.api.nvim_set_hl(0, 'markdownCodeBlock', { bg = '#1f1d2e' })
   end,
 }
