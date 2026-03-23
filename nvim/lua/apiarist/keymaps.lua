@@ -151,27 +151,26 @@ vim.keymap.set('n', '<leader>tz', '<cmd>ZenMode<CR>', { desc = '[T]oggle [Z]en M
 local function toggle_checkbox()
   local line = vim.api.nvim_get_current_line()
   local row = vim.api.nvim_win_get_cursor(0)[1] - 1 -- 0-indexed
+  local indent = line:match('^(%s*)') or ''
+  local new_line
 
-  if line:match '%- %[ %]' then
-    local new_line = line:gsub('%- %[ %]', '- [x]')
-    vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
-  elseif line:match '%- %[x%]' then
-    local new_line = line:gsub('%- %[x%]', '- [ ]')
-    vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
+  if line:match('^%s*- %[ %]') then
+    -- Unchecked → checked
+    new_line = line:gsub('%- %[ %]', '- [x]', 1)
+  elseif line:match('^%s*- %[x%]') then
+    -- Checked → unchecked
+    new_line = line:gsub('%- %[x%]', '- [ ]', 1)
+  elseif line:match('^%s*[-*+] ') then
+    -- Bullet → checkbox (preserve content after the bullet)
+    local content = line:match('^%s*[-*+] (.*)')
+    new_line = indent .. '- [ ] ' .. content
   else
-    -- If line has text but no checkbox, add unchecked checkbox at the beginning
-    local trimmed = line:match '^%s*(.-)%s*$' -- trim whitespace
-    if trimmed and trimmed ~= '' then
-      local indent = line:match '^(%s*)' or ''
-      local new_line = indent .. '- [ ] ' .. trimmed
-      vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
-    else
-      -- Empty line, just add checkbox
-      local indent = line:match '^(%s*)' or ''
-      local new_line = indent .. '- [ ] '
-      vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
-    end
+    -- Plain text or empty → add checkbox
+    local text = line:match('^%s*(.-)%s*$') or ''
+    new_line = indent .. '- [ ] ' .. text
   end
+
+  vim.api.nvim_buf_set_lines(0, row, row + 1, false, { new_line })
 end
 
 vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown checkbox' })
