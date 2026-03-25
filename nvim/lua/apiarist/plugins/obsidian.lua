@@ -64,7 +64,7 @@ return {
         template = 'daily-note.md',
       },
 
-      -- Completion (using blink.cmp, not nvim-cmp)
+      -- Completion via blink.cmp (auto-detected)
       completion = {
         nvim_cmp = false,
         min_chars = 2,

@@ -22,6 +22,9 @@ return {
       },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
+        per_filetype = {
+          markdown = { inherit_defaults = true, 'obsidian', 'obsidian_new', 'obsidian_tags' },
+        },
       },
       cmdline = {
         completion = {
