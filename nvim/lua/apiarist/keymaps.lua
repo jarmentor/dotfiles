@@ -174,7 +174,6 @@ local function toggle_checkbox()
 end
 
 vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown checkbox' })
-vim.keymap.set('n', '<leader>tc', toggle_checkbox, { desc = '[T]oggle markdown [C]heckbox' })
 
 -- Copy file paths
 vim.keymap.set('n', '<leader>yp', '<cmd>let @+ = expand("%:p")<CR>', { desc = '[Y]ank file [P]ath (absolute)' })

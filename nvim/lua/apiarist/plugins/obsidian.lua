@@ -42,18 +42,6 @@ return {
         -- Override 'gf' mapping to work on markdown/wiki links
         vim.keymap.set('n', 'gf', '<cmd>Obsidian follow_link<cr>', vim.tbl_extend('force', opts, { desc = 'Follow link' }))
         
-        -- Toggle check-boxes
-        vim.keymap.set('n', '<leader>ch', function()
-          vim.cmd('Obsidian toggle_checkbox')
-        end, vim.tbl_extend('force', opts, { desc = 'Toggle checkbox' }))
-        
-        -- Quick checkbox creation
-        vim.keymap.set('n', '<leader>cb', function()
-          local line = vim.api.nvim_get_current_line()
-          local indent = line:match '^%s*'
-          vim.api.nvim_set_current_line(indent .. '- [ ] ')
-          vim.api.nvim_feedkeys('A', 'n', false)
-        end, vim.tbl_extend('force', opts, { desc = 'Create checkbox' }))
       end,
     })
     
