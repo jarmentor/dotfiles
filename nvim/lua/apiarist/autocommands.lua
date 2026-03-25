@@ -142,6 +142,8 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.linebreak = true
     vim.opt_local.textwidth = 0
     vim.opt_local.wrapmargin = 0
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = 'en_us'
 
     -- Auto-continue lists and checkboxes on Enter
     vim.keymap.set('i', '<CR>', function()

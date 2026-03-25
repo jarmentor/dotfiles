@@ -30,9 +30,6 @@ return {
     { '<leader>ox', '<cmd>Obsidian extract<cr>', desc = 'Extract selection to new note' },
   },
   config = function()
-    -- Disable conceallevel to work with render-markdown.nvim
-    vim.opt.conceallevel = 0
-    
     -- Set up buffer-local keymaps for markdown files
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'markdown',
