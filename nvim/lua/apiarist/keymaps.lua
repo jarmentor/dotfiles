@@ -5,8 +5,12 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Capital W and Q commands (fixed to work properly)
-vim.api.nvim_create_user_command('W', 'w', {})
-vim.api.nvim_create_user_command('Q', 'q', {})
+vim.api.nvim_create_user_command('W', function(opts)
+  vim.cmd('w' .. (opts.bang and '!' or ''))
+end, { bang = true })
+vim.api.nvim_create_user_command('Q', function(opts)
+  vim.cmd('q' .. (opts.bang and '!' or ''))
+end, { bang = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -93,20 +97,70 @@ vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<CR>', { desc = '[T]oggle [W]ra
 vim.keymap.set('n', '<leader>tn', '<cmd>set number! relativenumber!<CR>', { desc = '[T]oggle [N]umber' })
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]pell' })
 
--- Toggle diagnostics (linting errors)
+-- Toggle diagnostics (linting errors) — in markdown, toggles clean reading mode
+local _clean_reading = false
+local _clean_reading_saved = {}
+
 vim.keymap.set('n', '<leader>te', function()
+  -- Markdown: toggle clean reading mode
+  if vim.bo.filetype == 'markdown' then
+    _clean_reading = not _clean_reading
+
+    if _clean_reading then
+      -- Save current state
+      _clean_reading_saved = {
+        number = vim.wo.number,
+        relativenumber = vim.wo.relativenumber,
+        signcolumn = vim.wo.signcolumn,
+        cursorline = vim.wo.cursorline,
+        spell = vim.wo.spell,
+        list = vim.wo.list,
+        laststatus = vim.o.laststatus,
+        diagnostics = vim.diagnostic.is_enabled(),
+      }
+
+      -- Strip chrome
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = 'no'
+      vim.wo.cursorline = false
+      vim.wo.spell = false
+      vim.wo.list = false
+      vim.o.laststatus = 0
+      vim.diagnostic.enable(false)
+      vim.lsp.stop_client(vim.lsp.get_clients({ name = 'harper_ls' }))
+
+      print('Clean reading: on')
+    else
+      -- Restore saved state
+      local s = _clean_reading_saved
+      vim.wo.number = s.number
+      vim.wo.relativenumber = s.relativenumber
+      vim.wo.signcolumn = s.signcolumn
+      vim.wo.cursorline = s.cursorline
+      vim.wo.spell = s.spell
+      vim.wo.list = s.list
+      vim.o.laststatus = s.laststatus
+      if s.diagnostics then
+        vim.diagnostic.enable(true)
+        vim.cmd('edit') -- reattach harper
+      end
+
+      print('Clean reading: off')
+    end
+    return
+  end
+
+  -- Non-markdown: toggle diagnostics as before
   local is_enabled = vim.diagnostic.is_enabled()
   vim.diagnostic.enable(not is_enabled)
 
-  -- Also stop/start harper LSP to prevent it from showing hints
   if is_enabled then
-    -- Stopping diagnostics, so stop harper
     vim.lsp.stop_client(vim.lsp.get_clients({ name = 'harper_ls' }))
   else
-    -- Re-enabling diagnostics, restart buffer to reattach harper
     vim.cmd('edit')
   end
-end, { desc = '[T]oggle diagnostic [E]rrors' })
+end, { desc = '[T]oggle [E]rrors / clean reading (md)' })
 
 -- Toggle virtual text (inline diagnostic messages)
 vim.keymap.set('n', '<leader>tv', function()
