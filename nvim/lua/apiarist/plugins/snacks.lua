@@ -116,9 +116,67 @@ return {
     {
       '<leader>gs',
       function()
-        require('snacks').picker.git_status()
+        local root = require('snacks.git').get_root()
+        if not root then
+          vim.notify('Not in a git repository', vim.log.levels.WARN)
+          return
+        end
+        local lines = vim.fn.systemlist('git -C ' .. vim.fn.shellescape(root) .. ' status --porcelain')
+        if vim.v.shell_error ~= 0 or #lines == 0 then
+          vim.notify('No changes', vim.log.levels.INFO)
+          return
+        end
+
+        local staged, modified, untracked = {}, {}, {}
+        for _, line in ipairs(lines) do
+          local x, y = line:sub(1, 1), line:sub(2, 2)
+          local file = line:sub(4)
+          local entry = { file = file, x = x, y = y, text = line }
+          if x == '?' then
+            table.insert(untracked, entry)
+          elseif x ~= ' ' and x ~= '?' then
+            table.insert(staged, entry)
+          end
+          -- working tree changes (unstaged modifications)
+          if y ~= ' ' and y ~= '?' and x ~= '?' then
+            table.insert(modified, entry)
+          end
+        end
+
+        local items = {}
+        local function add_group(group, label)
+          for _, e in ipairs(group) do
+            table.insert(items, {
+              text = e.file,
+              file = root .. '/' .. e.file,
+              label = label,
+              status = e.x .. e.y,
+            })
+          end
+        end
+        add_group(staged, 'staged')
+        add_group(modified, 'modified')
+        add_group(untracked, 'untracked')
+
+        require('snacks').picker {
+          title = 'Git Changes',
+          items = items,
+          format = function(item)
+            local hl = ({ staged = 'DiffAdd', modified = 'DiffChange', untracked = 'DiffDelete' })[item.label] or 'Normal'
+            return {
+              { item.status .. ' ', hl },
+              { item.text },
+            }
+          end,
+          confirm = function(picker, item)
+            picker:close()
+            if item then
+              vim.cmd('edit ' .. vim.fn.fnameescape(item.file))
+            end
+          end,
+        }
       end,
-      desc = '[G]it [S]tatus',
+      desc = '[G]it [S]tatus (sorted)',
     },
     -- Help and navigation
     {
