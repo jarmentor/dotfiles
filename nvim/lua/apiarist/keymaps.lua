@@ -80,6 +80,9 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
 -- Unique selected lines
 vim.keymap.set('v', '<leader>u', ':sort u<CR>gv', { desc = '[U]nique selected lines' })
 
+-- Trim trailing whitespace
+vim.keymap.set('v', '<leader>tw', [[:s/\s\+$//e<CR>]], { desc = 'Trim trailing whitespace' })
+
 -- nvim-surround helper shortcuts (optional - learn ys/cs/ds first!)
 vim.keymap.set('n', '<leader>sw', 'ysiw"', { desc = '[S]urround [W]ord with quotes' })
 
