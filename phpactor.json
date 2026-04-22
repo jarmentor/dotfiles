@@ -1,5 +1,5 @@
 {
-        "worse_reflection.stub_directories": [
+        "indexer.stub_paths": [
                 "/Users/jarmentor/.composer/vendor/php-stubs"
         ]
 }

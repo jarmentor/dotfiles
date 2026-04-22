@@ -305,10 +305,17 @@ return {
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            -- Special setup for Tailwind CSS LSP to include .astro files
-            if server_name == 'tailwindcss-language-server' then
+            -- Special setup for Tailwind CSS LSP: restrict filetypes (no PHP/SCSS)
+            -- and skip giant WP repos where it indexes vendored scss.
+            if server_name == 'tailwindcss' then
               require('lspconfig')[server_name].setup {
-                filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript' },
+                filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue' },
+                root_dir = require('lspconfig').util.root_pattern(
+                  'tailwind.config.js',
+                  'tailwind.config.cjs',
+                  'tailwind.config.mjs',
+                  'tailwind.config.ts'
+                ),
               }
             else
               require('lspconfig')[server_name].setup(server)

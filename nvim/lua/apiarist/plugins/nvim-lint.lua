@@ -5,6 +5,39 @@ return {
     config = function()
       local lint = require 'lint'
 
+      -- phpcs: resolve project-local binary + ruleset per buffer via autocmd
+      -- nvim-lint here wants static tables for cmd/args, so rebind on BufEnter.
+      local phpcs = lint.linters.phpcs
+      phpcs.cmd = 'phpcs'
+      phpcs.args = { '-q', '--report=json', '-s', '-' }
+
+      local function resolve_phpcs()
+        if vim.bo.filetype ~= 'php' then
+          return
+        end
+        local bufname = vim.api.nvim_buf_get_name(0)
+        if bufname == '' then
+          return
+        end
+        -- Walk up and pick the first ancestor containing vendor/bin/phpcs.
+        -- Avoids stopping at a nested composer.json without installed deps.
+        local cmd_bin = 'phpcs'
+        for dir in vim.fs.parents(bufname) do
+          local candidate = dir .. '/vendor/bin/phpcs'
+          if vim.fn.executable(candidate) == 1 then
+            cmd_bin = candidate
+            break
+          end
+        end
+        phpcs.cmd = cmd_bin
+        phpcs.args = {
+          '-q',
+          '--report=json',
+          '-s',
+          '--stdin-path=' .. bufname,
+          '-',
+        }
+      end
       -- Linter setup for specific filetypes
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
@@ -16,13 +49,17 @@ return {
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 
       -- Linting autocommand with condition
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+      vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
         callback = function()
-          -- If we're not hovering, do the linting
-          if vim.o.buftype == '' then
-            lint.try_lint()
+          if vim.o.buftype ~= '' then
+            return
           end
+          -- Resolve phpcs cmd/args before try_lint for php buffers
+          if vim.bo.filetype == 'php' then
+            resolve_phpcs()
+          end
+          lint.try_lint()
         end,
       })
 
