@@ -33,6 +33,7 @@ return { -- Autoformat
       markdown = { 'prettierd', 'prettier', stop_after_first = true },
       tex = { 'latexindent' },
       bib = { 'bibtex-tidy' },
+      php = { 'phpcbf' },
     },
     formatters = {
       prettier = {
