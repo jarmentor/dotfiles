@@ -30,6 +30,7 @@ typeset -a EXTRA_PATHS=(
   "/opt/homebrew/opt/ruby/bin"
   "/Library/Frameworks/Python.framework/Versions/3.11/bin"
   "$HOME/.docker/bin"
+  "$HOME/go/bin"
 )
 for p in "${EXTRA_PATHS[@]}"; do
   [[ -d $p && :$PATH: != *":$p:"* ]] && PATH="$p:$PATH"
@@ -87,7 +88,7 @@ alias lst='eza --icons --git -l --sort=modified --reverse'  # newest first (lst 
 
 # Clipboard
 alias pbp='pbpaste'
-alias cpwd='pwd | pbcopy'
+alias {cpwd,pwdc}='pwd | pbcopy'
 alias cplast='fc -ln -1 | pbcopy'
 
 # Disk
