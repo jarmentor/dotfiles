@@ -45,7 +45,7 @@ return {
         completion = {
           menu = { auto_show = true },
           ghost_text = { enabled = true },
-          list = { selection = { preselect = true, auto_insert = false } },
+          list = { selection = { preselect = false, auto_insert = false } },
         },
       },
       signature = { 
