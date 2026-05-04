@@ -10,6 +10,10 @@ return {
         ['<CR>'] = { 'accept', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<C-y>'] = { 'accept', 'fallback' },
+        ['<C-e>'] = { 'cancel', 'fallback' },
       },
       appearance = {
         use_nvim_cmp_as_default = true,
@@ -27,11 +31,22 @@ return {
         },
       },
       cmdline = {
+        keymap = {
+          preset = 'default',
+          ['<Tab>'] = { 'select_next', 'fallback' },
+          ['<S-Tab>'] = { 'select_prev', 'fallback' },
+          ['<C-n>'] = { 'select_next', 'fallback' },
+          ['<C-p>'] = { 'select_prev', 'fallback' },
+          ['<CR>'] = { 'accept', 'fallback' },
+          ['<Right>'] = { 'accept', 'fallback' },
+          ['<C-y>'] = { 'accept', 'fallback' },
+          ['<C-e>'] = { 'cancel', 'fallback' },
+        },
         completion = {
-          menu = {
-            auto_show = true
-          }
-        }
+          menu = { auto_show = true },
+          ghost_text = { enabled = true },
+          list = { selection = { preselect = true, auto_insert = false } },
+        },
       },
       signature = { 
         enabled = true,
