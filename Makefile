@@ -26,7 +26,6 @@ install link:
 	@ln -sf $(PWD)/.stylelintrc ~/.stylelintrc
 	@ln -sf $(PWD)/.markdownlint.json ~/.markdownlint.json
 	@ln -sf $(PWD)/.taskrc ~/.taskrc
-	@ln -sf $(PWD)/phpactor.json ~/.config/phpactor/phpactor.json
 	@mkdir -p ~/.config/ghostty
 	@ln -sf $(PWD)/ghostty.config ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
@@ -53,7 +52,6 @@ uninstall unlink:
 	@rm -f ~/.stylelintrc
 	@rm -f ~/.markdownlint.json
 	@rm -f ~/.taskrc
-	@rm -f ~/.config/phpactor/phpactor.json
 	@rm -f ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
 	@rm -f ~/.config/spotify_player/app.toml
@@ -73,7 +71,6 @@ status:
 	@printf "~/.stylelintrc: "; [ -L ~/.stylelintrc ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.markdownlint.json: "; [ -L ~/.markdownlint.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.taskrc: "; [ -L ~/.taskrc ] && echo "✓ linked" || echo "✗ not linked"
-	@printf "~/.config/phpactor/phpactor.json: "; [ -L ~/.config/phpactor/phpactor.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/ghostty/config: "; [ -L ~/.config/ghostty/config ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/nvim: "; [ -L ~/.config/nvim ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/spotify_player/app.toml: "; [ -L ~/.config/spotify_player/app.toml ] && echo "✓ linked" || echo "✗ not linked"
@@ -83,7 +80,7 @@ status:
 # Clean broken symlinks
 clean:
 	@echo "Cleaning broken symlinks..."
-	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim)" | xargs rm -f 2>/dev/null || true
+	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|ghostty|nvim)" | xargs rm -f 2>/dev/null || true
 	@echo "Broken symlinks cleaned!"
 
 # Ollama setup for Neovim code completion

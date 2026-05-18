@@ -172,9 +172,9 @@ return {
           filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'graphql' },
         },
 
-        phpactor = {
+        phpantom_lsp = {
           capabilities = capabilities,
-          root_dir = require('lspconfig').util.root_pattern('composer.json', 'wp-config.php', 'functions.php', '.git'),
+          root_dir = require('lspconfig').util.root_pattern('.phpantom.toml', 'composer.json', 'wp-config.php', 'functions.php', '.git'),
         },
 
         lua_ls = {
