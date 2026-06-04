@@ -4,3 +4,5 @@
 .env.personal
 .env.comit
 .DS_Store
+
+**/.claude/settings.local.json
