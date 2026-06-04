@@ -244,6 +244,72 @@ fbr() {
   [[ -n $branch ]] && git checkout "$branch"
 }
 
+# inspect — show each character's codepoint, hex byte(s), and ASCII status
+# usage:
+#   inspect "some string"
+#   echo "piped input" | inspect
+#   inspect < file.txt
+inspect() {
+  local input
+  if [ -t 0 ] && [ $# -gt 0 ]; then
+    input="$*"
+  else
+    input="$(cat)"
+  fi
+  printf '%s' "$input" | perl -CSD -ne '
+    use Encode qw(encode);
+    for (split //) {
+      my $cp    = ord($_);
+      my $bytes = join(" ", map { sprintf("%02x", $_) } unpack("C*", encode("UTF-8", $_)));
+      my $disp  = (/\p{Cc}/ || /\s/) ? sprintf("\\x%02x", $cp) : $_;
+      my $kind  = /\p{ASCII}/ ? "ascii" : "non-ascii";
+      printf "%-6s  U+%04X  %-12s  %s\n", $disp, $cp, $bytes, $kind;
+    }
+  '
+}
+
+# img2web
+img2web() {
+  local quality="${1:-82}"
+  local maxw="${2:-1920}"
+
+  local jpgdir="web/jpg"
+  local webpdir="web/webp"
+  mkdir -p "$jpgdir" "$webpdir"
+
+  setopt local_options extended_glob
+  local files=( (#i)*.(jpg|jpeg|png|webp|tif|tiff)(N.) )
+
+  if (( ${#files} == 0 )); then
+    echo "No images found in $PWD" >&2
+    return 1
+  fi
+
+  for f in $files; do
+    [[ "$f" == web/* ]] && continue
+
+    # slugify
+    local slug="${f:r:l}"
+    slug="${slug//[^a-z0-9]##/-}"   # any run of non-alnum → single hyphen
+    slug="${slug##-}"; slug="${slug%%-}"
+
+    # collision guard (checks both target dirs)
+    local out="$slug" n=1
+    while [[ -e "$jpgdir/$out.jpg" || -e "$webpdir/$out.webp" ]]; do
+      out="${slug}-${n}"; (( n++ ))
+    done
+
+    magick "$f" -resize "${maxw}>" -strip \
+      -interlace Plane -sampling-factor 4:2:0 -quality "$quality" \
+      "$jpgdir/$out.jpg"
+
+    magick "$f" -resize "${maxw}>" -strip \
+      -quality "$quality" \
+      "$webpdir/$out.webp" \
+      && echo "✓ $f → $out.{jpg,webp}"
+  done
+}
+
 # ────────────────────────────────────────────────────────────────────────────
 # Third-party tool integrations
 
