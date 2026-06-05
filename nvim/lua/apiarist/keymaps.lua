@@ -131,7 +131,9 @@ vim.keymap.set('n', '<leader>te', function()
       vim.wo.list = false
       vim.o.laststatus = 0
       vim.diagnostic.enable(false)
-      vim.lsp.stop_client(vim.lsp.get_clients({ name = 'harper_ls' }))
+      for _, client in ipairs(vim.lsp.get_clients({ name = 'harper_ls' })) do
+        client:stop()
+      end
 
       print('Clean reading: on')
     else
@@ -159,7 +161,9 @@ vim.keymap.set('n', '<leader>te', function()
   vim.diagnostic.enable(not is_enabled)
 
   if is_enabled then
-    vim.lsp.stop_client(vim.lsp.get_clients({ name = 'harper_ls' }))
+    for _, client in ipairs(vim.lsp.get_clients({ name = 'harper_ls' })) do
+      client:stop()
+    end
   else
     vim.cmd('edit')
   end
