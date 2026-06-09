@@ -119,11 +119,15 @@ alias {v,vim,nv,ivm,bim}='nvim'
 alias r='ranger'
 alias {dev,todev}='cd /Volumes/Development'
 
-# Daily note function
-d() {
-  local today_file="/Volumes/Development/Notebook/daily/$(date +%Y-%m-%d).md"
-  nvim "$today_file"
+note() {
+  local offset="${1:-+0}"   # note the +
+  local file="/Volumes/Development/Notebook/daily/$(date -v"${offset}d" +%Y-%m-%d).md"
+  nvim "$file"
 }
+
+alias d='note'
+alias y='note -1'
+
 alias {n,nb,notebook}='cd /Volumes/Development/Notebook/'
 
 # Git
