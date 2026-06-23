@@ -116,7 +116,6 @@ alias tdl='cd ~/Downloads'
 alias {dots,dotfiles}='cd ~/.dotfiles'
 alias neovim='nvim'
 alias {v,vim,nv,ivm,bim}='nvim'
-alias r='ranger'
 alias {dev,todev}='cd /Volumes/Development'
 
 note() {
