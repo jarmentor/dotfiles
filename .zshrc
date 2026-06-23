@@ -314,6 +314,20 @@ img2web() {
   done
 }
 
+# recent -- show recent files within a dir
+recent() {
+  fd --type f --hidden \
+    --exclude .git \
+    --exclude node_modules \
+    --exclude vendor \
+    --exclude .DS_Store \
+    --print0 2>/dev/null \
+    | xargs -0 stat -f '%m	%Sm	%N' -t '%Y-%m-%d %H:%M' 2>/dev/null \
+    | sort -rn \
+    | cut -f2- \
+    | head -n "${1:-35}"
+}
+
 # ────────────────────────────────────────────────────────────────────────────
 # Third-party tool integrations
 
