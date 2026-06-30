@@ -128,7 +128,11 @@ vim.api.nvim_create_autocmd('FocusLost', {
       return
     end
     if vim.bo.modifiable and vim.bo.modified and vim.fn.expand '%' ~= '' and not vim.bo.readonly then
+      -- Don't reformat the whole file just because focus was lost; explicit
+      -- :w and <leader>f still format. Avoids surprise diffs in legacy repos.
+      vim.b.disable_autoformat = true
       vim.cmd 'silent! write'
+      vim.b.disable_autoformat = false
     end
   end,
 })

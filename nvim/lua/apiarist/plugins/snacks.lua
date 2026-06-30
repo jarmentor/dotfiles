@@ -286,14 +286,6 @@ return {
       end,
       desc = '[G]it [H]unks',
     },
-    -- Line picker
-    {
-      '<leader>sl',
-      function()
-        require('snacks').picker.lines()
-      end,
-      desc = '[S]earch [L]ines',
-    },
     -- Git stash picker
     {
       '<leader>gS',

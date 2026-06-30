@@ -11,10 +11,23 @@ return { -- Autoformat
       mode = '',
       desc = '[F]ormat buffer',
     },
+    {
+      '<leader>tf',
+      function()
+        vim.g.disable_autoformat = not vim.g.disable_autoformat
+        vim.notify('Format on save: ' .. (vim.g.disable_autoformat and 'OFF' or 'ON'))
+      end,
+      desc = '[T]oggle [F]ormat on save',
+    },
   },
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)
+      -- Global toggle (<leader>tf) or per-buffer flag (set during focus-lost
+      -- autosave) — skip formatting so we don't rewrite whole legacy files.
+      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+        return
+      end
       -- Disable "format_on_save lsp_fallback" for languages that don't
       -- have a well standardized coding style. You can add additional
       -- languages here or re-enable it for the disabled ones.

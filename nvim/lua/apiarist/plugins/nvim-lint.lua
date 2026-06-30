@@ -91,7 +91,7 @@ return {
       -- Removed from here to avoid conflict
 
       -- Keymap for manual diagnostic hover
-      vim.keymap.set('n', '<leader>l', vim.diagnostic.open_float, { desc = 'Show line diagnostics' })
+      vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show line diagnostics ([E]rror float)' })
     end,
   },
 }

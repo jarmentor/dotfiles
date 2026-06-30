@@ -4,5 +4,7 @@
 .env.personal
 .env.comit
 .DS_Store
+*.log
+.nvimlog
 
 **/.claude/settings.local.json

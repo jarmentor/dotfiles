@@ -3,8 +3,9 @@ return {
   event = 'BufRead',
   dependencies = { 'kevinhwang91/promise-async' },
   config = function()
-    -- Enable foldcolumn
-    vim.o.foldcolumn = '1'
+    -- Foldcolumn off — no fold digits on the left edge. Folds still work
+    -- via za/zR/zM and the fold preview text at the fold line.
+    vim.o.foldcolumn = '0'
     vim.o.foldlevel = 99
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true

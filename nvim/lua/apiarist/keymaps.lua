@@ -44,8 +44,6 @@ vim.keymap.set('n', '<S-k>', ':m .-2<CR>==', { desc = 'Move line up' })
 vim.keymap.set('v', '<S-j>', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
 vim.keymap.set('v', '<S-k>', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
 
-vim.keymap.set('n', 'I', vim.lsp.buf.hover, { desc = 'Show Hover Information' })
-
 -- Buffer management
 vim.keymap.set('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })
 vim.keymap.set('n', '<leader>bo', '<cmd>%bdelete|edit#|bdelete#<CR>', { desc = '[B]uffer [O]nly (close others)' })
@@ -82,9 +80,6 @@ vim.keymap.set('v', '<leader>u', ':sort u<CR>gv', { desc = '[U]nique selected li
 
 -- Trim trailing whitespace
 vim.keymap.set('v', '<leader>tw', [[:s/\s\+$//e<CR>]], { desc = 'Trim trailing whitespace' })
-
--- nvim-surround helper shortcuts (optional - learn ys/cs/ds first!)
-vim.keymap.set('n', '<leader>sw', 'ysiw"', { desc = '[S]urround [W]ord with quotes' })
 
 -- Center search results
 vim.keymap.set('n', 'n', 'nzz', { desc = 'Next search result (centered)' })
