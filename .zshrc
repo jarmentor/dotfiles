@@ -190,6 +190,17 @@ alias csv='csvlens'
 # ────────────────────────────────────────────────────────────────────────────
 # Functions
 
+ghraw() {
+  local open=false
+  [[ "$1" == "-o" ]] && { open=true; shift; }
+  [[ "$1" =~ ^https?://github\.com/[^/]+/[^/]+/blob/ ]] || {
+    echo "ghraw: not a github blob url: $1" >&2; return 1;
+  }
+  local raw
+  raw=$(echo "$1" | sed -E 's#https?://github\.com/([^/]+)/([^/]+)/blob/#https://raw.githubusercontent.com/\1/\2/#')
+  if $open; then open "$raw"; else echo "$raw"; fi
+}
+
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
