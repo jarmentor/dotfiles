@@ -151,7 +151,7 @@ alias gwip='git add -A && git commit -m "wip"'
 alias gundo='git reset --soft HEAD~1'
 
 # Brew & system
-alias brewup='brew update && brew upgrade && brew cleanup && brew upgrade --cask && brew doctor'
+alias brewup='brew update; brew upgrade; brew cleanup'
 
 # Docker & Node
 alias dk='docker'
