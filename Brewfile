@@ -1,24 +1,12 @@
-tap "airbytehq/tap"
-tap "anomalyco/tap", "https://github.com/anomalyco/homebrew-tap.git"
-tap "cjbassi/ytop"
 tap "draftbrew/tap"
-tap "hashicorp/tap"
-tap "mongodb/brew"
-tap "sass/sass"
-tap "tcnksm/license"
-tap "wpscanteam/tap"
-# Search tool like grep, but optimized for programmers
-brew "ack"
 # Run your GitHub Actions locally
 brew "act"
-# Plugin manager for zsh, inspired by oh-my-zsh and vundle
-brew "antigen"
+# Command-line oriented TCP/IP packet assembler/analyzer
+brew "hping"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
-# Open-source, cross-platform JavaScript runtime environment
-brew "node"
 # Fast HTTP/1.1 benchmarking tool written in Node.js
 brew "autocannon"
 # Terminal bandwidth utilization tool
@@ -37,8 +25,6 @@ brew "curl", link: true
 brew "freetds"
 # Dependency Manager for PHP
 brew "composer"
-# Apjanke's fork of the classic cowsay project
-brew "cowsay"
 # Command-line csv viewer
 brew "csvlens"
 # Validate EPUB files, version 2.0 and later
@@ -55,8 +41,6 @@ brew "ffmpeg"
 brew "ffuf"
 # Lock file during command
 brew "flock"
-# Infamous electronic fortune-cookie generator
-brew "fortune"
 # Monitor a directory for changes and run a shell command
 brew "fswatch"
 # Command-line fuzzy finder written in Go
@@ -81,8 +65,6 @@ brew "golangci-lint"
 brew "htop"
 # Curl statistics made simple
 brew "httpstat"
-# Website copier/offline browser
-brew "httrack"
 # ISO/IEC 23008-12:2017 HEIF file format decoder and encoder
 brew "libheif"
 # Tools and libraries to manipulate images in select formats
@@ -91,24 +73,16 @@ brew "imagemagick"
 brew "jq"
 # Simple terminal UI for git commands
 brew "lazygit"
-# Small memory footprint, flexible web-server
-brew "lighttpd"
 # Next-gen compiler infrastructure
 brew "llvm"
 # Curses-based tool for viewing and analyzing log files
 brew "lnav"
-# Rainbows and unicorns in your console!
-brew "lolcat"
 # Package manager for the Lua programming language
 brew "luarocks"
 # Text-based web browser
 brew "lynx"
 # Swiss Army knife of email handling
 brew "mailutils"
-# Drop-in replacement for MySQL
-brew "mariadb"
-# Text-to-HTML conversion tool
-brew "markdown"
 # Open source relational database management system
 brew "mysql-client"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -157,8 +131,6 @@ brew "scc"
 brew "shellcheck"
 # Autoformat shell script source code
 brew "shfmt"
-# Terminal based presentation tool
-brew "slides"
 # Penetration testing for SQL injection and database servers
 brew "sqlmap"
 # SSH server & client auditing
@@ -171,8 +143,6 @@ brew "tag"
 brew "task"
 # Very fast implementation of tldr in Rust
 brew "tealdeer"
-# User interface to the TELNET protocol
-brew "telnet"
 # Terminal multiplexer
 brew "tmux"
 # Discovery, extraction and processing for Web text
@@ -234,8 +204,6 @@ cask "ghostty"
 cask "github"
 # Web browser
 cask "google-chrome"
-# Web browser
-cask "google-chrome@canary"
 # Open-source video transcoder
 cask "handbrake-app"
 # Open-source keystroke visualiser
@@ -244,8 +212,6 @@ cask "keycastr"
 cask "local"
 # Screen and video recording software
 cask "loom"
-# Full TeX Live distribution with GUI applications
-cask "mactex"
 # Visual tool to design, develop and administer MySQL servers
 cask "mysqlworkbench"
 # Knowledge base that works on top of a local folder of plain text Markdown files
