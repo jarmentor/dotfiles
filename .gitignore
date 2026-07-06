@@ -8,3 +8,5 @@
 .nvimlog
 
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/
