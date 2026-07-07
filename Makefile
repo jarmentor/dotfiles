@@ -34,6 +34,7 @@ install link:
 	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 	@chmod +x $(PWD)/tmux/tmux-sessionizer.sh
 	@chmod +x $(PWD)/tmux/preview-helper.sh
+	@chmod +x $(PWD)/tmux/session-switch.sh
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
