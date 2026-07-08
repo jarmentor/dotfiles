@@ -81,6 +81,10 @@ vim.keymap.set('v', '<leader>u', ':sort u<CR>gv', { desc = '[U]nique selected li
 -- Trim trailing whitespace
 vim.keymap.set('v', '<leader>tw', [[:s/\s\+$//e<CR>]], { desc = 'Trim trailing whitespace' })
 
+-- Base64 encode/decode selection (line-wise filter through shell)
+vim.keymap.set('x', '<leader>be', ':!base64<CR>', { desc = '[B]ase64 [E]ncode selection' })
+vim.keymap.set('x', '<leader>bd', ':!base64 -d<CR>', { desc = '[B]ase64 [D]ecode selection' })
+
 -- Center search results
 vim.keymap.set('n', 'n', 'nzz', { desc = 'Next search result (centered)' })
 vim.keymap.set('n', 'N', 'Nzz', { desc = 'Previous search result (centered)' })

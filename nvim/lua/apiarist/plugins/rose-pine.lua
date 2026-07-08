@@ -9,6 +9,10 @@ return {
         italic = true,
         transparency = true,
       },
+      highlight_groups = {
+        -- More obvious visual selection
+        Visual = { bg = 'iris', blend = 30 },
+      },
     }
   end,
   init = function()
