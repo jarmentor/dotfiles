@@ -284,6 +284,15 @@ inspect() {
 
 # img2web
 img2web() {
+  # single-file mode: img2web <file> [quality] [maxw] → <file>-web.webp, same dir
+  if [[ -f "$1" ]]; then
+    local src="$1" quality="${2:-82}" maxw="${3:-1920}"
+    local out="${src:r}-web.webp"
+    magick "$src" -resize "${maxw}>" -strip -quality "$quality" "$out" \
+      && echo "✓ $src → ${out:t}"
+    return
+  fi
+
   local quality="${1:-82}"
   local maxw="${2:-1920}"
 
