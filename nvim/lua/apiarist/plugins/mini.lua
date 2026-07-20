@@ -14,6 +14,9 @@ return { -- Collection of various small independent plugins/modules
     -- Replace Comment.nvim with mini.comment for commenting support
     require('mini.comment').setup()
 
+    -- Auto-close brackets/quotes (nvim-ts-autotag already handles HTML tags)
+    require('mini.pairs').setup()
+
     local ms = require 'mini.statusline'
     -- Custom location format: LINE:COLUMN with fixed width
     ---@diagnostic disable-next-line: duplicate-set-field

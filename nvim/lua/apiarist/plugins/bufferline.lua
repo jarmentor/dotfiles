@@ -1,6 +1,4 @@
--- buffer cycling
-vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer', silent = true })
-vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { desc = 'Previous buffer', silent = true })
+-- buffer cycling is on ]b / [b (see keymaps.lua); <Tab> is left as <C-i> (jumplist)
 
 -- buffer navigation
 vim.keymap.set('n', '<C-1>', ':BufferLineGoToBuffer 1<CR>', { desc = 'Go to buffer 1', silent = true })
@@ -44,12 +42,11 @@ local function smart_close_buffer()
   end
 end
 
--- buffer management
-vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete current buffer', silent = true })
+-- buffer management (kept under the <leader>b group so <leader>o/x/n stay free
+-- for the Obsidian / Trouble / notifier prefixes they collided with)
 vim.keymap.set('n', '<leader>ba', ':bufdo bd<CR>', { desc = 'Delete all buffers', silent = true })
-vim.keymap.set('n', '<leader>x', smart_close_buffer, { desc = 'Smart close current buffer', silent = true })
-vim.keymap.set('n', '<leader>o', ':BufferLineCloseLeft<CR>:BufferLineCloseRight<CR>', { desc = 'Close all other buffers', silent = true })
-vim.keymap.set('n', '<leader>n', ':enew<CR>', { desc = 'New buffer', silent = true })
+vim.keymap.set('n', '<leader>bx', smart_close_buffer, { desc = 'Smart close current buffer', silent = true })
+vim.keymap.set('n', '<leader>bN', ':enew<CR>', { desc = 'New buffer', silent = true })
 
 return {
   'akinsho/bufferline.nvim',

@@ -32,15 +32,7 @@ return {
       'b0o/schemastore.nvim',
     },
     config = function()
-      -- Override LSP floating window defaults
-      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = 'rounded'
-        opts.pad_top = 1
-        opts.pad_bottom = 1
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
-      end
+      -- Float borders now come from vim.o.winborder = 'rounded' (options.lua)
 
       -- Better diagnostic configuration
       vim.diagnostic.config({
@@ -96,6 +88,9 @@ return {
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+          -- Hover documentation (buffer-local so keywordprg K survives elsewhere)
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
@@ -171,6 +166,9 @@ return {
         graphql = {
           filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'graphql' },
         },
+
+        -- TypeScript/JavaScript language server (diagnostics, completion, go-to-def)
+        ts_ls = {},
 
         phpactor = {
           capabilities = capabilities,

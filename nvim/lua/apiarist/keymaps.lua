@@ -38,11 +38,10 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Horizontal split window' })
 vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Vertical split window' })
 
--- Moving Lines Around
-vim.keymap.set('n', '<S-j>', ':m .+1<CR>==', { desc = 'Move line down' })
-vim.keymap.set('n', '<S-k>', ':m .-2<CR>==', { desc = 'Move line up' })
-vim.keymap.set('v', '<S-j>', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
-vim.keymap.set('v', '<S-k>', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
+-- Move selected lines with J/K in visual mode (normal J=join and K=hover stay;
+-- visual-mode join is now gJ). Avoids Alt-j/k, which tmux intercepts.
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
 
 -- Buffer management
 vim.keymap.set('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })

@@ -102,3 +102,6 @@ vim.opt.redrawtime = 1500
 
 -- Better floating window appearance
 vim.opt.pumblend = 10 -- Slight transparency for popup menu
+
+-- Rounded borders on all floating windows (hover, lazy, mason, etc.)
+vim.o.winborder = 'rounded'
