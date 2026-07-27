@@ -218,6 +218,16 @@ rfc() {
   curl -s "https://www.rfc-editor.org/rfc/rfc$1.txt" | less
 }
 
+hsi() {
+  local cache="${XDG_CACHE_HOME:-$HOME/.cache}/http-status-codes.csv"
+  [[ -f $cache ]] && find "$cache" -mtime -90 -print -quit | grep -q . || {
+    mkdir -p "${cache%/*}"
+    curl -sfL 'https://www.iana.org/assignments/http-status-codes/http-status-codes-1.csv' \
+      -o "$cache" || { echo "fetch failed"; return 1; }
+  }
+  awk -F',' -v q="${1:-}" 'NR>1 && (q=="" || $1 ~ "^"q) {print}' "$cache" | column -t -s','
+}
+
 sitemap() {
   local url="$1"
   curl -s "$url" \
