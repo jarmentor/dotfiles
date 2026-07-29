@@ -374,6 +374,51 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type=d --hidden --strip-cwd-prefix --exclude .git'
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
 
+# ────────────────────────────────────────────────────────────────────────────
+# Autosuggest from tmux pane output — ghost-text completion for words you've
+# never typed (container IDs, stack-trace paths, branch names that scrolled by).
+# History strategy still wins; this only fills the gaps.
+typeset -g _pane_words_cache="${TMPDIR:-/tmp}/zsh-pane-words.$$"
+
+# Rebuild in the background so the prompt never waits on capture-pane. Sorting,
+# filtering and dedupe happen here too — off the prompt path they're free, and
+# they leave the reader a plain scan of an already newest-first unique list.
+# Words <4 chars are dropped: the strategy needs a >=3 char prefix plus at least
+# one more character, so they can never be suggested.
+_pane_words_refresh() {
+  [[ -n $TMUX ]] || return
+  setopt localoptions no_bg_nice   # don't deprioritize it; we want it done before you type
+  {
+    tmux capture-pane -p -S -5000 -t "$TMUX_PANE" 2>/dev/null \
+      | tr -cs 'a-zA-Z0-9_./:@~=+-' '\n' \
+      | tail -r \
+      | awk 'length > 3 && !seen[$0]++' \
+      > "$_pane_words_cache.tmp" 2>/dev/null \
+      && mv -f "$_pane_words_cache.tmp" "$_pane_words_cache" 2>/dev/null
+  } &!
+}
+autoload -Uz add-zsh-hook && add-zsh-hook precmd _pane_words_refresh
+
+_pane_words_cleanup() { rm -f "$_pane_words_cache" "$_pane_words_cache.tmp" }
+add-zsh-hook zshexit _pane_words_cleanup
+
+# Read at suggestion time, not at precmd: zsh-autosuggestions fetches in a forked
+# child, so this is already off the UI path — and by the time you've typed three
+# characters the background rebuild has landed, so it sees the command you just ran.
+_zsh_autosuggest_strategy_pane() {
+  setopt localoptions noglobsubst   # keep glob chars in $prefix literal
+  typeset -g suggestion
+  local prefix=${1##*[[:space:]]}   # only the word currently being typed
+  (( ${#prefix} >= 3 )) || return
+  [[ -r $_pane_words_cache ]] || return
+  local w
+  for w in ${(f)"$(<$_pane_words_cache)"}; do
+    [[ $w == ${prefix}?* ]] && { suggestion="${1}${w#$prefix}"; return }
+  done
+}
+
+ZSH_AUTOSUGGEST_STRATEGY=(history pane)
+
 # SGPT (bind Ctrl-L)
 _sgpt_zsh() {
   if [[ -n $BUFFER ]]; then
