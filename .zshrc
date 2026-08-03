@@ -149,6 +149,7 @@ alias gst='git stash'
 alias gstp='git stash pop'
 alias gwip='git add -A && git commit -m "wip"'
 alias gundo='git reset --soft HEAD~1'
+alias ghb='gh browse'
 
 # Brew & system
 alias brewup='brew update; brew upgrade; brew cleanup'
