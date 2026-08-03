@@ -97,6 +97,7 @@ vim.keymap.set({ 'n', 'i', 'v' }, '<C-s>', '<cmd>w<CR><Esc>', { desc = 'Save fil
 vim.keymap.set('n', '<leader>tw', '<cmd>set wrap!<CR>', { desc = '[T]oggle [W]rap' })
 vim.keymap.set('n', '<leader>tn', '<cmd>set number! relativenumber!<CR>', { desc = '[T]oggle [N]umber' })
 vim.keymap.set('n', '<leader>ts', '<cmd>set spell!<CR>', { desc = '[T]oggle [S]pell' })
+vim.keymap.set('n', '<leader>tF', ':set filetype=', { desc = 'Set [F]iletype (<Tab> completes)' })
 
 -- Toggle diagnostics (linting errors) — in markdown, toggles clean reading mode
 local _clean_reading = false
