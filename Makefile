@@ -35,6 +35,7 @@ install link:
 	@chmod +x $(PWD)/tmux/tmux-sessionizer.sh
 	@chmod +x $(PWD)/tmux/preview-helper.sh
 	@chmod +x $(PWD)/tmux/session-switch.sh
+	@chmod +x $(PWD)/tmux/claude-notify.sh
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
