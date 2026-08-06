@@ -1,0 +1,36 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/gemma4",
+  "provider": {
+    "ollama": {
+      "models": {
+        "gemma4": {
+          "_launch": true,
+          "name": "gemma4"
+        },
+        "gpt-oss:20b": {
+          "name": "GPT-OSS 20B (Big Daddy)"
+        }
+      },
+      "name": "Ollama",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      }
+    },
+    "openrouter": {
+      "models": {
+        "moonshotai/kimi-k2": {
+          "options": {
+            "provider": {
+              "order": [
+                "baseten"
+              ],
+              "allow_fallbacks": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

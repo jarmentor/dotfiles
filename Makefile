@@ -30,6 +30,8 @@ install link:
 	@ln -sf $(PWD)/nvim ~/.config/nvim
 	@mkdir -p ~/.config/spotify_player
 	@ln -sf $(PWD)/spotify-player/app.toml ~/.config/spotify_player/app.toml
+	@mkdir -p ~/.config/opencode
+	@ln -sf $(PWD)/opencode.json ~/.config/opencode/opencode.json
 	@mkdir -p ~/.local/bin
 	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 	@echo "Dotfiles installed successfully!"
@@ -50,6 +52,7 @@ uninstall unlink:
 	@rm -f ~/.config/ghostty/config
 	@rm -rf ~/.config/nvim
 	@rm -f ~/.config/spotify_player/app.toml
+	@rm -f ~/.config/opencode/opencode.json
 	@rm -f ~/.local/bin/tmux-sessionizer
 	@echo "Dotfiles uninstalled successfully!"
 
@@ -69,11 +72,12 @@ status:
 	@printf "~/.config/ghostty/config: "; [ -L ~/.config/ghostty/config ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/nvim: "; [ -L ~/.config/nvim ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/spotify_player/app.toml: "; [ -L ~/.config/spotify_player/app.toml ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.config/opencode/opencode.json: "; [ -L ~/.config/opencode/opencode.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/tmux-sessionizer: "; [ -L ~/.local/bin/tmux-sessionizer ] && echo "✓ linked" || echo "✗ not linked"
 
 # Clean broken symlinks
 clean:
 	@echo "Cleaning broken symlinks..."
-	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim)" | xargs rm -f 2>/dev/null || true
+	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim|opencode)" | xargs rm -f 2>/dev/null || true
 	@echo "Broken symlinks cleaned!"
 
