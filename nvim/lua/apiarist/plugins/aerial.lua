@@ -2,7 +2,19 @@ return {
   'stevearc/aerial.nvim',
   cmd = { 'AerialToggle', 'AerialOpen', 'AerialInfo' },
   keys = {
-    { '<C-y>', '<cmd>AerialToggle!<CR>', desc = 'Toggle Aerial Symbols' },
+    -- Not `AerialToggle!`: the bang skips the WinEnter that no-neck-pain needs to
+    -- register aerial as its right-side integration, so it keeps both padding
+    -- buffers and the layout collapses on close. Toggle, then step focus back.
+    {
+      '<C-y>',
+      function()
+        vim.cmd 'AerialToggle'
+        if vim.bo.filetype == 'aerial' then
+          vim.cmd 'wincmd p'
+        end
+      end,
+      desc = 'Toggle Aerial Symbols',
+    },
   },
   opts = {
     backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
