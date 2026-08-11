@@ -467,6 +467,8 @@ zle -N zle-line-init
 precmd() {
     __set_beam_cursor  # doesn't have to be in precmd - can put outside a function if you like
 }
+fpath=($HOME/.dotfiles/zsh/completions $fpath)
+
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/jarmentor/.docker/completions $fpath)
 autoload -Uz compinit

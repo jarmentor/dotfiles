@@ -1,0 +1,91 @@
+#compdef wpe
+
+# Environment names come straight out of wpe-cli's own site cache
+# (~/.cache/wpe-cli/sites.json, refreshed by any wpe command every 6h).
+_wpe_environments() {
+  local cache=${XDG_CACHE_HOME:-$HOME/.cache}/wpe-cli/sites.json
+  [[ -r $cache ]] || return 1
+
+  # Pasted a URL/domain? Match on the domain but insert the environment name.
+  # -U lets us replace a word the candidates don't prefix-match.
+  if [[ $PREFIX == *.* ]]; then
+    local q=${${${PREFIX#*://}%%/*}%%:*}
+    local -a names expl
+    names=(${(f)"$(jq -r --arg q "$q" '
+      .data[]
+      | select((.primary_domain // "") as $d
+               | $d != "" and (($d | contains($q)) or ($q | contains($d))))
+      | .name' -- $cache 2>/dev/null)"})
+    (( $#names )) || return 1
+    _description -V environments expl "environment matching $q"
+    compadd -U "$expl[@]" -a names
+    return
+  fi
+
+  local -a envs
+  envs=(${(f)"$(jq -r '.data[] | "\(.name):\(.environment) \(.primary_domain // "")"' -- $cache 2>/dev/null)"})
+  _describe -t environments 'environment' envs
+}
+
+_wpe() {
+  local curcontext="$curcontext" state line
+  local -a commands
+  commands=(
+    'list-sites:Retrieve a list of all sites in WPE'
+    'find:Retrieve a list of environments matching a query'
+    'backup:Trigger a backup on an arbitrary environment'
+    'purge-cache:Purge the WPE cache for an arbitrary environment'
+    'status:Retrieve the status of the WPE Public API'
+    'whoami:Retrieve the current user'
+    'ssh:Open an SSH session to the specified environment or domain'
+    'open:Open WPEngine admin panel for environment by name or domain'
+    'help:Display help for command'
+  )
+
+  _arguments -C \
+    '(-V --version)'{-V,--version}'[output the version number]' \
+    '(-h --help)'{-h,--help}'[display help for command]' \
+    '1: :->command' \
+    '*:: :->args'
+
+  case $state in
+    command)
+      _describe -t commands 'wpe command' commands
+      ;;
+    args)
+      case $words[1] in
+        list-sites)
+          _arguments '--no-colors[output non-colorized]'
+          ;;
+        find)
+          _arguments \
+            '(-t --type)'{-t,--type}'[type of environment]:type:(production staging development)' \
+            '(-s --status)'{-s,--status}'[status of environment]:status:(active)' \
+            '--php[PHP version of the environment]:version:' \
+            '--no-colors[output non-colorized]' \
+            '1: :_wpe_environments'
+          ;;
+        backup)
+          _arguments \
+            '(-m --message)'{-m,--message}'[backup message]:message:' \
+            '(-n --notification-emails)'{-n,--notification-emails}'[notification emails]:emails:' \
+            '--no-colors[output non-colorized]' \
+            '*: :_wpe_environments'
+          ;;
+        purge-cache)
+          _arguments \
+            '(-t --type)'{-t,--type}'[type of cache to purge]:type:(object page cdn)' \
+            '1: :_wpe_environments'
+          ;;
+        ssh|open)
+          _arguments '1: :_wpe_environments'
+          ;;
+        help)
+          _describe -t commands 'wpe command' commands
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_wpe "$@"
