@@ -15,6 +15,7 @@ help:
 install link:
 	@echo "Creating symlinks for dotfiles..."
 	@ln -sf $(PWD)/.zshrc ~/.zshrc
+	@ln -sf $(PWD)/.p10k.zsh ~/.p10k.zsh
 	@ln -sf $(PWD)/.vimrc ~/.vimrc
 	@ln -sf $(PWD)/.tmux.conf ~/.tmux.conf
 	@ln -sf $(PWD)/.gitconfig ~/.gitconfig
@@ -38,6 +39,7 @@ install link:
 uninstall unlink:
 	@echo "Removing dotfiles symlinks..."
 	@rm -f ~/.zshrc
+	@rm -f ~/.p10k.zsh
 	@rm -f ~/.vimrc
 	@rm -f ~/.tmux.conf
 	@rm -f ~/.gitconfig
@@ -57,6 +59,7 @@ uninstall unlink:
 status:
 	@echo "Checking dotfiles symlink status:"
 	@printf "~/.zshrc: "; [ -L ~/.zshrc ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.p10k.zsh: "; [ -L ~/.p10k.zsh ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.vimrc: "; [ -L ~/.vimrc ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.tmux.conf: "; [ -L ~/.tmux.conf ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.gitconfig: "; [ -L ~/.gitconfig ] && echo "✓ linked" || echo "✗ not linked"
@@ -74,6 +77,6 @@ status:
 # Clean broken symlinks
 clean:
 	@echo "Cleaning broken symlinks..."
-	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim|opencode)" | xargs rm -f 2>/dev/null || true
+	@find ~ -maxdepth 3 -type l ! -exec test -e {} \; -print 2>/dev/null | grep -E "(\.zshrc|\.p10k\.zsh|\.vimrc|\.tmux\.conf|\.gitconfig|\.gitignore|\.editorconfig|\.stylelintrc|\.markdownlint\.json|\.taskrc|phpactor\.json|ghostty|nvim|opencode)" | xargs rm -f 2>/dev/null || true
 	@echo "Broken symlinks cleaned!"
 
