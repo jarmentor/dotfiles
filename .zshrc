@@ -64,6 +64,10 @@ setopt HIST_VERIFY # shows command before executing from history
 bindkey -v
 export KEYTIMEOUT=1
 
+# viins doesn't inherit the emacs word-motion keys; put Alt/Option-arrow back
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word
+
 # ────────────────────────────────────────────────────────────────────────────
 # Terminal tweaks
 [[ $TERM_PROGRAM == "ghostty" ]] && export TERM=xterm-256color
@@ -349,6 +353,13 @@ img2web() {
 
 # Zoxide
 eval "$(zoxide init --cmd cd zsh)"
+
+# cd to a file's directory instead of erroring out (wraps zoxide's cd)
+functions -c cd __cd_zoxide
+cd() {
+  [[ -f $1 ]] && set -- "${1:h}" "${@:2}"
+  __cd_zoxide "$@"
+}
 
 # Bun
 [[ -s "$HOME/.bun/bin/bun" ]] && export PATH="$HOME/.bun/bin:$PATH"
