@@ -93,8 +93,20 @@ return {
     link_tree_to_folds = true,
     nerd_font = "auto",
     on_attach = function(bufnr)
-      vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-      vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+      -- aerial.navigation.next() wraps via `((lnum + step - 1) % count) + 1` and offers
+      -- no option to stop, so clamp here: a jump that moved us against `dir` wrapped
+      -- past the last (or first) symbol, so put the cursor back.
+      local function step(dir)
+        return function()
+          local pos = vim.api.nvim_win_get_cursor(0)
+          require("aerial")[dir > 0 and "next" or "prev"](1)
+          if (vim.api.nvim_win_get_cursor(0)[1] - pos[1]) * dir < 0 then
+            vim.api.nvim_win_set_cursor(0, pos)
+          end
+        end
+      end
+      vim.keymap.set("n", "{", step(-1), { buffer = bufnr })
+      vim.keymap.set("n", "}", step(1), { buffer = bufnr })
     end,
     open_automatic = false,
     post_jump_cmd = "normal! zz",
