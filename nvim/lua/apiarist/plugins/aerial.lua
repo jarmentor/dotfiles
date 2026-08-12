@@ -93,9 +93,7 @@ return {
     link_tree_to_folds = true,
     nerd_font = "auto",
     on_attach = function(bufnr)
-      -- aerial.navigation.next() wraps via `((lnum + step - 1) % count) + 1` and offers
-      -- no option to stop, so clamp here: a jump that moved us against `dir` wrapped
-      -- past the last (or first) symbol, so put the cursor back.
+      -- aerial's next/prev wrap with no option to stop; a jump against `dir` wrapped
       local function step(dir)
         return function()
           local pos = vim.api.nvim_win_get_cursor(0)

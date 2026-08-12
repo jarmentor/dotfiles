@@ -69,10 +69,6 @@ bindkey '^[[1;3D' backward-word
 bindkey '^[[1;3C' forward-word
 
 # ────────────────────────────────────────────────────────────────────────────
-# Terminal tweaks
-[[ $TERM_PROGRAM == "ghostty" ]] && export TERM=xterm-256color
-
-# ────────────────────────────────────────────────────────────────────────────
 # Editor based on context
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR=vim
