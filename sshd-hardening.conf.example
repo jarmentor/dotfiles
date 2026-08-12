@@ -1,0 +1,12 @@
+# Reference only — not installed by `make install`. To apply on a box that wants it:
+#   sudo install -m 644 -o root -g wheel sshd-hardening.conf.example \
+#     /etc/ssh/sshd_config.d/200-hardening.conf && sudo launchctl kickstart -k system/com.openssh.sshd
+#
+# Sorts after 100-macos.conf; sshd takes the first value it obtains per keyword
+# and the macOS file sets none of these.
+#
+# KbdInteractive must be off too: 100-macos.conf sets UsePAM yes, so passwords
+# still get in via PAM keyboard-interactive with only PasswordAuthentication no.
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
