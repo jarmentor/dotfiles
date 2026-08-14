@@ -1,9 +1,6 @@
 #!/bin/sh
-# Regenerate WP-CLI aliases for every environment in wpe-cli's site cache
-# (~/.cache/wpe-cli/sites.json, refreshed by any wpe command every 6h).
-#
-# Install names are client data, so they never land in this repo: cache in,
-# ~/.wp-cli/config.yml out. Hand-written aliases above the marker survive.
+# wpe-cli's site cache in, ~/.wp-cli/config.yml out. Anything above the marker
+# is yours and survives.
 set -eu
 
 cache=${XDG_CACHE_HOME:-$HOME/.cache}/wpe-cli/sites.json
@@ -25,7 +22,10 @@ fi
 
 {
 	echo "$marker"
-	jq -r '.data[] | "@\(.name):\n  ssh: \(.name)@\(.name).ssh.wpengine.net/sites/\(.name)"' -- "$cache"
+	# Multisite refuses to run without --url.
+	jq -r '.data[]
+	       | "@\(.name):\n  ssh: \(.name)@\(.name).ssh.wpengine.net/sites/\(.name)"
+	         + (if .is_multisite then "\n  url: \(.primary_domain)" else "" end)' -- "$cache"
 } >> "$tmp"
 
 mv "$tmp" "$config"
