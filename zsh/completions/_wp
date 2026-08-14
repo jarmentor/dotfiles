@@ -1,0 +1,23 @@
+#compdef wp
+
+# WP-CLI knows its own commands, flags and aliases — ask it instead of
+# maintaining a spec. Same contract as upstream's wp-completion.bash.
+#
+# Exception: aliases. Asking wp costs a PHP boot, and it gets slower with every
+# alias in the config, so read them straight off disk — they are already sitting
+# there as `@name:` keys.
+_wp() {
+  if [[ $words[CURRENT] == @* ]]; then
+    local config=${WP_CLI_CONFIG_PATH:-$HOME/.wp-cli/config.yml}
+    [[ -r $config ]] || return 1
+    compadd -- ${${(M)${(f)"$(<$config)"}:#@*:}%:}
+    return
+  fi
+
+  # Candidates come back with a trailing space, which zsh adds itself.
+  local -a candidates
+  candidates=(${(f)"$(wp cli completions --line="$BUFFER" --point="$CURSOR" 2>/dev/null)"})
+  compadd -- ${candidates%% }
+}
+
+_wp "$@"

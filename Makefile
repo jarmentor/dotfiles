@@ -33,6 +33,7 @@ install link:
 	@ln -sf $(PWD)/opencode.json ~/.config/opencode/opencode.json
 	@mkdir -p ~/.local/bin
 	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
+	@ln -sf $(PWD)/wpe/wpe-aliases.sh ~/.local/bin/wpe-aliases
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
@@ -53,6 +54,7 @@ uninstall unlink:
 	@rm -rf ~/.config/nvim
 	@rm -f ~/.config/opencode/opencode.json
 	@rm -f ~/.local/bin/tmux-sessionizer
+	@rm -f ~/.local/bin/wpe-aliases
 	@echo "Dotfiles uninstalled successfully!"
 
 # Show status of symlinks
@@ -73,6 +75,7 @@ status:
 	@printf "~/.config/nvim: "; [ -L ~/.config/nvim ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.config/opencode/opencode.json: "; [ -L ~/.config/opencode/opencode.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/tmux-sessionizer: "; [ -L ~/.local/bin/tmux-sessionizer ] && echo "✓ linked" || echo "✗ not linked"
+	@printf "~/.local/bin/wpe-aliases: "; [ -L ~/.local/bin/wpe-aliases ] && echo "✓ linked" || echo "✗ not linked"
 
 # Clean broken symlinks
 clean:
