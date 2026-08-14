@@ -1,4 +1,4 @@
--- buffer cycling is on ]b / [b (see keymaps.lua); <Tab> is left as <C-i> (jumplist)
+-- buffer cycling is on <Tab> / <S-Tab> and ]b / [b (see keymaps.lua)
 
 -- buffer navigation
 vim.keymap.set('n', '<C-1>', ':BufferLineGoToBuffer 1<CR>', { desc = 'Go to buffer 1', silent = true })

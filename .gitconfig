@@ -69,7 +69,6 @@
   unstage = reset HEAD --
   whoami = config user.email
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-
   # Show verbose output about tags, branches or remotes
   tags = tag -l
   branches = branch --all
@@ -92,6 +91,9 @@
 
   # Show what you've done today
   today = log --since=midnight --author='Jonathan' --oneline
+
+  # Today's commits, each with its diffstat, plus a summed total
+  today-stat = "!git log --since=midnight --oneline --shortstat; git log --since=midnight --numstat --format= | awk '{a+=$1; d+=$2} END{printf \"total +%d -%d (net %d)\\n\", a, d, a-d}'"
 
   # Delete branches whose remote tracking is gone
   gone = "!git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D"

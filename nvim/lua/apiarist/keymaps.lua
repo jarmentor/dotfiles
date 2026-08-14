@@ -53,6 +53,11 @@ vim.keymap.set('n', '<leader>bt', '<cmd>tabnew<CR>', { desc = '[B]uffer in new [
 vim.keymap.set('n', '[b', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', ']b', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 
+-- Tab cycles buffers. Safe because tmux extended-keys (.tmux.conf) lets nvim
+-- see <Tab> and <C-i> as distinct keys, so the jumplist keeps working.
+vim.keymap.set('n', '<Tab>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
+vim.keymap.set('n', '<S-Tab>', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
+
 -- Better window management
 vim.keymap.set('n', '<leader>ww', '<C-w>w', { desc = 'Switch [W]indow' })
 vim.keymap.set('n', '<leader>wd', '<C-w>c', { desc = '[W]indow [D]elete/close' })
