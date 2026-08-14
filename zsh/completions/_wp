@@ -1,23 +1,35 @@
 #compdef wp
 
-# WP-CLI knows its own commands, flags and aliases — ask it instead of
-# maintaining a spec. Same contract as upstream's wp-completion.bash.
-#
-# Exception: aliases. Asking wp costs a PHP boot, and it gets slower with every
-# alias in the config, so read them straight off disk — they are already sitting
-# there as `@name:` keys.
+# Ask wp for commands and flags. Aliases we read ourselves: wp costs a PHP boot
+# and returns bare names, the cache can label them with a domain.
 _wp() {
-  if [[ $words[CURRENT] == @* ]]; then
-    local config=${WP_CLI_CONFIG_PATH:-$HOME/.wp-cli/config.yml}
-    [[ -r $config ]] || return 1
-    compadd -- ${${(M)${(f)"$(<$config)"}:#@*:}%:}
+  local config=${WP_CLI_CONFIG_PATH:-$HOME/.wp-cli/config.yml}
+
+  if [[ $words[CURRENT] == @* && -r $config ]]; then
+    local cache=${XDG_CACHE_HOME:-$HOME/.cache}/wpe-cli/sites.json
+    local entry
+    local -a aliases labelled
+    local -A domains
+
+    aliases=(${${(M)${(f)"$(<$config)"}:#@*:}%:})
+    if [[ -r $cache ]]; then
+      for entry in ${(f)"$(jq -r '.data[] | "@\(.name) \(.primary_domain) (\(.environment))"' -- $cache 2>/dev/null)"}; do
+        domains[${entry%% *}]=${entry#* }
+      done
+    fi
+    for entry in $aliases; do
+      labelled+=("$entry:${domains[$entry]:-hand-written}")
+    done
+
+    _describe -t wp-aliases 'alias' labelled
     return
   fi
 
-  # Candidates come back with a trailing space, which zsh adds itself.
+  # Trailing space is zsh's job, and --flag= wants a value typed straight after.
   local -a candidates
   candidates=(${(f)"$(wp cli completions --line="$BUFFER" --point="$CURSOR" 2>/dev/null)"})
-  compadd -- ${candidates%% }
+  compadd -S '' -- ${(M)candidates:#*=}
+  compadd -- ${${candidates:#*=}%% }
 }
 
 _wp "$@"
