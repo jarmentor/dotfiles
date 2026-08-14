@@ -253,6 +253,11 @@ extract() {
 
 serve() { python3 -m http.server "${1:-8000}"; }
 
+# wp-cli 2.12's bundled deps trip PHP 8.5 deprecations, and PHP CLI prints them
+# on STDOUT, so they corrupt piped and --format=json output. Drop this once a
+# wp-cli release is PHP 8.5 clean.
+wp() { command php -d error_reporting='E_ALL & ~E_DEPRECATED' "${commands[wp]:?wp-cli not installed}" "$@" }
+
 gopen() {
   local url
   url=$(git remote get-url origin 2>/dev/null) || { echo "No remote"; return 1; }
