@@ -1,0 +1,14 @@
+# Reference block for ~/.ssh/config. Not linked by make install.
+
+# WPE spins up a sidecar container per connection — multiplex or pay it twice.
+Host *.ssh.wpengine.net
+    IdentityFile ~/.ssh/wpengine_ed25519
+    IdentitiesOnly yes              # gateway drops you after 6 failed key offers
+    PreferredAuthentications publickey
+    ControlMaster auto
+    ControlPath ~/.ssh/socket-%C    # hashed, stays under the 104-char socket limit
+    ControlPersist 8m               # sidecar times out at 10m
+    ServerAliveInterval 60
+
+# Warm:  ssh -MNf <install>@<install>.ssh.wpengine.net
+# Cap is 5 connections per user, masters included — fan out at -P 4, batch the rest.
