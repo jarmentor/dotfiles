@@ -9,6 +9,7 @@ Host *.ssh.wpengine.net
     ControlPath ~/.ssh/socket-%C    # hashed, stays under the 104-char socket limit
     ControlPersist 8m               # sidecar times out at 10m
     ServerAliveInterval 60
+    WarnWeakCrypto no-pq-kex        # gateway has no PQ kex, nothing to act on
 
 # Warm:  ssh -MNf <install>@<install>.ssh.wpengine.net
 # Cap is 5 connections per user, masters included — fan out at -P 4, batch the rest.
