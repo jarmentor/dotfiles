@@ -30,5 +30,8 @@ match=$(sed -n 2p <<< "$out")
 target="${match:-$query}"
 [[ -z "$target" ]] && exit 0
 
-tmux has-session -t "$target" 2>/dev/null || tmux new-session -d -s "$target"
+# -c is not optional: a detached new-session has no client to borrow a cwd from,
+# so tmux falls back to the server's own cwd — whatever directory the very first
+# tmux invocation happened to run from.
+tmux has-session -t "$target" 2>/dev/null || tmux new-session -d -s "$target" -c "$HOME"
 tmux switch-client -t "$target"

@@ -4,6 +4,19 @@
 # so padding panes are the only way to actually centre the text.
 set -euo pipefail
 
+# `reap` runs from the pane-exited hook, which fires after the pane is gone. A
+# window holding nothing but pads can never close on its own — cat blocks forever
+# — so it sits there named "cat" and stalls the session teardown. Drop it.
+if [ "${1:-}" = reap ]; then
+	for w in $(tmux list-windows -a -F '#{window_id}'); do
+		flags=$(tmux list-panes -t "$w" -F '#{@zen_pad}' 2>/dev/null) || continue
+		if [ -n "$flags" ] && ! printf '%s\n' "$flags" | grep -qv '^1$'; then
+			tmux kill-window -t "$w"
+		fi
+	done
+	exit 0
+fi
+
 win=$(tmux display -p '#{window_id}')
 
 pads=$(tmux list-panes -t "$win" -F '#{pane_id} #{@zen_pad}' | awk '$2 == "1" { print $1 }')

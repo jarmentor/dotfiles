@@ -92,7 +92,8 @@ fi
 if [[ "$selected" == "Create Main Session" ]]; then
     # Create main session
     if ! tmux has-session -t main 2>/dev/null; then
-        tmux new-session -d -s main
+        # -c: detached sessions have no client cwd and fall back to the server's
+        tmux new-session -d -s main -c "$HOME"
     fi
     tmux switch-client -t main
 elif [[ "$selected" == kill:* ]]; then
