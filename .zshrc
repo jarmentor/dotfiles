@@ -253,6 +253,22 @@ extract() {
 
 serve() { python3 -m http.server "${1:-8000}"; }
 
+# rsync with wp-cli's aliases as the address book, either direction:
+#   wpsync @install:wp-content/uploads/ ./uploads/
+wpsync() {
+  local arg ssh args=()
+  for arg in "$@"; do
+    if [[ $arg == @*:* ]]; then
+      ssh=$(awk -v a="${arg%%:*}:" '$1==a{f=1;next} f&&/^@/{exit} f&&$1=="ssh:"{print $2;exit}' ~/.wp-cli/config.yml)
+      [[ -n $ssh ]] || { print -u2 "wpsync: no ssh target for ${arg%%:*}"; return 1 }
+      args+=("${ssh%%/*}:/${ssh#*/}/${arg#*:}")
+    else
+      args+=("$arg")
+    fi
+  done
+  rsync -az --info=progress2 "${args[@]}"
+}
+
 # wp-cli 2.12 deprecations land on STDOUT and corrupt piped output. Drop when fixed.
 wp() { command php -d error_reporting='E_ALL & ~E_DEPRECATED' "${commands[wp]:?wp-cli not installed}" "$@" }
 

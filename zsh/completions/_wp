@@ -1,4 +1,4 @@
-#compdef wp
+#compdef wp wpsync
 
 # Ask wp for commands and flags. Aliases we read ourselves: wp costs a PHP boot
 # and returns bare names, the cache can label them with a domain.
@@ -24,6 +24,8 @@ _wp() {
     _describe -t wp-aliases 'alias' labelled
     return
   fi
+
+  [[ $service == wpsync ]] && { _files; return }
 
   # Trailing space is zsh's job, and --flag= wants a value typed straight after.
   local -a candidates
