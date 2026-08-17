@@ -269,12 +269,37 @@ wpsync() {
   rsync -az --info=progress2 "${args[@]}"
 }
 
-# wp-cli 2.12 deprecations land on STDOUT and corrupt piped output. Drop when fixed.
-# @local.<slug> is not a real wp-cli alias: LocalWP sites need their own PHP build
-# and mysql socket, so localwp runs those. Completed by zsh/completions/_wp.
+# @local.<slug> is not a real wp-cli alias — slug is the site's directory name,
+# resolved against Local's own sites.json (same source as zsh/completions/_wp).
+# Local only listens on a unix socket and define()s DB_HOST in wp-config.php
+# first, so `wp --dbhost` loses; the socket has to be set at the PHP layer.
+# Local's bundled php.ini is display_errors=1/memory_limit=128M, hence both -d's.
 wp() {
-  [[ $1 == @local.* ]] &&
-    { "${commands[localwp]:?localwp not linked — run make install}" wp "${1#@local.}" "${@:2}"; return }
+  if [[ $1 == @local.* ]]; then
+    local dir=${LOCAL_DIR:-$HOME/Library/Application Support/Local} slug=${1#@local.}
+    local -a f
+    f=(${(f)"$(jq -r --arg s "$slug" '
+          to_entries[] | select((.value.path|split("/")|last) == $s)
+          | .key, .value.path, .value.services.php.version, .value.services.mysql.version
+          ' -- "$dir/sites.json" 2>/dev/null)"})
+    (( $#f == 4 )) || { print -u2 "wp: no LocalWP site '$slug'"; return 1 }
+
+    local base=${~f[2]} root sock=$dir/run/${f[1]}/mysql/mysqld.sock
+    root=$base/app/public; [[ -d $root ]] || root=$base
+    [[ -S $sock ]] || { print -u2 "wp: $slug is not running — start it in Local.app"; return 1 }
+    local -a php=( $dir/lightning-services/php-${f[3]}*/bin/*/bin/php(N) )
+
+    # `wp db *` shells out to a mysql client, and there is none on PATH — Local
+    # ships a matching one per site. MYSQL_UNIX_PORT points it at the socket.
+    local -a mysqldir=( $dir/lightning-services/mysql-${f[4]}*/bin/*/bin(N) )
+    MYSQL_UNIX_PORT=$sock PATH=${mysqldir[1]:+${mysqldir[1]}:}$PATH command ${php[1]:-php} \
+      -d mysqli.default_socket=$sock \
+      -d error_reporting='E_ALL & ~E_DEPRECATED' \
+      -d memory_limit=512M \
+      "${commands[wp]:?wp-cli not installed}" --path=$root "${@:2}"
+    return
+  fi
+  # wp-cli 2.12 deprecations land on STDOUT and corrupt piped output. Drop when fixed.
   command php -d error_reporting='E_ALL & ~E_DEPRECATED' "${commands[wp]:?wp-cli not installed}" "$@"
 }
 

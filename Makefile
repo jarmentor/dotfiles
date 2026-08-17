@@ -1,8 +1,5 @@
 .PHONY: help install uninstall link unlink status clean
 
-# Lives in its own repo on an external volume; skipped when that isn't mounted.
-LOCALWP := $(HOME)/.claude/skills/local-wp/localwp
-
 # Default target
 help:
 	@echo "Available targets:"
@@ -37,7 +34,6 @@ install link:
 	@mkdir -p ~/.local/bin
 	@ln -sf $(PWD)/tmux/tmux-sessionizer.sh ~/.local/bin/tmux-sessionizer
 	@ln -sf $(PWD)/wpe/wpe-aliases.sh ~/.local/bin/wpe-aliases
-	@[ -x "$(LOCALWP)" ] && ln -sf "$(LOCALWP)" ~/.local/bin/localwp || echo "  localwp skill not mounted — skipped"
 	@echo "Dotfiles installed successfully!"
 
 # Remove symlinks
@@ -59,7 +55,6 @@ uninstall unlink:
 	@rm -f ~/.config/opencode/opencode.json
 	@rm -f ~/.local/bin/tmux-sessionizer
 	@rm -f ~/.local/bin/wpe-aliases
-	@rm -f ~/.local/bin/localwp
 	@echo "Dotfiles uninstalled successfully!"
 
 # Show status of symlinks
@@ -81,7 +76,6 @@ status:
 	@printf "~/.config/opencode/opencode.json: "; [ -L ~/.config/opencode/opencode.json ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/tmux-sessionizer: "; [ -L ~/.local/bin/tmux-sessionizer ] && echo "✓ linked" || echo "✗ not linked"
 	@printf "~/.local/bin/wpe-aliases: "; [ -L ~/.local/bin/wpe-aliases ] && echo "✓ linked" || echo "✗ not linked"
-	@printf "~/.local/bin/localwp: "; [ -x ~/.local/bin/localwp ] && echo "✓ linked" || echo "✗ not linked"
 
 # Clean broken symlinks
 clean:
