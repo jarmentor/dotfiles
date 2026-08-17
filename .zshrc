@@ -253,22 +253,6 @@ extract() {
 
 serve() { python3 -m http.server "${1:-8000}"; }
 
-# rsync with wp-cli's aliases as the address book, either direction:
-#   wpsync @install:wp-content/uploads/ ./uploads/
-wpsync() {
-  local arg ssh args=()
-  for arg in "$@"; do
-    if [[ $arg == @*:* ]]; then
-      ssh=$(awk -v a="${arg%%:*}:" '$1==a{f=1;next} f&&/^@/{exit} f&&$1=="ssh:"{print $2;exit}' ~/.wp-cli/config.yml)
-      [[ -n $ssh ]] || { print -u2 "wpsync: no ssh target for ${arg%%:*}"; return 1 }
-      args+=("${ssh%%/*}:/${ssh#*/}/${arg#*:}")
-    else
-      args+=("$arg")
-    fi
-  done
-  rsync -az --info=progress2 "${args[@]}"
-}
-
 # @local.<slug> is not a real wp-cli alias — slug is the site's directory name,
 # resolved against Local's own sites.json (same source as zsh/completions/_wp).
 # Local only listens on a unix socket and define()s DB_HOST in wp-config.php

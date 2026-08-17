@@ -1,4 +1,4 @@
-#compdef wp wpsync
+#compdef wp
 
 # Ask wp for commands and flags. Aliases we read ourselves: wp costs a PHP boot
 # and returns bare names, the cache can label them with a domain.
@@ -22,10 +22,9 @@ _wp() {
       labelled+=("$entry:${domains[$entry]:-hand-written}")
     done
 
-    # LocalWP sites are not wp-cli aliases — the wp() wrapper hands @local.* to
-    # localwp, which knows the per-site PHP and socket. Slug is the site
-    # directory name, which is what localwp resolves on. No ssh, so not wpsync.
-    if [[ $service != wpsync && -r $locald/sites.json ]]; then
+    # LocalWP sites are not wp-cli aliases — the wp() wrapper resolves @local.*
+    # against this same sites.json. Slug is the site's directory name.
+    if [[ -r $locald/sites.json ]]; then
       for entry in ${(f)"$(jq -r --slurpfile st "$locald/site-statuses.json" '
             to_entries[]
             | "@local.\(.value.path | split("/") | last) \(.value.domain) (local, \($st[0][.key] // "unknown"))"
@@ -37,8 +36,6 @@ _wp() {
     _describe -t wp-aliases 'alias' labelled
     return
   fi
-
-  [[ $service == wpsync ]] && { _files; return }
 
   # Trailing space is zsh's job, and --flag= wants a value typed straight after.
   local -a candidates
