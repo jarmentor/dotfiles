@@ -5,13 +5,14 @@
 _wp() {
   local config=${WP_CLI_CONFIG_PATH:-$HOME/.wp-cli/config.yml}
 
-  if [[ $words[CURRENT] == @* && -r $config ]]; then
+  if [[ $words[CURRENT] == @* ]]; then
     local cache=${XDG_CACHE_HOME:-$HOME/.cache}/wpe-cli/sites.json
+    local locald=${LOCAL_DIR:-$HOME/Library/Application Support/Local}
     local entry
     local -a aliases labelled
     local -A domains
 
-    aliases=(${${(M)${(f)"$(<$config)"}:#@*:}%:})
+    [[ -r $config ]] && aliases=(${${(M)${(f)"$(<$config)"}:#@*:}%:})
     if [[ -r $cache ]]; then
       for entry in ${(f)"$(jq -r '.data[] | "@\(.name) \(.primary_domain) (\(.environment))"' -- $cache 2>/dev/null)"}; do
         domains[${entry%% *}]=${entry#* }
@@ -20,6 +21,18 @@ _wp() {
     for entry in $aliases; do
       labelled+=("$entry:${domains[$entry]:-hand-written}")
     done
+
+    # LocalWP sites are not wp-cli aliases — the wp() wrapper hands @local.* to
+    # localwp, which knows the per-site PHP and socket. Slug is the site
+    # directory name, which is what localwp resolves on. No ssh, so not wpsync.
+    if [[ $service != wpsync && -r $locald/sites.json ]]; then
+      for entry in ${(f)"$(jq -r --slurpfile st "$locald/site-statuses.json" '
+            to_entries[]
+            | "@local.\(.value.path | split("/") | last) \(.value.domain) (local, \($st[0][.key] // "unknown"))"
+          ' -- "$locald/sites.json" 2>/dev/null)"}; do
+        labelled+=("${entry%% *}:${entry#* }")
+      done
+    fi
 
     _describe -t wp-aliases 'alias' labelled
     return

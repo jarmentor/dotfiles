@@ -270,7 +270,13 @@ wpsync() {
 }
 
 # wp-cli 2.12 deprecations land on STDOUT and corrupt piped output. Drop when fixed.
-wp() { command php -d error_reporting='E_ALL & ~E_DEPRECATED' "${commands[wp]:?wp-cli not installed}" "$@" }
+# @local.<slug> is not a real wp-cli alias: LocalWP sites need their own PHP build
+# and mysql socket, so localwp runs those. Completed by zsh/completions/_wp.
+wp() {
+  [[ $1 == @local.* ]] &&
+    { "${commands[localwp]:?localwp not linked — run make install}" wp "${1#@local.}" "${@:2}"; return }
+  command php -d error_reporting='E_ALL & ~E_DEPRECATED' "${commands[wp]:?wp-cli not installed}" "$@"
+}
 
 gopen() {
   local url
