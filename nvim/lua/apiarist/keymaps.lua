@@ -44,8 +44,19 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move block down' })
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move block up' })
 
 -- Buffer management
-vim.keymap.set('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })
-vim.keymap.set('n', '<leader>bo', '<cmd>%bdelete|edit#|bdelete#<CR>', { desc = '[B]uffer [O]nly (close others)' })
+vim.keymap.set('n', '<leader>bd', function()
+  Snacks.bufdelete()
+end, { desc = '[B]uffer [D]elete' })
+vim.keymap.set('n', '<leader>bo', function()
+  -- scratch/unnamed buffers can never be written, so drop them without prompting
+  Snacks.bufdelete.delete {
+    force = true,
+    filter = function(b)
+      return b ~= vim.api.nvim_get_current_buf() and (vim.bo[b].buftype ~= '' or vim.api.nvim_buf_get_name(b) == '')
+    end,
+  }
+  Snacks.bufdelete.other()
+end, { desc = '[B]uffer [O]nly (close others)' })
 vim.keymap.set('n', '<leader>bn', '<cmd>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set('n', '<leader>bp', '<cmd>bprevious<CR>', { desc = '[B]uffer [P]revious' })
 vim.keymap.set('n', '<leader>bt', '<cmd>tabnew<CR>', { desc = '[B]uffer in new [T]ab' })
