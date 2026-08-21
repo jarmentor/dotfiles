@@ -1,12 +1,12 @@
 tap "draftbrew/tap"
 # Run your GitHub Actions locally
 brew "act"
-# Command-line oriented TCP/IP packet assembler/analyzer
-brew "hping"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
 # Fast HTTP/1.1 benchmarking tool written in Node.js
 brew "autocannon"
 # Terminal bandwidth utilization tool
@@ -49,8 +49,6 @@ brew "fzf"
 brew "gawk"
 # GitHub command-line tool
 brew "gh"
-# Library for JPEG-2000 image manipulation
-brew "openjpeg"
 # Distributed revision control system
 brew "git"
 # Quickly rewrite git repository history
@@ -83,6 +81,8 @@ brew "luarocks"
 brew "lynx"
 # Swiss Army knife of email handling
 brew "mailutils"
+# 'traceroute' and 'ping' in a single tool
+brew "mtr"
 # Open source relational database management system
 brew "mysql-client"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -101,6 +101,8 @@ brew "ollama"
 brew "ripgrep"
 # AI coding agent, built for the terminal
 brew "opencode"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
 # Swiss-army knife of markup format conversion
 brew "pandoc"
 # Command-line tool to generate, analyze, convert and manipulate colors
@@ -124,9 +126,11 @@ brew "rbenv"
 # Utility that provides fast incremental file transfer
 brew "rsync"
 # Powerful, clean, object-oriented scripting language
-brew "ruby", link: false
+brew "ruby"
 # Fast and accurate code counter with complexity and COCOMO estimates
 brew "scc"
+# Easily detect and prevent bugs and anti-patterns in your codebase
+brew "semgrep"
 # Static analysis and lint tool, for (ba)sh scripts
 brew "shellcheck"
 # Autoformat shell script source code
@@ -183,12 +187,18 @@ brew "zsh"
 brew "zsh-completions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# Command-line oriented TCP/IP packet assembler/analyzer
+brew "draftbrew/tap/hping", trusted: true
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 # Application uninstaller
 cask "appcleaner"
 # Utility that prevents the system from going to sleep
 cask "caffeine"
+# UI for creating Windows installer ISO from UUPDump
+cask "crystalfetch"
+# Voice and text chat software
+cask "discord"
 # Web browser
 cask "firefox"
 cask "font-fira-code"
@@ -228,11 +238,15 @@ cask "skim"
 cask "slack"
 # Music streaming service
 cask "spotify"
+# Mesh VPN based on WireGuard
+cask "tailscale-app"
+# Virtual machines UI using QEMU
+cask "utm"
 # Video communication and virtual meeting platform
 cask "zoom"
 go "github.com/spf13/cobra-cli"
 go "github.com/maaslalani/invoice"
-cargo "pdfrip"
+cargo "pdfrip", source: "https://github.com/mufeedvh/pdfrip.git"
 cargo "rustmap"
 cargo "stylua"
 cargo "tree-sitter-cli"
