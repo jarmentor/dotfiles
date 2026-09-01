@@ -17,7 +17,8 @@ vim.keymap.set('n', '<leader>bN', ':enew<CR>', { desc = 'New buffer', silent = t
 return {
   'akinsho/bufferline.nvim',
   version = '*',
-  dependencies = 'nvim-tree/nvim-web-devicons',
+  -- 'rose-pine' by spec name, not repo path, or lazy clones a second copy
+  dependencies = { 'nvim-tree/nvim-web-devicons', 'rose-pine' },
   config = function()
     require('bufferline').setup {
       highlights = require 'rose-pine.plugins.bufferline',

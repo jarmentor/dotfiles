@@ -11,7 +11,8 @@ return {
       inline_surround_change = 'cs', -- change inline style
       link_add = 'gl', -- add link
       link_follow = 'gx', -- follow link
-      go_curr_heading = ']c', -- go to current heading
+      -- Not ]c: this shadows gitsigns' next-hunk in markdown
+      go_curr_heading = ']h', -- go to current heading
       go_parent_heading = ']p', -- go to parent heading
       go_next_heading = ']]', -- go to next heading
       go_prev_heading = '[[', -- go to previous heading

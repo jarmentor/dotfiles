@@ -14,14 +14,9 @@ return {
         Visual = { bg = 'iris', blend = 30 },
       },
     }
-  end,
-  init = function()
-    -- Load the colorscheme here.
-    -- Like many other themes, this one has different styles, and you could load
-    -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-    vim.cmd.colorscheme 'rose-pine'
 
-    -- You can configure highlights by doing something like:
+    -- Not in `init`: that runs before setup, dropping transparency and Visual above
+    vim.cmd.colorscheme 'rose-pine'
     vim.cmd.hi 'Comment gui=none'
   end,
 }

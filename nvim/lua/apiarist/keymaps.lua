@@ -26,14 +26,8 @@ vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
+-- <C-hjkl> window nav comes from vim-tmux-navigator; it overrides anything set here
 
---  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 -- Easy splits: horizontal and vertical
 vim.keymap.set('n', '<leader>-', '<cmd>split<CR>', { desc = 'Horizontal split window' })
 vim.keymap.set('n', '<leader>|', '<cmd>vsplit<CR>', { desc = 'Vertical split window' })
@@ -190,17 +184,7 @@ vim.keymap.set('n', '<leader>tv', function()
   vim.diagnostic.config({ virtual_text = not current })
 end, { desc = '[T]oggle [V]irtual text' })
 
--- Toggle git-only mode (hide diagnostics, keep git signs)
-vim.keymap.set('n', '<leader>tg', function()
-  local current = vim.diagnostic.is_enabled()
-  if current then
-    vim.diagnostic.enable(false)
-    print('Git-only mode: diagnostics hidden')
-  else
-    vim.diagnostic.enable(true)
-    print('Git-only mode: off (diagnostics shown)')
-  end
-end, { desc = '[T]oggle [G]it-only mode' })
+-- <leader>tg removed: it duplicated <leader>te's non-markdown branch
 
 -- LSP utilities
 vim.keymap.set('n', '<leader>lr', '<cmd>LspRestart<CR>', { desc = '[L]SP [R]estart' })
@@ -208,11 +192,11 @@ vim.keymap.set('n', '<leader>L', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
 
 -- Harper LSP spelling navigation and correction
 vim.keymap.set('n', ']s', function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.HINT })
+  vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.HINT, float = true })
 end, { desc = 'Next spelling issue' })
 
 vim.keymap.set('n', '[s', function()
-  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.HINT })
+  vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.HINT, float = true })
 end, { desc = 'Previous spelling issue' })
 
 -- Better spelling correction that selects the whole word
@@ -255,20 +239,24 @@ vim.keymap.set('n', '<leader>k', toggle_checkbox, { desc = 'Toggle markdown chec
 vim.keymap.set('n', '<leader>yp', '<cmd>let @+ = expand("%:p")<CR>', { desc = '[Y]ank file [P]ath (absolute)' })
 vim.keymap.set('n', '<leader>yr', '<cmd>let @+ = expand("%")<CR>', { desc = '[Y]ank [R]elative path' })
 
--- Open current file in Finder
-vim.keymap.set('n', '<leader>of', '<cmd>!open %:p:h<CR>', { desc = '[O]pen in [F]inder' })
+-- Not <leader>of: obsidian.nvim's lazy `keys` stub wins that at startup
+vim.keymap.set('n', '<leader>O', '<cmd>!open %:p:h<CR>', { desc = '[O]pen in Finder' })
 
 -- Visual mode search - search for selected text
 vim.keymap.set('v', '//', 'y/\\V<C-R>=escape(@",\'/\\\')<CR><CR>', { desc = 'Search selected text' })
 
 -- Better diagnostic navigation
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = 'Next diagnostic' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = 'Previous diagnostic' })
 vim.keymap.set('n', ']e', function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
 end, { desc = 'Next error' })
 vim.keymap.set('n', '[e', function()
-  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
 end, { desc = 'Previous error' })
 
 -- Buffer formatting
@@ -277,7 +265,7 @@ vim.keymap.set('n', '<leader>bf', vim.lsp.buf.format, { desc = '[B]uffer [F]orma
 -- Quick window equalize
 vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = '[W]indow [=] equalize' })
 
--- Custom gt for Accelo tickets and tasks
+-- On gA, not gt: gt is built-in next-tab and <leader>bt opens tabs
 local function open_ticket()
   local line = vim.api.nvim_get_current_line()
   local col = vim.api.nvim_win_get_cursor(0)[2]
@@ -320,7 +308,7 @@ local function open_ticket()
   print('No ticket or task pattern found under cursor')
 end
 
-vim.keymap.set('n', 'gt', open_ticket, { desc = 'Open Accelo ticket under cursor' })
+vim.keymap.set('n', 'gA', open_ticket, { desc = 'Open [A]ccelo ticket under cursor' })
 
 -- Custom commands
 vim.api.nvim_create_user_command('Wrap', function()

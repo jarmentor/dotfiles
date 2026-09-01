@@ -19,15 +19,20 @@ return {
         if bufname == '' then
           return
         end
-        -- Walk up and pick the first ancestor containing vendor/bin/phpcs.
-        -- Avoids stopping at a nested composer.json without installed deps.
-        local cmd_bin = 'phpcs'
-        for dir in vim.fs.parents(bufname) do
-          local candidate = dir .. '/vendor/bin/phpcs'
-          if vim.fn.executable(candidate) == 1 then
-            cmd_bin = candidate
-            break
+        -- Cached: this runs on every InsertLeave and the walk stats each ancestor
+        local cmd_bin = vim.b.phpcs_cmd
+        if not cmd_bin then
+          -- Walk up and pick the first ancestor containing vendor/bin/phpcs.
+          -- Avoids stopping at a nested composer.json without installed deps.
+          cmd_bin = 'phpcs'
+          for dir in vim.fs.parents(bufname) do
+            local candidate = dir .. '/vendor/bin/phpcs'
+            if vim.fn.executable(candidate) == 1 then
+              cmd_bin = candidate
+              break
+            end
           end
+          vim.b.phpcs_cmd = cmd_bin
         end
         phpcs.cmd = cmd_bin
         phpcs.args = {

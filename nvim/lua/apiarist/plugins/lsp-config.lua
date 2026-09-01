@@ -73,10 +73,6 @@ return {
           --  Symbols are things like variables, functions, types, etc.
           map('<leader>ds', require('snacks').picker.lsp_symbols, '[D]ocument [S]ymbols')
 
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('snacks').picker.lsp_workspace_symbols, '[W]orkspace [S]ymbols')
-
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -124,14 +120,15 @@ return {
         end,
       })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities())
-      -- Add folding capabilities for nvim-ufo
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      -- Without this nvim-ufo silently falls back to indent folding
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
         lineFoldingOnly = true,
       }
 
+      -- Merged over nvim-lspconfig's lsp/ defaults. root_markers, not root_dir:
+      -- lspconfig.util's functions are the old framework's signature.
       local servers = {
         cssls = {
           settings = {
@@ -152,15 +149,14 @@ return {
 
         clangd = {
           cmd = { 'clangd', '--background-index', '--clang-tidy', '--header-insertion=never' },
-          capabilities = capabilities,
           filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
-          root_dir = require('lspconfig').util.root_pattern('.git', 'compile_commands.json', 'compile_flags.txt'),
+          root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
         },
 
         emmet_language_server = {
-          filetypes = { 'html', 'astro', 'css', 'javascript', 'typescript', 'php', 'vue', 'svelte', 'javascriptreact', 'typescriptreact' },
-          root_dir = require('lspconfig').util.find_git_ancestor,
-          single_file_support = true,
+          -- No php: phpactor owns that filetype alone
+          filetypes = { 'html', 'astro', 'css', 'javascript', 'typescript', 'vue', 'svelte', 'javascriptreact', 'typescriptreact' },
+          root_markers = { '.git' },
         },
 
         graphql = {
@@ -171,14 +167,23 @@ return {
         ts_ls = {},
 
         phpactor = {
-          capabilities = capabilities,
-          root_dir = require('lspconfig').util.root_pattern('composer.json', 'wp-config.php', 'functions.php', '.git'),
+          -- Tiered so the site root beats a nested plugin/theme composer.json.
+          -- Never functions.php: every theme has one, stranding the index there.
+          root_markers = { { '.phpactor.json', 'wp-config.php' }, { 'composer.json', '.git' } },
+        },
+
+        -- Defaults include php/scss, which makes it index vendored scss in WP repos
+        tailwindcss = {
+          filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue' },
+          root_markers = {
+            'tailwind.config.js',
+            'tailwind.config.cjs',
+            'tailwind.config.mjs',
+            'tailwind.config.ts',
+          },
         },
 
         lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
           settings = {
             Lua = {
               completion = {
@@ -207,6 +212,7 @@ return {
           },
         },
 
+        -- Defaults include php/lua/sh/c, i.e. spellchecking your source code
         harper_ls = {
           filetypes = { 'markdown', 'text' },
           settings = {
@@ -275,6 +281,11 @@ return {
         sqlls = {},
       }
 
+      vim.lsp.config('*', { capabilities = capabilities })
+      for name, cfg in pairs(servers) do
+        vim.lsp.config(name, cfg)
+      end
+
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -285,7 +296,13 @@ return {
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      -- tailwindcss excluded: its Mason package name differs, listed below
+      local ensure_installed = {}
+      for name in pairs(servers) do
+        if name ~= 'tailwindcss' then
+          table.insert(ensure_installed, name)
+        end
+      end
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'tailwindcss-language-server',
@@ -293,32 +310,13 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+      -- v2 silently ignores `handlers` and `automatic_installation`
       require('mason-lspconfig').setup {
-        automatic_installation = true,
         ensure_installed = {},
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            -- Special setup for Tailwind CSS LSP: restrict filetypes (no PHP/SCSS)
-            -- and skip giant WP repos where it indexes vendored scss.
-            if server_name == 'tailwindcss' then
-              require('lspconfig')[server_name].setup {
-                filetypes = { 'astro', 'html', 'css', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue' },
-                root_dir = require('lspconfig').util.root_pattern(
-                  'tailwind.config.js',
-                  'tailwind.config.cjs',
-                  'tailwind.config.mjs',
-                  'tailwind.config.ts'
-                ),
-              }
-            else
-              require('lspconfig')[server_name].setup(server)
-            end
-          end,
+        -- Everything Mason installs auto-starts; these three double up on a
+        -- filetype already covered (oxfmt is wanted as a formatter, not an LSP)
+        automatic_enable = {
+          exclude = { 'phpantom_lsp', 'markdown_oxide', 'oxfmt' },
         },
       }
     end,

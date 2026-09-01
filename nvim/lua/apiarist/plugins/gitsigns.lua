@@ -118,7 +118,7 @@ return {
           end
 
           vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-          vim.api.nvim_buf_set_option(buf, 'filetype', 'diff')
+          vim.bo[buf].filetype = 'diff'
 
           -- Open in a floating window
           local width = math.floor(vim.o.columns * 0.9)

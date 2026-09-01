@@ -51,23 +51,18 @@ end, { desc = 'Git reset with confirmation' })
 
 -- NOTE: JS/TS formatting handled by conform.nvim (see plugins/conform.lua)
 
--- Automatically return to the last edit position when reopening a file
+-- Return to the last edit position, except in git buffers where the stale mark
+-- lands you mid-message
 vim.api.nvim_create_autocmd('BufReadPost', {
-  callback = function()
+  callback = function(event)
+    -- Matched, not vim.bo: this runs before filetypedetect
+    local skip = { gitcommit = true, gitrebase = true, gitsendemail = true }
+    if skip[vim.filetype.match { buf = event.buf } or ''] then
+      return
+    end
     local last_pos = vim.fn.line '\'"'
     if last_pos > 0 and last_pos <= vim.fn.line '$' then
       vim.cmd 'normal! g`"'
-    end
-  end,
-})
-
--- Enable inlay hints for phpbuffers
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(event)
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client.name == 'phpactor' and client.supports_method 'textDocument/inlayHint' then
-      -- Enable for this buffer
-      vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
     end
   end,
 })
@@ -108,15 +103,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
--- Remove trailing whitespace on save (limited to text files to avoid corrupting binaries)
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = { '*.lua', '*.js', '*.ts', '*.jsx', '*.tsx', '*.php', '*.py', '*.md', '*.txt', '*.yaml', '*.yml', '*.json', '*.css', '*.scss', '*.html', '*.vue', '*.svelte', '*.astro', '*.tex', '*.bib', '*.sh', '*.zsh', '*.bash' },
-  callback = function()
-    local save_cursor = vim.fn.getpos '.'
-    vim.cmd [[%s/\s\+$//e]]
-    vim.fn.setpos('.', save_cursor)
-  end,
-})
+-- Trailing whitespace on save lives in conform now (one BufWritePre writer).
 
 -- Auto-save on focus lost (silent - no spam)
 vim.api.nvim_create_autocmd('FocusLost', {
@@ -151,6 +138,13 @@ vim.api.nvim_create_autocmd('FileType', {
 
     -- Auto-continue lists and checkboxes on Enter
     vim.keymap.set('i', '<CR>', function()
+      -- This buffer-local map shadows blink's <CR>, so hand the key back
+      local ok, blink = pcall(require, 'blink.cmp')
+      if ok and blink.is_menu_visible() then
+        blink.accept()
+        return
+      end
+
       local line = vim.api.nvim_get_current_line()
       local indent = line:match('^(%s*)')
 

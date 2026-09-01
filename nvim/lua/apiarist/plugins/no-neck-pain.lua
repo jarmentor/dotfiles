@@ -56,8 +56,8 @@ return {
         
         -- Check if we're in a special window that should be ignored
         local buf = vim.api.nvim_win_get_buf(current_win)
-        local filetype = vim.api.nvim_buf_get_option(buf, 'filetype')
-        local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+        local filetype = vim.bo[buf].filetype
+        local buftype = vim.bo[buf].buftype
         
         -- Skip if aerial is open anywhere (let the integration handle it)
         local aerial_ok, aerial = pcall(require, 'aerial')

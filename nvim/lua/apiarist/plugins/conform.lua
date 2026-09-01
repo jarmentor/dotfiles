@@ -1,3 +1,19 @@
+-- Filetypes oxfmt doesn't cover, so trimming is all they get.
+local trim_only = {
+  'python',
+  'text',
+  'yaml',
+  'css',
+  'scss',
+  'html',
+  'vue',
+  'svelte',
+  'astro',
+  'sh',
+  'bash',
+  'zsh',
+}
+
 return { -- Autoformat
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -6,10 +22,20 @@ return { -- Autoformat
     {
       '<leader>f',
       function()
-        require('conform').format { async = true, lsp_fallback = true }
+        -- Without a range conform formats the whole buffer, even from a selection
+        local range = nil
+        local mode = vim.fn.mode()
+        if mode == 'v' or mode == 'V' or mode == '\22' then
+          local a, b = vim.fn.getpos 'v', vim.fn.getpos '.'
+          if a[2] > b[2] or (a[2] == b[2] and a[3] > b[3]) then
+            a, b = b, a
+          end
+          range = { start = { a[2], a[3] - 1 }, ['end'] = { b[2], b[3] } }
+        end
+        require('conform').format { async = true, lsp_format = 'fallback', range = range }
       end,
-      mode = '',
-      desc = '[F]ormat buffer',
+      mode = { 'n', 'v' },
+      desc = '[F]ormat buffer/selection',
     },
     {
       '<leader>tf',
@@ -20,42 +46,41 @@ return { -- Autoformat
       desc = '[T]oggle [F]ormat on save',
     },
   },
-  opts = {
-    notify_on_error = false,
-    format_on_save = function(bufnr)
-      -- Global toggle (<leader>tf) or per-buffer flag (set during focus-lost
-      -- autosave) — skip formatting so we don't rewrite whole legacy files.
-      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-        return
-      end
-      -- Disable "format_on_save lsp_fallback" for languages that don't
-      -- have a well standardized coding style. You can add additional
-      -- languages here or re-enable it for the disabled ones.
-      local disable_filetypes = { c = true, cpp = true, markdown = true }
-      return {
-        timeout_ms = 500,
-        lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-      }
-    end,
-    formatters_by_ft = {
+  opts = function()
+    local formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      typescript = { 'prettierd', 'prettier', stop_after_first = true },
-      javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      markdown = { 'prettierd', 'prettier', stop_after_first = true },
+      javascript = { 'oxfmt' },
+      typescript = { 'oxfmt' },
+      javascriptreact = { 'oxfmt' },
+      typescriptreact = { 'oxfmt' },
+      json = { 'oxfmt' },
+      jsonc = { 'oxfmt' },
+      markdown = { 'oxfmt' }, -- keeps trailing double-space hard breaks
       tex = { 'latexindent' },
       bib = { 'bibtex-tidy' },
       php = { 'phpcbf' },
-    },
-    formatters = {
-      prettier = {
-        options = {
-          ft_parsers = {
-            markdown = 'markdown',
-          },
-        },
-      },
-    },
-  },
+    }
+    -- Trimming here keeps one BufWritePre writer; two left extmarks stale
+    for _, ft in ipairs(trim_only) do
+      formatters_by_ft[ft] = { 'trim_whitespace' }
+    end
+
+    return {
+      notify_on_error = false,
+      format_on_save = function(bufnr)
+        -- Buffer flag is set during focus-lost autosave, so legacy repos don't
+        -- get surprise whole-file diffs
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        -- Languages without a well standardized style
+        local disable_filetypes = { c = true, cpp = true, markdown = true }
+        return {
+          timeout_ms = 500,
+          lsp_format = disable_filetypes[vim.bo[bufnr].filetype] and 'never' or 'fallback',
+        }
+      end,
+      formatters_by_ft = formatters_by_ft,
+    }
+  end,
 }

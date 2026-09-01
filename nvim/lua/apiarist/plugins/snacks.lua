@@ -3,14 +3,6 @@ return {
   priority = 1000, -- ensure early setup
   lazy = false, -- load immediately to register autocommands
 
-  -- Only load when these commands or keymaps are used (still "loaded", but usage is deferred)
-  cmd = {
-    'SnacksDashboard',
-    'SnacksToggleDim',
-    'SnacksToggleInlayHints',
-    'SnacksTerminal',
-    'SnacksNotifierHistory',
-  },
   keys = {
     {
       '<leader>nh',
@@ -199,14 +191,6 @@ return {
         require('snacks').picker.recent()
       end,
       desc = '[S]earch Recent Files',
-    },
-    -- Document/Workspace symbols
-    {
-      '<leader>sy',
-      function()
-        require('snacks').picker.lsp_symbols()
-      end,
-      desc = '[S]earch S[Y]mbols (document)',
     },
     {
       '<leader>ws',
