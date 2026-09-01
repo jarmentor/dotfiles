@@ -482,6 +482,10 @@ for envf in ~/.dotfiles/.env ~/.dotfiles/.env.comit ~/.dotfiles/.env.personal; d
   [[ -r $envf ]] && source "$envf"
 done
 
+# Overrides .env.comit's wpe-ssh function. An alias, not a function, so zsh
+# substitutes it before completing and zsh/completions/_wpe applies for free.
+alias wpessh='wpe ssh'
+
 
 
 function __set_beam_cursor {
