@@ -35,6 +35,7 @@ _wpe() {
     'find:Retrieve a list of environments matching a query'
     'backup:Trigger a backup on an arbitrary environment'
     'purge-cache:Purge the WPE cache for an arbitrary environment'
+    'refresh:Discard the local site cache and re-fetch from the API'
     'status:Retrieve the status of the WPE Public API'
     'whoami:Retrieve the current user'
     'ssh:Open an SSH session to the specified environment or domain'

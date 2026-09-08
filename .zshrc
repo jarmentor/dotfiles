@@ -486,6 +486,10 @@ done
 # substitutes it before completing and zsh/completions/_wpe applies for free.
 alias wpessh='wpe ssh'
 
+# Rebuild the site cache that feeds both zsh/completions/_wpe and the @site
+# aliases wpe-aliases writes to wp-cli.
+alias wpe-refresh='wpe refresh && wpe-aliases'
+
 
 
 function __set_beam_cursor {
