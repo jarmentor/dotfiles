@@ -318,13 +318,22 @@ return {
       },
       -- header lives on `preset`; a `header` key on the section item is ignored
       preset = {
-        header = [[
-███████╗██╗   ██╗██████╗ ██████╗ ██╗   ██╗
-██╔════╝██║   ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
-█████╗  ██║   ██║██████╔╝██████╔╝ ╚████╔╝ 
-██╔══╝  ██║   ██║██╔══██╗██╔══██╗  ╚██╔╝  
-██║     ╚██████╔╝██║  ██║██████╔╝   ██║   
-╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═════╝    ╚═╝   ]],
+        -- pad every line to the widest one: the dashboard centers lines
+        -- individually, so ragged lines render misaligned
+        header = ([[
+           ,
+           ),\
+          ( ) )
+   |'-.  .-"""-.  .-'|
+   |.-.`/,, - ,,\'.-.|
+   '._ | (@) (@) | _.'
+      `|   (-)   |`
+       > .'   '. <
+       | |     | |
+   jgs \ \     / /
+        ((()-()))]]):gsub('[^\n]+', function(line)
+          return line .. string.rep(' ', 22 - #line)
+        end),
       },
       sections = {
         { section = 'header' },
