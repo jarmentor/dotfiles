@@ -409,6 +409,22 @@ return {
     picker = {
       enabled = true,
       hidden = true,
+      -- <a-t> sends picker results to a Trouble tree: persistent list + preview,
+      -- which the picker itself can't give you once it closes. Required inside the
+      -- closure, not at spec load, so trouble.nvim stays lazy on `cmd = 'Trouble'`.
+      win = {
+        input = {
+          keys = {
+            ['<a-t>'] = {
+              function(picker)
+                require('trouble.sources.snacks').open(picker, { type = 'smart' })
+              end,
+              mode = { 'n', 'i' },
+              desc = 'Open in Trouble',
+            },
+          },
+        },
+      },
     },
     scope = { enabled = false }, -- toggle off if not needed
     scroll = { enabled = false },

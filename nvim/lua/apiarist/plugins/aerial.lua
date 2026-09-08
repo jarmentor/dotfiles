@@ -66,15 +66,21 @@ return {
     lazy_load = true,
     disable_max_lines = 10000,
     disable_max_size = 2000000,
+    -- Matches trouble's default `symbols` filter, so both outlines show the same
+    -- thing. Package is dropped: luals reports control-flow blocks as Package.
     filter_kind = {
       "Class",
       "Constructor",
       "Enum",
+      "Field",
       "Function",
       "Interface",
-      "Module",
       "Method",
+      "Module",
+      "Namespace",
+      "Property",
       "Struct",
+      "Trait",
     },
     highlight_mode = "split_width",
     highlight_closest = true,
