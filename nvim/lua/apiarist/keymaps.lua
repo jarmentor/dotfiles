@@ -140,9 +140,7 @@ vim.keymap.set('n', '<leader>te', function()
       vim.wo.list = false
       vim.o.laststatus = 0
       vim.diagnostic.enable(false)
-      for _, client in ipairs(vim.lsp.get_clients({ name = 'harper_ls' })) do
-        client:stop()
-      end
+      vim.lsp.enable('harper_ls', false)
 
       print('Clean reading: on')
     else
@@ -157,7 +155,7 @@ vim.keymap.set('n', '<leader>te', function()
       vim.o.laststatus = s.laststatus
       if s.diagnostics then
         vim.diagnostic.enable(true)
-        vim.cmd('edit') -- reattach harper
+        vim.lsp.enable('harper_ls') -- reattaches to open buffers, no :edit needed
       end
 
       print('Clean reading: off')
@@ -169,13 +167,7 @@ vim.keymap.set('n', '<leader>te', function()
   local is_enabled = vim.diagnostic.is_enabled()
   vim.diagnostic.enable(not is_enabled)
 
-  if is_enabled then
-    for _, client in ipairs(vim.lsp.get_clients({ name = 'harper_ls' })) do
-      client:stop()
-    end
-  else
-    vim.cmd('edit')
-  end
+  vim.lsp.enable('harper_ls', not is_enabled)
 end, { desc = '[T]oggle [E]rrors / clean reading (md)' })
 
 -- Toggle virtual text (inline diagnostic messages)
