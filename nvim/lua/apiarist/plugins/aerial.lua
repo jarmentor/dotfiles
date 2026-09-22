@@ -98,20 +98,6 @@ return {
     link_folds_to_tree = false,
     link_tree_to_folds = true,
     nerd_font = "auto",
-    on_attach = function(bufnr)
-      -- aerial's next/prev wrap with no option to stop; a jump against `dir` wrapped
-      local function step(dir)
-        return function()
-          local pos = vim.api.nvim_win_get_cursor(0)
-          require("aerial")[dir > 0 and "next" or "prev"](1)
-          if (vim.api.nvim_win_get_cursor(0)[1] - pos[1]) * dir < 0 then
-            vim.api.nvim_win_set_cursor(0, pos)
-          end
-        end
-      end
-      vim.keymap.set("n", "{", step(-1), { buffer = bufnr })
-      vim.keymap.set("n", "}", step(1), { buffer = bufnr })
-    end,
     open_automatic = false,
     post_jump_cmd = "normal! zz",
     close_on_select = false,
