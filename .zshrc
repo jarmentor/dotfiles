@@ -206,7 +206,12 @@ ghraw() {
 }
 
 make_dir_cd() {
-  mkdir -p "$1" && cd "$1"
+  mkdir -p -- "$1" && cd -- "$1"
+}
+
+# Today's scratch folder in Downloads
+dl() {
+  make_dir_cd ~/Downloads/$(date +%F)
 }
 
 fkill() {
