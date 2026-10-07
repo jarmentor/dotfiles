@@ -186,6 +186,9 @@ alias img-resize='magick mogrify'
 # Remote server
 alias {h,hipaa}='ssh hipaa'
 
+# mkdir + cd
+alias {mkdircd,mkcd}='make_dir_cd'
+
 # CSV
 alias csv='csvlens'
 # ────────────────────────────────────────────────────────────────────────────
@@ -202,7 +205,7 @@ ghraw() {
   if $open; then open "$raw"; else echo "$raw"; fi
 }
 
-mkcd() {
+make_dir_cd() {
   mkdir -p "$1" && cd "$1"
 }
 
