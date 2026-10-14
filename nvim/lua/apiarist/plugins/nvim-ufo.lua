@@ -13,9 +13,13 @@ return {
     -- NOTE: Folding capabilities are added in lsp-config.lua to avoid
     -- re-configuring all LSP servers here (which would override other settings)
 
-    -- Configure folding provider: first LSP, then indent as fallback
+    -- Configure folding provider: first LSP, then indent as fallback.
+    -- Markdown has no folding LSP, so use treesitter to fold by heading section.
     require('ufo').setup {
       provider_selector = function(bufnr, filetype, buftype)
+        if filetype == 'markdown' then
+          return { 'treesitter', 'indent' }
+        end
         return { 'lsp', 'indent' }
       end,
     }

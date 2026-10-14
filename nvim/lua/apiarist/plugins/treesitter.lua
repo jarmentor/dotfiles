@@ -64,6 +64,10 @@ return {
         max_lines = 0,
         min_window_height = 0,
         zindex = 20,
+        -- Sticky headings flicker as you cross sections in long notes
+        on_attach = function(buf)
+          return vim.bo[buf].filetype ~= 'markdown'
+        end,
       }
     end,
   },

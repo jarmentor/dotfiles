@@ -135,6 +135,11 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.wrapmargin = 0
     vim.opt_local.spell = true
     vim.opt_local.spelllang = 'en_us'
+    -- Scroll long wrapped lines a screen row at a time instead of jumping whole lines
+    vim.opt_local.smoothscroll = true
+    vim.opt_local.scrolloff = 8
+    -- Hang wrapped list items under their text, not the bullet
+    vim.opt_local.breakindentopt = 'list:-1'
 
     -- Auto-continue lists and checkboxes on Enter
     vim.keymap.set('i', '<CR>', function()

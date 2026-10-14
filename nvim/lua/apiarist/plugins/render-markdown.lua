@@ -17,13 +17,31 @@ return {
         default = 0,
         rendered = 3,
       },
+      -- Keep concealed in normal/cmdline so long link URLs don't expand and reflow as the cursor moves
+      concealcursor = {
+        rendered = 'nc',
+      },
     },
     -- File size limit to prevent lag on large documents
     max_file_size = 10.0, -- 10MB limit
     debounce = 100, -- 100ms debounce delay
-    -- Anti-conceal feature - hide rendering on cursor line
+    -- Anti-conceal feature - show raw text on cursor line, but only in insert mode
     anti_conceal = {
       enabled = true,
+      ignore = {
+        -- plugin defaults
+        code_background = true,
+        indent = true,
+        sign = true,
+        virtual_lines = true,
+        -- stay rendered in normal mode so line widths don't change while scrolling
+        link = { 'n' },
+        check_icon = { 'n' },
+        bullet = { 'n' },
+        head_icon = { 'n' },
+        quote = { 'n' },
+        dash = { 'n' },
+      },
     },
     -- Callout configuration for Obsidian compatibility
     callout = {
@@ -101,7 +119,7 @@ return {
       checked = {
         icon = '󰱒 ',
         highlight = 'RenderMarkdownChecked',
-        scope_highlight = nil,
+        scope_highlight = 'Comment', -- dim completed items
       },
       custom = {
         todo = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo' },
