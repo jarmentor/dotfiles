@@ -1,0 +1,106 @@
+#compdef press
+
+# Site names come from press's own site cache
+# (~/.cache/pressable-cli/sites.json, refreshed by any press command every 6h).
+_press_sites() {
+  local cache=${XDG_CACHE_HOME:-$HOME/.cache}/pressable-cli/sites.json
+  [[ -r $cache ]] || return 1
+
+  # Pasted a URL/domain? Match on any domain but insert the site name.
+  if [[ $PREFIX == *.* ]]; then
+    local q=${${${PREFIX#*://}%%/*}%%:*}
+    local -a names expl
+    names=(${(f)"$(jq -r --arg q "$q" '
+      .data[]
+      | select((.domains // []) | any(. as $d | $d != "" and (($d | contains($q)) or ($q | contains($d)))))
+      | .name' -- $cache 2>/dev/null)"})
+    (( $#names )) || return 1
+    _description -V sites expl "site matching $q"
+    compadd -U "$expl[@]" -a names
+    return
+  fi
+
+  local -a sites
+  sites=(${(f)"$(jq -r '.data[] | "\(.name):\(.primary_domain // "")"' -- $cache 2>/dev/null)"})
+  _describe -t sites 'site' sites
+}
+
+_press() {
+  local curcontext="$curcontext" state line
+  local -a commands
+  commands=(
+    'list-sites:Retrieve a list of all sites in Pressable'
+    'find:Retrieve sites matching a query'
+    'backup:Trigger on-demand backups'
+    'purge-cache:Purge caches for a site'
+    'refresh:Discard the local site cache and re-fetch from the API'
+    'whoami:Retrieve the current account'
+    'ssh:Open an SSH session to a site, or run a command there'
+    'open:Open the MyPressable dashboard for a site'
+    'login:Open a one-time wp-admin login'
+    'help:Display help for command'
+  )
+
+  _arguments -C \
+    '(-V --version)'{-V,--version}'[output the version number]' \
+    '(-i --tui)'{-i,--tui}'[browse sites interactively]' \
+    '(-h --help)'{-h,--help}'[display help for command]' \
+    '1: :->command' \
+    '*:: :->args'
+
+  case $state in
+    command)
+      _describe -t commands 'press command' commands
+      ;;
+    args)
+      case $words[1] in
+        list-sites)
+          _arguments '--json[full JSON instead of id/name/domain lines]'
+          ;;
+        find)
+          _arguments \
+            '--state[site state]:state:(live)' \
+            '--php[PHP version of the site]:version:' \
+            '--staging[only staging sites]' \
+            '--tag[only sites with this tag]:tag:' \
+            '--json[full JSON instead of id/name/domain lines]' \
+            '1: :_press_sites'
+          ;;
+        backup)
+          _arguments \
+            '--type[backup type]:type:(fs db both)' \
+            '*: :_press_sites'
+          ;;
+        purge-cache)
+          _arguments \
+            '(-t --type)'{-t,--type}'[type of cache to purge]:type:(edge object cdn all)' \
+            '1: :_press_sites'
+          ;;
+        ssh)
+          # After `--` it's a remote command, not a site.
+          if (( ${words[(I)--]} )); then
+            local idx=${words[(I)--]}
+            words=(${words[idx+1,-1]}); (( CURRENT -= idx ))
+            _normal
+          else
+            _arguments '1: :_press_sites' '*:: :_normal'
+          fi
+          ;;
+        open)
+          _arguments '1: :_press_sites'
+          ;;
+        login)
+          _arguments \
+            '--email[WordPress user email]:email:' \
+            '--user-agent[must match the browser that opens the URL]:user agent:' \
+            '1: :_press_sites'
+          ;;
+        help)
+          _describe -t commands 'press command' commands
+          ;;
+      esac
+      ;;
+  esac
+}
+
+_press "$@"
