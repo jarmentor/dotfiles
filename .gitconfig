@@ -137,3 +137,9 @@
 [mergetool "nvim"]
   cmd = nvim -d $LOCAL $REMOTE
   trustExitCode = false
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
