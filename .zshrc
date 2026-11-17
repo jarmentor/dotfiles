@@ -266,6 +266,13 @@ serve() { python3 -m http.server "${1:-8000}"; }
 # first, so `wp --dbhost` loses; the socket has to be set at the PHP layer.
 # Local's bundled php.ini is display_errors=1/memory_limit=128M, hence both -d's.
 wp() {
+  # @press.<name> goes through `press ssh`, which knows the per-site SSH user.
+  # Pressable's login dir already resolves WordPress, so no --path.
+  if [[ $1 == @press.* ]]; then
+    press ssh "${1#@press.}" -- wp "${@:2}"
+    return
+  fi
+
   if [[ $1 == @local.* ]]; then
     local dir=${LOCAL_DIR:-$HOME/Library/Application Support/Local} slug=${1#@local.}
     local -a f

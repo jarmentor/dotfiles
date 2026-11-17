@@ -33,6 +33,17 @@ _wp() {
       done
     fi
 
+    # Pressable sites: the wp() wrapper sends @press.* through `press ssh`.
+    local presscache=${XDG_CACHE_HOME:-$HOME/.cache}/pressable-cli/sites.json
+    if [[ -r $presscache ]]; then
+      for entry in ${(f)"$(jq -r '
+            .data[]
+            | "@press.\(.name) \(.primary_domain // .url) (pressable, \(if .staging then "staging" else "production" end))"
+          ' -- "$presscache" 2>/dev/null)"}; do
+        labelled+=("${entry%% *}:${entry#* }")
+      done
+    fi
+
     _describe -t wp-aliases 'alias' labelled
     return
   fi
