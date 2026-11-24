@@ -2,7 +2,7 @@ return {
   {
     'saghen/blink.cmp',
     event = { 'InsertEnter', 'CmdlineEnter' },
-    dependencies = 'rafamadriz/friendly-snippets',
+    dependencies = { 'rafamadriz/friendly-snippets', 'L3MON4D3/LuaSnip' },
     version = '1.*',
     opts = {
       keymap = {
@@ -23,6 +23,8 @@ return {
           enabled = true,
         },
       },
+      -- LuaSnip holds both the markdown snippets and friendly-snippets (from_vscode)
+      snippets = { preset = 'luasnip' },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
         per_filetype = {
