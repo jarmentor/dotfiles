@@ -183,6 +183,9 @@ alias {ts,now}='date +%s | sed "s/\n//g"'
 alias tojpg='mogrify -quality 100 -format jpg'
 alias img-resize='magick mogrify'
 
+# Affinity
+alias {aff,affinity}='open -a Affinity'
+
 # Remote server
 alias {h,hipaa}='ssh hipaa'
 
