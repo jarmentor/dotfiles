@@ -105,3 +105,12 @@ vim.opt.pumblend = 10 -- Slight transparency for popup menu
 
 -- Rounded borders on all floating windows (hover, lazy, mason, etc.)
 vim.o.winborder = 'rounded'
+
+-- Native folding (replaces nvim-ufo): treesitter by default, LSP folding ranges
+-- take over on attach (lsp-config.lua). All folds open on load.
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.o.foldtext = '' -- show the fold's first line, syntax-highlighted
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldcolumn = '0'

@@ -112,6 +112,10 @@ return {
             })
           end
 
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) then
+            vim.wo[vim.fn.bufwinid(event.buf)][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+          end
+
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
             map('<leader>th', function()
