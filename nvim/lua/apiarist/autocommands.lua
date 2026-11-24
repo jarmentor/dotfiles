@@ -1,18 +1,13 @@
 vim.api.nvim_create_user_command('TrimTrailingSpaces', function(opts)
   -- Use the range provided in opts.line1 and opts.line2
-  local range = opts.range
-  -- If no range is provided, use the entire buffer
-  if range == nil then
+  -- opts.range is 0 (not nil) when no range was given
+  if opts.range == 0 then
     vim.cmd '%s/\\s\\+$//e' -- Remove trailing spaces for the whole file
   else
     -- Remove trailing spaces for the specific range
     vim.cmd(string.format('%d,%d s/\\s\\+$//e', opts.line1, opts.line2))
   end
 end, { range = true, desc = 'Remove trailing spaces (with optional range)' })
-
-vim.api.nvim_create_user_command('ToggleLineNumbers', 'set number! | set relativenumber!', {})
-
-vim.api.nvim_create_user_command('SaveAll', 'wa', {})
 
 vim.api.nvim_create_user_command('BackupFile', function()
   -- Get the current file name
@@ -21,8 +16,7 @@ vim.api.nvim_create_user_command('BackupFile', function()
   local timestamp = os.date '%Y%m%d%H%M%S'
   -- Create a backup filename
   local backup_filename = filename .. '.' .. timestamp .. '.bak'
-  -- Perform the backup using the system's copy command
-  vim.cmd(string.format('silent !cp %s %s', filename, backup_filename))
+  assert(vim.uv.fs_copyfile(filename, backup_filename))
   -- Print a message to the user
   vim.api.nvim_out_write('Backup created at ' .. backup_filename .. '\n')
   -- Reload the file to ensure no changes
@@ -36,7 +30,9 @@ vim.api.nvim_create_user_command('GitResetBuffer', function()
   -- If the user presses 'Yes', proceed with the reset
   if confirm == 1 then
     -- Perform the git reset and reload the file
-    vim.cmd 'silent !git checkout -- % | edit!'
+    -- system(), not :!, which hands `| edit!` to the shell
+    vim.fn.system { 'git', 'checkout', '--', vim.fn.expand '%:p' }
+    vim.cmd 'edit!'
     vim.api.nvim_out_write 'Buffer has been reset to the latest commit.\n'
   else
     -- If the user presses 'No', just show a message and do nothing

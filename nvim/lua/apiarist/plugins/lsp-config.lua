@@ -17,8 +17,8 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason.nvim',
+      'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -38,7 +38,7 @@ return {
       vim.diagnostic.config({
         virtual_text = false,
         float = {
-          source = 'always',
+          source = true,
           border = 'rounded',
         },
         severity_sort = true,
@@ -58,7 +58,8 @@ return {
           map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('snacks').picker.lsp_references, '[G]oto [R]eferences')
+          -- grr, not gr: a gr map makes nvim's built-in grn/gra/gri wait out timeoutlen
+          map('grr', require('snacks').picker.lsp_references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
@@ -121,11 +122,6 @@ return {
       })
 
       local capabilities = require('blink.cmp').get_lsp_capabilities()
-      -- Without this nvim-ufo silently falls back to indent folding
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
 
       -- Merged over nvim-lspconfig's lsp/ defaults. root_markers, not root_dir:
       -- lspconfig.util's functions are the old framework's signature.
