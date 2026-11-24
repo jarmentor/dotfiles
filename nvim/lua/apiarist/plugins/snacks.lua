@@ -366,20 +366,6 @@ return {
           padding = 1,
           pane = 1,
         },
-        {
-          section = 'terminal',
-          title = 'Git Status',
-          icon = ' ',
-          enabled = function()
-            return require('snacks.git').get_root() ~= nil
-          end,
-          cmd = 'git status --short --branch --renames',
-          height = 5,
-          padding = 1,
-          ttl = 5 * 60,
-          indent = 3,
-          pane = 1,
-        },
         { section = 'startup', pane = 1 },
       },
       indent = vim.o.columns < 100 and 1 or 2, -- dynamic for narrow windows
