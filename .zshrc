@@ -43,6 +43,9 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(git fast-syntax-highlighting zsh-autosuggestions)
 
+# before OMZ so its single compinit picks these up
+fpath=($HOME/.dotfiles/zsh/completions $HOME/.docker/completions $fpath)
+
 source "$ZSH/oh-my-zsh.sh"
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -92,7 +95,7 @@ alias {cpwd,pwdc}='pwd | pbcopy'
 alias cplast='fc -ln -1 | pbcopy'
 
 # Disk
-alias du='du -sh'
+alias dus='du -sh'
 alias df='df -h'
 
 # Networking
@@ -177,7 +180,7 @@ alias ff=fzf
 alias hgrep='history | grep'
 alias lorem=lorem-ipsum
 alias fib='seq 50 | awk "BEGIN{a=1;b=1}{print a;c=a+b;a=b;b=c}"'
-alias {ts,now}='date +%s | sed "s/\n//g"'
+alias {ts,now}='date +%s'
 
 # Photo / image
 alias tojpg='mogrify -quality 100 -format jpg'
@@ -419,7 +422,8 @@ fi
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh"
+# --no-use: default alias is `system` (brew node), so skip the ~370ms version resolve
+[[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh" --no-use
 [[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ]] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 # PNPM
@@ -533,16 +537,7 @@ function zle-line-init {
 }
 zle -N zle-line-init
 
-precmd() {
-    __set_beam_cursor  # doesn't have to be in precmd - can put outside a function if you like
-}
-fpath=($HOME/.dotfiles/zsh/completions $fpath)
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/jarmentor/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
+add-zsh-hook precmd __set_beam_cursor
 
 # bun completions
 [ -s "/Users/jarmentor/.bun/_bun" ] && source "/Users/jarmentor/.bun/_bun"
