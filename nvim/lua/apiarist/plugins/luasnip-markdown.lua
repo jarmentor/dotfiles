@@ -1,6 +1,7 @@
 -- lua/apiarist/plugins/luasnip-markdown.lua
 return {
   'L3MON4D3/LuaSnip',
+  event = 'InsertEnter',
   dependencies = { 'rafamadriz/friendly-snippets' },
   config = function()
     local luasnip = require('luasnip')
